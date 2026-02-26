@@ -16,7 +16,14 @@ const navLinks = [
     link: "#testimonials",
   },
 ];
-
+const words_videos = [
+  { text: "Cinematic stories", imgPath: "/images/designs.svg" },
+  { text: "High-end editing", imgPath: "/images/ideas.svg" },
+  {
+    text: "AI-powered visuals",
+    imgPath: "/images/concepts.svg",
+  },
+];
 const words = [
   { text: "Ideas", imgPath: "/images/ideas.svg" },
   { text: "Concepts", imgPath: "/images/concepts.svg" },
@@ -267,6 +274,7 @@ const socialImgs = [
 ];
 
 export {
+  words_videos,
   words,
   abilities,
   logoIconsList,

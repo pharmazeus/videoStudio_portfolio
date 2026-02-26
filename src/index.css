@@ -145,7 +145,7 @@ section {
       @apply flex;
 
       .inner {
-        @apply px-5 py-2 rounded-lg bg-white text-black group-hover:bg-black-50 transition-colors duration-300;
+        @apply px-1 py-2 rounded-lg bg-white text-black group-hover:bg-black-50 transition-colors duration-300;
 
         span {
           @apply group-hover:text-white transition-colors duration-300;
@@ -332,33 +332,23 @@ section {
 .wrapper {
   display: flex;
   flex-direction: column;
-  animation: wordSlider 14s infinite cubic-bezier(0.9, 0.01, 0.3, 0.99);
+  animation: wordSlider 9s infinite cubic-bezier(0.7, 0.01, 0.3, 0.99);
 }
 
 @keyframes wordSlider {
-  0% {
-    transform: translateY(0.5%);
-  }
-  12.5% {
-    transform: translateY(-12.5%);
-  }
   25% {
-    transform: translateY(-25%);
+    transform: translateY(-3%);
   }
   37.5% {
     transform: translateY(-37.5%);
   }
-  50% {
-    transform: translateY(-50%);
-  }
+
   62.5% {
     transform: translateY(-62.5%);
   }
-  75% {
-    transform: translateY(-75%);
-  }
+
   87.5% {
-    transform: translateY(-87.5%);
+    transform: translateY(-70.5%);
   }
 }
 
