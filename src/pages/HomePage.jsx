@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 
 import CTAButton from "../components/CTAButton";
 import SectionTitle from "../components/SectionTitle";
+import Testimonials from "../sections/Testimonials";
 import {
   caseStudies,
   faqs,
@@ -9,7 +10,6 @@ import {
   pricingPackages,
   processSteps,
   services,
-  testimonials,
   valueStrip,
   whyWorkWithMe,
 } from "../constants";
@@ -220,23 +220,7 @@ function HomePage() {
         </div>
       </section>
 
-      <section id="testimonials-proof" className="border-y border-black-50 bg-black-100/40 py-14 md:py-20">
-        <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 xl:px-20">
-          <SectionTitle
-            eyebrow="Testimonials"
-            title="Proof near the decision point"
-          />
-          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
-            {testimonials.map((item) => (
-              <article key={item.name} className="card-border rounded-xl p-5">
-                <p className="text-sm text-white-50">"{item.quote}"</p>
-                <p className="mt-5 font-semibold text-white">{item.name}</p>
-                <p className="text-xs text-blue-50">{item.role}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+      <Testimonials />
 
       <section id="faq" className="py-14 md:py-20">
         <div className="mx-auto w-full max-w-[960px] px-5 md:px-10">

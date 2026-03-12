@@ -392,6 +392,12 @@ export const addOns = [
   { name: "Monthly monitoring / support", startingPrice: 100, priceRange: [100, 300] },
 ];
 
+const placeholderVideoMedia = {
+  poster: "/images/video-placeholder.svg",
+  previewSrc: "/images/screen.mp4",
+  youtubeUrl: "https://www.youtube.com/",
+};
+
 export const caseStudies = [
   {
     slug: "at-cinema-content-engine",
@@ -415,9 +421,7 @@ export const caseStudies = [
       "Reusable content operations workflow",
     ],
     media: {
-      poster: "/posters/horizontal/CinemaPosterHorizontal.png",
-      previewSrc: "/videos/HorizontalSpaceZoomInAndOutCreatorBgVideo.mp4",
-      youtubeUrl: "https://www.youtube.com/watch?v=M7lc1UVf-VE",
+      ...placeholderVideoMedia,
     },
     featured: true,
     proofLevel: "selected",
@@ -444,9 +448,7 @@ export const caseStudies = [
       "Improved inquiry intent",
     ],
     media: {
-      poster: "/images/project1.png",
-      previewSrc: "/videos/verticalZoomOut.mp4",
-      youtubeUrl: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+      ...placeholderVideoMedia,
     },
     featured: true,
     proofLevel: "selected",
@@ -473,9 +475,7 @@ export const caseStudies = [
       "Faster weekly turnaround",
     ],
     media: {
-      poster: "/images/project2.png",
-      previewSrc: "/videos/HorizontalSpaceZoomInAndOutCreatorBgVideo.mp4",
-      youtubeUrl: "https://www.youtube.com/watch?v=ScMzIvxBSi4",
+      ...placeholderVideoMedia,
     },
     featured: true,
     proofLevel: "selected",
@@ -501,9 +501,7 @@ export const caseStudies = [
       "Higher confidence in first campaign push",
     ],
     media: {
-      poster: "/posters/horizontal/withCameraModerateEnhHorizontal.png",
-      previewSrc: "/videos/verticalZoomOut.mp4",
-      youtubeUrl: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
+      ...placeholderVideoMedia,
     },
     featured: false,
     proofLevel: "snapshot",
@@ -530,9 +528,7 @@ export const caseStudies = [
       "Faster campaign deployment",
     ],
     media: {
-      poster: "/images/project3.png",
-      previewSrc: "/videos/HorizontalSpaceZoomInAndOutCreatorBgVideo.mp4",
-      youtubeUrl: "https://www.youtube.com/watch?v=ysz5S6PUM-U",
+      ...placeholderVideoMedia,
     },
     featured: false,
     proofLevel: "snapshot",
@@ -559,9 +555,7 @@ export const caseStudies = [
       "Lower admin overhead",
     ],
     media: {
-      poster: "/posters/horizontal/readyBlackHorizontalPoster.png",
-      previewSrc: "/videos/verticalZoomOut.mp4",
-      youtubeUrl: "https://www.youtube.com/watch?v=5qap5aO4i9A",
+      ...placeholderVideoMedia,
     },
     featured: false,
     proofLevel: "snapshot",
@@ -571,6 +565,9 @@ export const caseStudies = [
 export const testimonials = [
   {
     name: "Maya R.",
+    mentions: "@maya-r",
+    review:
+      "The biggest win was clarity. We finally had content, website updates, and workflows moving together instead of separately.",
     role: "Founder, Local Wellness Studio",
     quote:
       "The biggest win was clarity. We finally had content, website updates, and workflows moving together instead of separately.",
@@ -578,6 +575,9 @@ export const testimonials = [
   },
   {
     name: "Daniel T.",
+    mentions: "@daniel-t",
+    review:
+      "The site and content now reflect how we actually work. We get better-fit inquiries and spend less time explaining basic scope.",
     role: "Owner, Construction Services",
     quote:
       "The site and content now reflect how we actually work. We get better-fit inquiries and spend less time explaining basic scope.",
@@ -585,6 +585,9 @@ export const testimonials = [
   },
   {
     name: "Sofia L.",
+    mentions: "@sofia-l",
+    review:
+      "Execution got faster across the board. The workflow cleanup saved our team hours every week.",
     role: "Marketing Lead, Property Team",
     quote:
       "Execution got faster across the board. The workflow cleanup saved our team hours every week.",
