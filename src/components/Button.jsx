@@ -1,18 +1,24 @@
 const Button = ({ className, text, id }) => {
   return (
     <a
+      href={id ? `#${id}` : undefined}
       onClick={(e) => {
-        e.preventDefault;
-        const target = document.getElementById("counter");
-        if (target && id) {
-          const offset = window.innerHeight * 0.15;
+        // Prevent default anchor jump; we do a smooth scroll with an offset.
+        e.preventDefault();
 
-          const top =
-            target.getBoundingClientRect().top + window.scrollY - offset;
-          window.scrollTo({ top, behavior: "smooth" });
-        }
+        if (!id) return;
+
+        const target = document.getElementById(id);
+        if (!target) return;
+
+        const offset = window.innerHeight * 0.15;
+        const top =
+          target.getBoundingClientRect().top + window.scrollY - offset;
+
+        window.scrollTo({ top, behavior: "smooth" });
       }}
       className={`${className ?? ""} cta-wrapper`}
+      aria-label={text}
     >
       <div className="cta-button group">
         <div className="bg-circle"></div>
@@ -24,4 +30,5 @@ const Button = ({ className, text, id }) => {
     </a>
   );
 };
+
 export default Button;

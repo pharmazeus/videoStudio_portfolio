@@ -3,6 +3,7 @@
 
 :root {
   --gradient: radial-gradient(circle, #e5e5e5 0%, #fff 100%);
+  --hero-word-row-height: 48px;
 }
 
 html,
@@ -85,12 +86,12 @@ section {
   }
 
   .hero-text {
-    @apply flex flex-col justify-center md:text-[60px] text-[30px] font-semibold relative z-10 pointer-events-none;
+    @apply flex flex-col justify-center md:text-[50px] text-[30px] font-semibold relative z-10 pointer-events-none;
     img {
       @apply size-8 md:size-10 object-contain;
     }
     .slide {
-      @apply absolute pt-0 px-2 md:px-5 py-[30px] h-[48px] md:h-[78px] md:translate-y-1 translate-y-0 overflow-hidden;
+      @apply absolute inset-x-0 top-0 px-2 md:px-5 h-full overflow-hidden;
     }
   }
 
@@ -128,7 +129,7 @@ section {
         @apply flex space-x-8;
 
         li {
-          @apply text-white-50 relative;
+          @apply text-white relative;
 
           span {
             @apply transition-colors duration-300 hover:text-white;
@@ -145,13 +146,14 @@ section {
       @apply flex;
 
       .inner {
-        @apply px-5 py-2 rounded-lg bg-white text-black group-hover:bg-black-50 transition-colors duration-300;
+        @apply px-1 py-2 rounded-lg bg-white text-black group-hover:bg-black-50 transition-colors duration-300;
 
         span {
           @apply group-hover:text-white transition-colors duration-300;
         }
       }
     }
+
   }
 
   .app-showcase {
@@ -199,6 +201,75 @@ section {
       h2 {
         @apply text-lg md:text-xl lg:text-2xl font-semibold mt-5;
       }
+    }
+  }
+
+  .video-showcase-shell {
+    @apply relative overflow-hidden rounded-2xl border border-black-50 bg-black-100/95 p-4 md:p-6 xl:p-8;
+  }
+
+  .video-showcase-gridline {
+    @apply absolute inset-0 pointer-events-none opacity-40;
+    background:
+      linear-gradient(
+        90deg,
+        rgba(217, 236, 255, 0.06) 1px,
+        transparent 1px
+      ),
+      linear-gradient(rgba(217, 236, 255, 0.05) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(
+      circle at center,
+      rgba(0, 0, 0, 1) 18%,
+      rgba(0, 0, 0, 0) 82%
+    );
+  }
+
+  .video-showcase-header {
+    @apply relative z-10 flex flex-col items-center gap-6 mb-10 md:mb-14;
+  }
+
+  .video-preview-grid {
+    @apply relative z-10 grid gap-6;
+  }
+
+  .video-preview-grid-home {
+    @apply grid-cols-1 md:grid-cols-2 xl:grid-cols-3;
+  }
+
+  .video-preview-grid-catalog {
+    @apply grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4;
+  }
+
+  .video-preview-card {
+    @apply border border-black-50 bg-black-100 rounded-xl p-4 md:p-5 transition-all duration-500 hover:-translate-y-1 hover:border-white/15 flex flex-col;
+  }
+
+  .video-preview-card-catalog {
+    @apply p-4;
+  }
+
+  .video-preview-frame {
+    @apply rounded-xl overflow-hidden border border-white/10 bg-black;
+  }
+
+  .video-preview-copy {
+    @apply mt-4 md:mt-5;
+
+    h3 {
+      @apply text-xl md:text-2xl font-semibold;
+    }
+
+    p {
+      @apply text-white-50 mt-2 md:text-lg;
+    }
+  }
+
+  .video-preview-cta {
+    @apply mt-5 inline-flex items-center justify-center gap-2 rounded-lg bg-white text-black font-semibold px-4 py-3 transition-all duration-300 hover:bg-black-200 hover:text-white;
+
+    img {
+      @apply size-4;
     }
   }
 
@@ -322,47 +393,126 @@ section {
   }
 }
 
-/* Hero text slider starts */
-.slide {
-  display: inline-block;
-  flex-direction: column;
-  transition: all cubic-bezier(0.71, 0.03, 0.34, 1);
+.hero-bg-contrast {
+  background:
+    linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.4) 0%,
+      rgba(0, 0, 0, 0.28) 32%,
+      rgba(0, 0, 0, 0.15) 60%,
+      rgba(0, 0, 0, 0.2) 100%
+    ),
+    radial-gradient(
+      circle at 18% 42%,
+      rgba(0, 0, 0, 0.2) 0%,
+      rgba(0, 0, 0, 0) 58%
+    );
 }
 
-.wrapper {
+.hero-bg-vignette {
+  backdrop-filter: blur(12px) saturate(95%);
+  -webkit-backdrop-filter: blur(12px) saturate(95%);
+  mask-image: radial-gradient(
+    circle at center,
+    transparent 46%,
+    rgba(0, 0, 0, 0.35) 68%,
+    rgba(0, 0, 0, 0.9) 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    circle at center,
+    transparent 46%,
+    rgba(0, 0, 0, 0.35) 68%,
+    rgba(0, 0, 0, 0.9) 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-bg-vignette {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    mask-image: radial-gradient(
+      circle at center,
+      transparent 58%,
+      rgba(0, 0, 0, 0.3) 84%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
+    -webkit-mask-image: radial-gradient(
+      circle at center,
+      transparent 58%,
+      rgba(0, 0, 0, 0.3) 84%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
+  }
+}
+
+/* Hero text slider starts */
+.slide {
+  display: block;
+  overflow: hidden;
+  contain: paint;
+}
+
+.slide > .wrapper {
   display: flex;
   flex-direction: column;
-  animation: wordSlider 14s infinite cubic-bezier(0.9, 0.01, 0.3, 0.99);
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+  animation: wordSlider 9s infinite cubic-bezier(0.45, 0, 0.2, 1);
+}
+
+.word-rotator-row {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  height: var(--hero-word-row-height);
+  line-height: 1;
 }
 
 @keyframes wordSlider {
-  0% {
-    transform: translateY(0.5%);
+  0%,
+  22% {
+    transform: translate3d(0, 0, 0);
   }
-  12.5% {
-    transform: translateY(-12.5%);
+  33%,
+  55% {
+    transform: translate3d(
+      0,
+      calc(-1 * var(--hero-word-row-height)),
+      0
+    );
   }
-  25% {
-    transform: translateY(-25%);
+  66%,
+  88% {
+    transform: translate3d(
+      0,
+      calc(-2 * var(--hero-word-row-height)),
+      0
+    );
   }
-  37.5% {
-    transform: translateY(-37.5%);
-  }
-  50% {
-    transform: translateY(-50%);
-  }
-  62.5% {
-    transform: translateY(-62.5%);
-  }
-  75% {
-    transform: translateY(-75%);
-  }
-  87.5% {
-    transform: translateY(-87.5%);
+  100% {
+    transform: translate3d(
+      0,
+      calc(-3 * var(--hero-word-row-height)),
+      0
+    );
   }
 }
 
 /* Hero Text slider ends */
+
+@media (min-width: 768px) {
+  :root {
+    --hero-word-row-height: 78px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide > .wrapper {
+    animation: none;
+    transform: translate3d(0, 0, 0);
+  }
+}
 
 .gradient-line {
   width: 2px;
@@ -442,7 +592,8 @@ section {
   border: 2px solid transparent;
   background: var(--gradient);
   background-attachment: fixed;
-  mask: linear-gradient(#0000, #0000),
+  mask:
+    linear-gradient(#0000, #0000),
     conic-gradient(
       from calc((var(--start) - 15) * 1deg),
       #ffffff1f 0deg,
@@ -469,4 +620,8 @@ section {
 
 .card:hover::before {
   opacity: 1;
+}
+
+.space_around {
+  @apply justify-around;
 }
