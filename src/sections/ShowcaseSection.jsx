@@ -31,7 +31,7 @@ const ShowCaseSection = () => {
             trigger: card,
             start: "top bottom-=100",
           },
-        }
+        },
       );
     });
 
@@ -39,7 +39,7 @@ const ShowCaseSection = () => {
       sectionRef.current,
       { opacity: 0 },
       { opacity: 1 },
-      { duration: 1.5 }
+      { duration: 1.5 },
     );
   }, []);
 

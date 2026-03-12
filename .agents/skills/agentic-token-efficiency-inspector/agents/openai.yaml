@@ -1,0 +1,4 @@
+interface:
+  display_name: "Token Efficiency Inspector"
+  short_description: "Audit agentic architecture token waste"
+  default_prompt: "Use $agentic-token-efficiency-inspector to audit my agentic app for token waste and propose simplifications."

@@ -24,6 +24,150 @@ const words_videos = [
     imgPath: "/images/concepts.svg",
   },
 ];
+
+/**
+ * @typedef {"home" | "catalog"} VideoPlacement
+ */
+
+/**
+ * @typedef {Object} VideoItem
+ * @property {string} id
+ * @property {string} title
+ * @property {string} previewSrc
+ * @property {string} poster
+ * @property {string} youtubeUrl
+ * @property {string} [details]
+ * @property {VideoPlacement} placement
+ * @property {number} [order]
+ */
+
+/**
+ * Canonical video catalog for both home and catalog page.
+ * Preview is hosted locally; full version opens on YouTube.
+ * @type {VideoItem[]}
+ */
+const videoCatalog = [
+  {
+    id: "home-hero-cut",
+    title: "At Cinema - Hero Cut",
+    previewSrc: "/videos/HorizontalSpaceZoomInAndOutCreatorBgVideo.mp4",
+    poster: "/posters/horizontal/CinemaPosterHorizontal.png",
+    youtubeUrl: "https://www.youtube.com/watch?v=M7lc1UVf-VE",
+    details: "Brand Film · 4K Master · Sound-Ready",
+    placement: "home",
+    order: 1,
+  },
+  {
+    id: "home-vertical-motion",
+    title: "Vertical Motion Spot",
+    previewSrc: "/videos/verticalZoomOut.mp4",
+    poster: "/posters/horizontal/withCameraModerateEnhHorizontal.png",
+    youtubeUrl: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
+    details: "Social Format · 9:16 · Fast-paced",
+    placement: "home",
+    order: 2,
+  },
+  {
+    id: "home-studio-contrast",
+    title: "Studio Contrast Pass",
+    previewSrc: "/videos/HorizontalSpaceZoomInAndOutCreatorBgVideo.mp4",
+    poster: "/posters/horizontal/whiteCleanHorizontal.png",
+    youtubeUrl: "https://www.youtube.com/watch?v=ScMzIvxBSi4",
+    details: "Color Pass · Clean Lighting · Product Focus",
+    placement: "home",
+    order: 3,
+  },
+  {
+    id: "home-product-pace",
+    title: "Product Pace Sequence",
+    previewSrc: "/videos/verticalZoomOut.mp4",
+    poster: "/posters/horizontal/whiteCleanFarShotHorizontal.png",
+    youtubeUrl: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
+    details: "Commercial Rhythm · Shot Matching",
+    placement: "home",
+    order: 4,
+  },
+  {
+    id: "home-camera-pass",
+    title: "Camera Energy Pass",
+    previewSrc: "/videos/HorizontalSpaceZoomInAndOutCreatorBgVideo.mp4",
+    poster: "/posters/horizontal/withCameraBadFaceHorizontalSecond.png",
+    youtubeUrl: "https://www.youtube.com/watch?v=ysz5S6PUM-U",
+    details: "Dynamic Motion · Contrast Boost",
+    placement: "home",
+    order: 5,
+  },
+  {
+    id: "home-clean-grade",
+    title: "Clean Grade Storyline",
+    previewSrc: "/videos/verticalZoomOut.mp4",
+    poster: "/posters/horizontal/readyBlackHorizontalPoster.png",
+    youtubeUrl: "https://www.youtube.com/watch?v=5qap5aO4i9A",
+    details: "Narrative Cut · Ambient Mood",
+    placement: "home",
+    order: 6,
+  },
+  {
+    id: "catalog-neon-take",
+    title: "Neon Cut Breakdown",
+    previewSrc: "/videos/HorizontalSpaceZoomInAndOutCreatorBgVideo.mp4",
+    poster: "/posters/horizontal/CinemaPosterHorizontal.png",
+    youtubeUrl: "https://www.youtube.com/watch?v=2Vv-BfVoq4g",
+    details: "Director's Notes · Alternate Grade",
+    placement: "catalog",
+    order: 1,
+  },
+  {
+    id: "catalog-vertical-reel",
+    title: "Vertical Reel Breakdown",
+    previewSrc: "/videos/verticalZoomOut.mp4",
+    poster: "/posters/horizontal/withCameraHorizontalBadFaceHorizontal.png",
+    youtubeUrl: "https://www.youtube.com/watch?v=kXYiU_JCYtU",
+    details: "Short Form · Social-first Motion",
+    placement: "catalog",
+    order: 2,
+  },
+  {
+    id: "catalog-grade-pass",
+    title: "White Studio Grade",
+    previewSrc: "/videos/HorizontalSpaceZoomInAndOutCreatorBgVideo.mp4",
+    poster: "/posters/horizontal/whiteCleanHorizontal.png",
+    youtubeUrl: "https://www.youtube.com/watch?v=3JZ_D3ELwOQ",
+    details: "Clean Lighting · Product Focus",
+    placement: "catalog",
+    order: 3,
+  },
+  {
+    id: "catalog-blackout-seq",
+    title: "Blackout Sequence",
+    previewSrc: "/videos/verticalZoomOut.mp4",
+    poster: "/posters/horizontal/readyBlackHorizontalPoster.png",
+    youtubeUrl: "https://www.youtube.com/watch?v=6_b7RDuLwcI",
+    details: "Mood Build · Deep Contrast",
+    placement: "catalog",
+    order: 4,
+  },
+  {
+    id: "catalog-energy-take",
+    title: "Energy Camera Pass",
+    previewSrc: "/videos/HorizontalSpaceZoomInAndOutCreatorBgVideo.mp4",
+    poster: "/posters/horizontal/withCameraModerateEnhHorizontal.png",
+    youtubeUrl: "https://www.youtube.com/watch?v=RgKAFK5djSk",
+    details: "Camera Motion · Speed Ramps",
+    placement: "catalog",
+    order: 5,
+  },
+  {
+    id: "catalog-far-shot",
+    title: "Wide Frame Far Shot",
+    previewSrc: "/videos/verticalZoomOut.mp4",
+    poster: "/posters/horizontal/whiteCleanFarShotHorizontal.png",
+    youtubeUrl: "https://www.youtube.com/watch?v=fLexgOxsZu0",
+    details: "Wide Composition · Scene Balance",
+    placement: "catalog",
+    order: 6,
+  },
+];
 const words = [
   { text: "Ideas", imgPath: "/images/ideas.svg" },
   { text: "Concepts", imgPath: "/images/concepts.svg" },
@@ -275,6 +419,7 @@ const socialImgs = [
 
 export {
   words_videos,
+  videoCatalog,
   words,
   abilities,
   logoIconsList,

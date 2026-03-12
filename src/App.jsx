@@ -2,6 +2,7 @@ import LogoSection from "./sections/LogoSection";
 import NavBar from "./components/NavBar";
 import Hero from "./sections/Hero";
 import ShowCaseSection from "./sections/ShowcaseSection";
+import VideoShowcase from "./sections/VideoShowcase";
 
 import FeatureCards from "./sections/FeatureCards";
 import ExperienceSection from "./sections/ExperienceSection";
@@ -13,10 +14,10 @@ function App() {
     <>
       <NavBar />
       <Hero></Hero>
+      <VideoShowcase />
       <ShowCaseSection />
       <LogoSection />
       <FeatureCards />
-      <ExperienceSection />
       <Testimonials />
     </>
   );

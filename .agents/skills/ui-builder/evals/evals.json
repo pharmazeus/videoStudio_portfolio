@@ -1,0 +1,94 @@
+[
+  {
+    "query": "Build a primary button with hover and disabled states",
+    "should_trigger": true
+  },
+  {
+    "query": "Make a card component for displaying user profiles",
+    "should_trigger": true
+  },
+  {
+    "query": "Style this form with our design system",
+    "should_trigger": true
+  },
+  {
+    "query": "Make it look like this screenshot",
+    "should_trigger": true
+  },
+  {
+    "query": "Build a dashboard layout with sidebar navigation",
+    "should_trigger": true
+  },
+  {
+    "query": "Update this card — the spacing looks wrong",
+    "should_trigger": true
+  },
+  {
+    "query": "Make a quick button for the header",
+    "should_trigger": true
+  },
+  {
+    "query": "Review this component and tell me if it follows our design system",
+    "should_trigger": true
+  },
+  {
+    "query": "Change the primary color to blue",
+    "should_trigger": true
+  },
+  {
+    "query": "Build a pricing table with three tiers",
+    "should_trigger": true
+  },
+  {
+    "query": "This component looks off on mobile — fix the responsive layout",
+    "should_trigger": true
+  },
+  {
+    "query": "Add a loading skeleton to this card",
+    "should_trigger": true
+  },
+  {
+    "query": "Create a notification badge component",
+    "should_trigger": true
+  },
+  {
+    "query": "The typography feels inconsistent across pages",
+    "should_trigger": true
+  },
+  {
+    "query": "Make the nav match this Figma export I'm attaching",
+    "should_trigger": true
+  },
+  {
+    "query": "Fix this TypeScript error in my API route",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a Supabase query to fetch all users",
+    "should_trigger": false
+  },
+  {
+    "query": "Set up authentication with NextAuth",
+    "should_trigger": false
+  },
+  {
+    "query": "Debug why this API call is returning 401",
+    "should_trigger": false
+  },
+  {
+    "query": "Write a unit test for this utility function",
+    "should_trigger": false
+  },
+  {
+    "query": "Optimize this database query",
+    "should_trigger": false
+  },
+  {
+    "query": "Explain how React Server Components work",
+    "should_trigger": false
+  },
+  {
+    "query": "Generate seed data for my database",
+    "should_trigger": false
+  }
+]
