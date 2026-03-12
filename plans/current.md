@@ -1,32 +1,39 @@
 # Current Execution State
 
 ## Current objective
-Finalize and operationalize the hybrid video delivery workflow:
-- On-site preview clips
-- Full video watch action via YouTube links
-- Consistent behavior on home and catalog pages
+Operationalize the Digital Systems Creator website rebuild with conversion-first routing and data-driven content across core pages.
 
 ## Success criteria
-- Home renders up to 6 `placement: home` cards.
-- Video catalog page renders all `placement: catalog` cards.
-- Every card has a working YouTube CTA (`target="_blank"`, `rel="noopener noreferrer"`).
-- Preview loading is optimized (`preload="none"`, viewport-based activation).
+- Core routes are live and navigable: `/`, `/work`, `/work/:slug`, `/services`, `/pricing`, `/about`, `/contact`.
+- Homepage messaging and section hierarchy match `docs/master-brief.md`.
+- Services, Pricing, About, Work, and Contact pages align to one umbrella positioning.
+- Required content/data constants are defined in `src/constants/index.js`.
 - Lint and build are passing.
 
 ## Constraints
-- Keep existing route structure and visual design system consistency.
+- Keep visual direction dark, cinematic, and clean.
+- Keep 3D/media as optional enhancement, not the core message.
+- Preserve mobile-first readability and performance guardrails.
 - Keep continuity docs concise and English-only.
-- Do not rely on chat history as project memory.
 
 ## Known blockers
-- Real unlisted YouTube production links are not yet provided (current links are placeholders).
+- Real production contact channels (email/booking URL) are placeholders and should be replaced.
+- Case-study outcomes are structured but still need final real metrics/assets where available.
 
 ## Next concrete step
-Replace placeholder `youtubeUrl` entries in `videoCatalog` with final unlisted production links and validate each CTA end-to-end.
+Replace placeholder contact endpoints and finalize proof data (real project links, metrics, and approved testimonial attributions) in `src/constants/index.js`.
 
 ## Relevant files
+- `src/main.jsx`
+- `src/App.jsx`
 - `src/constants/index.js`
-- `src/components/VideoPreviewCard.jsx`
-- `src/sections/VideoShowcase.jsx`
-- `src/pages/VideoShowcasePage.jsx`
-- `src/index.css`
+- `src/components/NavBar.jsx`
+- `src/components/SiteLayout.jsx`
+- `src/pages/HomePage.jsx`
+- `src/pages/WorkPage.jsx`
+- `src/pages/CaseStudyPage.jsx`
+- `src/pages/ServicesPage.jsx`
+- `src/pages/PricingPage.jsx`
+- `src/pages/AboutPage.jsx`
+- `src/pages/ContactPage.jsx`
+- `src/lib/formatPrice.js`

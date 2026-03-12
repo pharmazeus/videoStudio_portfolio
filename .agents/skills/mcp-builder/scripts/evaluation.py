@@ -1,6 +1,6 @@
 """MCP Server Evaluation Harness
 
-This script evaluates MCP servers by running test questions against them using Claude.
+This script evaluates MCP servers by running test questions against them using an AI model.
 """
 
 import argparse
@@ -76,8 +76,10 @@ def parse_evaluation_file(file_path: Path) -> list[dict[str, Any]]:
         return []
 
 
-def extract_xml_content(text: str, tag: str) -> str | None:
+def extract_xml_content(text: str | None, tag: str) -> str | None:
     """Extract content from XML tags."""
+    if text is None:
+        return None
     pattern = rf"<{tag}>(.*?)</{tag}>"
     matches = re.findall(pattern, text, re.DOTALL)
     return matches[-1].strip() if matches else None
@@ -89,7 +91,7 @@ async def agent_loop(
     question: str,
     tools: list[dict[str, Any]],
     connection: Any,
-) -> tuple[str, dict[str, Any]]:
+) -> tuple[str | None, dict[str, Any]]:
     """Run the agent loop with MCP tools."""
     messages = [{"role": "user", "content": question}]
 
@@ -107,7 +109,14 @@ async def agent_loop(
     tool_metrics = {}
 
     while response.stop_reason == "tool_use":
-        tool_use = next(block for block in response.content if block.type == "tool_use")
+        tool_use = next(
+            (block for block in response.content if block.type == "tool_use"),
+            None,
+        )
+        if tool_use is None:
+            raise RuntimeError(
+                "Response has stop_reason 'tool_use' but no tool_use block in content"
+            )
         tool_name = tool_use.name
         tool_input = tool_use.input
 
@@ -321,7 +330,7 @@ Examples:
 
     parser.add_argument("eval_file", type=Path, help="Path to evaluation XML file")
     parser.add_argument("-t", "--transport", choices=["stdio", "sse", "http"], default="stdio", help="Transport type (default: stdio)")
-    parser.add_argument("-m", "--model", default="claude-3-7-sonnet-20250219", help="Claude model to use (default: claude-3-7-sonnet-20250219)")
+    parser.add_argument("-m", "--model", default="claude-3-7-sonnet-20250219", help="Model to use (default: claude-3-7-sonnet-20250219)")
 
     stdio_group = parser.add_argument_group("stdio options")
     stdio_group.add_argument("-c", "--command", help="Command to run MCP server (stdio only)")

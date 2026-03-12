@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+
 import { navLinks } from "../constants";
 
 function NavBar() {
   const [scrolled, setScrolled] = useState(false);
-  const pathname =
-    typeof window !== "undefined" ? window.location.pathname : "/";
-  const isVideoPage = pathname === "/video-showcase";
+  const location = useLocation();
+  const pathname = location.pathname.replace(/\/+$/, "") || "/";
+  const isWorkPage = pathname === "/work" || pathname.startsWith("/work/");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -14,7 +16,7 @@ function NavBar() {
       setScrolled(y > 10);
     };
 
-    handleScroll(); // set initial state
+    handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
@@ -22,23 +24,23 @@ function NavBar() {
   return (
     <header className={`navbar ${scrolled ? "scrolled" : "not-scrolled"}`}>
       <div className="inner">
-        <a className="logo" href={isVideoPage ? "/" : "#hero"}>
+        <a className="logo" href={isWorkPage ? "/" : "#hero"}>
           Vladyslav Maidanskyi |
         </a>
         <nav className="desktop">
           <ul>
-            {isVideoPage ? (
+            {isWorkPage ? (
               <li className="group">
                 <a href="/">
-                  <span>Portfolio</span>
+                  <span>Home</span>
                   <span className="underline" />
                 </a>
               </li>
             ) : (
-              navLinks.map(({ name, link }) => (
-                <li key={name} className="group">
-                  <a href={link}>
-                    <span>{name}</span>
+              navLinks.map(({ label, path }) => (
+                <li key={path} className="group">
+                  <a href={path}>
+                    <span>{label}</span>
                     <span className="underline" />
                   </a>
                 </li>
@@ -46,16 +48,16 @@ function NavBar() {
             )}
           </ul>
         </nav>
-        {!isVideoPage && (
-          <a href="/video-showcase" className="contact-btn group">
+        {!isWorkPage && (
+          <a href="/work" className="contact-btn group">
             <div className="inner">
-              <span>Video Page</span>
+              <span>Work Page</span>
             </div>
           </a>
         )}
-        <a href={isVideoPage ? "/" : "#contact"} className="contact-btn group">
+        <a href={isWorkPage ? "/" : "/contact"} className="contact-btn group">
           <div className="inner">
-            <span>{isVideoPage ? "Back Home" : "Contact me"}</span>
+            <span>{isWorkPage ? "Back Home" : "Start a Project"}</span>
           </div>
         </a>
       </div>

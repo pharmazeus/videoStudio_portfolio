@@ -45,7 +45,7 @@ This file contains a growing ruleset that improves over time. **At session start
 - `.agents/skills/` — local skills and operating docs.
 - `plans/current.md` — active objective, constraints, blockers, next concrete step.
 - `plans/backlog.md` — queued or deferred work.
-- `specs/` — feature specs, design decisions, acceptance criteria.
+- `specs/` — feature specs and acceptance criteria.
 - `logs/sessions/` — concise session logs.
 - `decisions/` — durable decisions that should not be casually reopened.
 - `PLAN.md` — high-level roadmap.
@@ -84,7 +84,8 @@ Treat that file as the design source of truth for:
 
 ## Documentation
 
-- Record non-trivial decisions in `specs/`.
+- Record feature-level specs in `specs/`.
+- Record durable, cross-session decisions in `decisions/`.
 - Keep active execution state in `plans/current.md`.
 - Keep queued work in `plans/backlog.md`.
 - Add short completion notes in `logs/sessions/`.
@@ -240,3 +241,6 @@ Optimize continuity for:
 3. [CODE] Never use custom project classes (for example `card-border`) inside `@apply` in `src/index.css` — Tailwind v4 build can fail with unknown utility errors.
 4. [PROCESS] Always write planning/specification/instruction files in English when creating or editing them — user preference for all project documentation workflows.
 5. [PROCESS] Always use continuity files (`plans/current.md`, latest `logs/sessions/*.md`, and relevant `decisions/*.md`) as primary session memory instead of prior chat history — logging protocol requirement.
+6. [PROCESS] Always keep local skill documentation paths aligned to `.agents/...` and remove legacy vendor-specific path references to avoid conflicting operational instructions.
+7. [ARCH] Always keep continuity/logging protocol documents under `specs/`, while `docs/` remains app-facing documentation only — project documentation boundary decision.
+8. [PROCESS] Never keep legacy vendor-specific path references in local skills when `.agents` is the active structure — user requested full migration across all skills.

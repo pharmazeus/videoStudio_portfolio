@@ -2,7 +2,7 @@
 
 This file documents every image in the `inspiration/` folder.
 Before adding an image, add an entry here: what to extract, what to ignore.
-Claude reads this file before looking at any inspiration image.
+The agent reads this file before looking at any inspiration image.
 
 ---
 
@@ -33,7 +33,7 @@ Ignore:
 - [any other specific visual identity to discard]
 
 Notes:
-- [anything else Claude should know before using this image]
+- [anything else the agent should know before using this image]
 ```
 
 ---
@@ -41,4 +41,3 @@ Notes:
 ## Images
 
 <!-- Add entries below as you add images to this folder -->
-

@@ -28,7 +28,7 @@ When both exist for a component, read both. They answer different questions.
 ## Reference library structure
 
 ```
-.claude/skills/ui-builder/
+.agents/skills/ui-builder/
 ├── SKILL.md
 └── references/
     ├── components/              ← per-component specs + visuals
@@ -64,7 +64,7 @@ Before writing any code, run this discovery sequence:
 ### 1a. Find the design system
 Search in this order:
 ```
-.claude/design-system.md         ← preferred
+.agents/skills/ui-builder/design-system.md  ← preferred
 docs/design-system.md
 docs/design.md
 DESIGN.md
@@ -75,7 +75,7 @@ Read the first one found. If none exists → see **Step 1d**.
 
 ### 1b. Scan the reference library
 ```
-.claude/skills/ui-builder/references/
+.agents/skills/ui-builder/references/
 ```
 List all folders and files. Build a mental index of what visual and text
 references already exist. This tells you what's been established vs what
@@ -95,7 +95,7 @@ Before building anything, do this:
    - "Primary accent color and its hover state?"
    - "Light, dark, or both?"
    - "Any site or app you want this to feel like?"
-3. Draft a minimal `design-system.md`, confirm with user, save to `.claude/`
+3. Draft a minimal `design-system.md`, confirm with user, save to `.agents/skills/ui-builder/`
 4. Then proceed
 
 Never invent a design direction. Ground everything in something real.
@@ -199,7 +199,7 @@ get there with the project's tokens.
 ## Step 5 — Save references after building
 
 ### New component type (no folder existed)
-Create `.claude/skills/ui-builder/references/components/[name]/spec.md`:
+Create `.agents/skills/ui-builder/references/components/[name]/spec.md`:
 
 ```markdown
 # [Component Name] — Spec

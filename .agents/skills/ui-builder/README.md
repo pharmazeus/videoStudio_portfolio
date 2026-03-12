@@ -1,6 +1,6 @@
 # ui-builder skill
 
-A Claude skill that builds UI components anchored to your project's actual design system —
+An agent skill that builds UI components anchored to your project's actual design system —
 not generic AI output. Every component it generates matches your tokens, your visual history,
 and your conventions. Design drift stops here.
 
@@ -20,13 +20,13 @@ Works with React, Next.js, Vue, HTML/CSS — any stack using Tailwind or CSS cus
 
 ## Installation
 
-### Claude Code
+### Agent CLI / IDE
 
 Copy the skill folder into your project:
 
 ```
 your-project/
-└── .claude/
+└── .agents/
     └── skills/
         └── ui-builder/
             ├── SKILL.md
@@ -47,7 +47,7 @@ your-project/
                 └── evals.json
 ```
 
-### Claude.ai (Projects)
+### Web Agent Project Mode
 
 Upload `SKILL.md` and all reference files as project knowledge.
 Place `design-system.md` in the root of your project knowledge.
@@ -95,7 +95,7 @@ references/components/button/reference.png    ← what your button looks like
 references/components/card/reference.png      ← what your card looks like
 ```
 
-Claude will match this visual in future sessions. Without images, it works from
+The agent will match this visual in future sessions. Without images, it works from
 spec alone — still consistent, but less visually precise.
 
 ---
@@ -119,7 +119,7 @@ It also triggers when you share a screenshot or mockup:
 "Match this Figma export" + [image]
 ```
 
-### Explicit activation (Claude Code)
+### Explicit activation (any agent)
 
 ```
 Use the ui-builder skill to build a notification badge component.
@@ -187,9 +187,9 @@ The skill reads `index.md` before looking at any inspiration image.
 Run the eval queries in `evals/evals.json` to verify the skill activates
 when it should and stays quiet when it shouldn't.
 
-In Claude Code:
+In an agent CLI environment:
 ```
-Run the evals in .claude/skills/ui-builder/evals/evals.json and tell me 
+Run the evals in .agents/skills/ui-builder/evals/evals.json and tell me 
 which prompts correctly trigger the ui-builder skill.
 ```
 
@@ -201,11 +201,11 @@ and stay silent on all 8 `should_trigger: false` queries.
 ## Troubleshooting
 
 **Skill isn't triggering**
-- Make sure `SKILL.md` is in the correct path: `.claude/skills/ui-builder/SKILL.md`
-- In Claude Code, run `/skills` to verify the skill is loaded
+- Make sure `SKILL.md` is in the correct path: `.agents/skills/ui-builder/SKILL.md`
+- In your agent environment, verify the skill is loaded
 - Try explicit activation: "Use the ui-builder skill to..."
 
-**Claude is inventing colors not in my design system**
+**Agent is inventing colors not in my design system**
 - Your `design-system.md` is incomplete — fill in the color palette section
 - Add a "Forbidden patterns" entry: `❌ NO raw color classes: bg-blue-500`
 
@@ -214,7 +214,7 @@ and stay silent on all 8 `should_trigger: false` queries.
 - The skill will match it visually in future sessions
 
 **Spec files are getting stale**
-- After changing a component significantly, ask Claude to update the spec:
+- After changing a component significantly, ask the agent to update the spec:
   "Update references/components/button/spec.md to reflect the current implementation"
 
 ---
@@ -223,17 +223,17 @@ and stay silent on all 8 `should_trigger: false` queries.
 
 ### Add a new component spec
 
-Ask Claude Code:
+Ask your agent:
 ```
 Create a spec.md for our [table / toast / tooltip / etc] component 
-and save it to .claude/skills/ui-builder/references/components/[name]/spec.md
+and save it to .agents/skills/ui-builder/references/components/[name]/spec.md
 ```
 
 ### Add a new page reference
 
 ```
 Screenshot the [dashboard / settings / onboarding] page and save it with notes 
-to .claude/skills/ui-builder/references/screens/[name]/
+to .agents/skills/ui-builder/references/screens/[name]/
 ```
 
 ### Update the design system
@@ -249,7 +249,7 @@ and added a new surface color token.
 ## Project structure after full setup
 
 ```
-.claude/
+.agents/
 └── skills/
     └── ui-builder/
         ├── SKILL.md
