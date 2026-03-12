@@ -1,0 +1,89 @@
+{
+  "skill_name": "conversion-copywriter",
+  "evals": [
+    {
+      "id": "hero-rewrite",
+      "prompt": "Rewrite this homepage hero so it is clearer and more persuasive: 'We build innovative digital experiences for ambitious businesses.' The real offer is short-form video production, conversion-focused websites, and lightweight AI automation for service brands.",
+      "expected_output": "A concise English hero section with a concrete headline, subheadline, and specific CTA language.",
+      "files": [],
+      "review_criteria": [
+        "States the offer clearly",
+        "Targets a recognizable buyer context",
+        "Avoids generic hype",
+        "Ends with a specific CTA"
+      ]
+    },
+    {
+      "id": "service-blurb",
+      "prompt": "Write a service description for a done-for-you website offer for local businesses that need a site which explains the offer clearly and gets more qualified inquiries.",
+      "expected_output": "A short service block in English with benefit-led wording, one credibility angle, and one CTA.",
+      "files": [],
+      "review_criteria": [
+        "Leads with buyer outcome",
+        "Uses plain English",
+        "Includes credibility or delivery detail",
+        "Keeps the CTA direct"
+      ]
+    },
+    {
+      "id": "case-study-summary",
+      "prompt": "Turn these notes into a short case-study summary: the client had strong work but weak positioning, visitors were confused about what they offered, we simplified the message, tightened the site structure, and improved lead quality after launch. No exact metrics are available.",
+      "expected_output": "A truthful BAB-style summary that shows transformation without inventing numbers.",
+      "files": [],
+      "review_criteria": [
+        "Shows before and after clearly",
+        "Does not fabricate proof",
+        "Reads like commercial copy, not a diary",
+        "Stays concise"
+      ]
+    },
+    {
+      "id": "cta-variants",
+      "prompt": "Give me 5 CTA button options for a premium video production and content package for personal brands. Avoid 'Learn more' and 'Submit'.",
+      "expected_output": "Five distinct CTA labels in English, each specific and action-oriented.",
+      "files": [],
+      "review_criteria": [
+        "Options feel distinct",
+        "Each CTA implies a clear next action",
+        "No generic filler labels",
+        "Tone fits a premium offer"
+      ]
+    },
+    {
+      "id": "sales-email",
+      "prompt": "Write a short outbound email for a founder who helps clinics modernize their websites and appointment flow. The message should feel relevant, direct, and not spammy.",
+      "expected_output": "A concise English sales email with a relevance-led opening and low-friction CTA.",
+      "files": [],
+      "review_criteria": [
+        "Feels targeted rather than mass-sent",
+        "Uses a low-friction ask",
+        "Keeps the message short",
+        "Avoids fake familiarity"
+      ]
+    },
+    {
+      "id": "ad-copy",
+      "prompt": "Write 3 short ad variants for an AI automation offer that removes repetitive admin work for small agencies.",
+      "expected_output": "Three compact ad variants in English with a strong hook, clear offer, and direct CTA.",
+      "files": [],
+      "review_criteria": [
+        "Hook lands quickly",
+        "Offer is obvious",
+        "Copy stays specific",
+        "CTA is concrete"
+      ]
+    },
+    {
+      "id": "video-hook",
+      "prompt": "Write a 30-second intro script for a portfolio demo video that shows how better messaging can make a service website convert more clearly.",
+      "expected_output": "A spoken-rhythm English script with a hook, clear payoff, and a clean close.",
+      "files": [],
+      "review_criteria": [
+        "First line creates curiosity and clarity",
+        "Script sounds natural out loud",
+        "Core value arrives early",
+        "Close matches the format"
+      ]
+    }
+  ]
+}
