@@ -48,18 +48,23 @@ function NavBar() {
             )}
           </ul>
         </nav>
-        {!isWorkPage && (
-          <a href="/work" className="contact-btn group">
+        <div className="actions">
+          {!isWorkPage && (
+            <a href="/work" className="contact-btn contact-btn-secondary group">
+              <div className="inner">
+                <span>Work</span>
+              </div>
+            </a>
+          )}
+          <a href={isWorkPage ? "/" : "/contact"} className="contact-btn group">
             <div className="inner">
-              <span>Work Page</span>
+              <span className="sm:hidden">{isWorkPage ? "Home" : "Start"}</span>
+              <span className="hidden sm:inline">
+                {isWorkPage ? "Back Home" : "Start a Project"}
+              </span>
             </div>
           </a>
-        )}
-        <a href={isWorkPage ? "/" : "/contact"} className="contact-btn group">
-          <div className="inner">
-            <span>{isWorkPage ? "Back Home" : "Start a Project"}</span>
-          </div>
-        </a>
+        </div>
       </div>
     </header>
   );

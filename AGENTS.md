@@ -244,3 +244,4 @@ Optimize continuity for:
 6. [PROCESS] Always keep local skill documentation paths aligned to `.agents/...` and remove legacy vendor-specific path references to avoid conflicting operational instructions.
 7. [ARCH] Always keep continuity/logging protocol documents under `specs/`, while `docs/` remains app-facing documentation only — project documentation boundary decision.
 8. [PROCESS] Never keep legacy vendor-specific path references in local skills when `.agents` is the active structure — user requested full migration across all skills.
+9. [PROCESS] Always append a concise session log entry after completing any task, including minor fixes — keeps a complete recent-change trail across sessions.

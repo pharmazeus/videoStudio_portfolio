@@ -4,8 +4,8 @@ import CTAButton from "../components/CTAButton";
 import SectionTitle from "../components/SectionTitle";
 import Testimonials from "../sections/Testimonials";
 import {
-  caseStudies,
   faqs,
+  getFeaturedCaseStudies,
   heroContent,
   pricingPackages,
   processSteps,
@@ -16,7 +16,7 @@ import {
 import { formatFromPrice } from "../lib/formatPrice";
 
 function HomePage() {
-  const featuredWork = caseStudies.filter((item) => item.featured).slice(0, 3);
+  const featuredWork = getFeaturedCaseStudies(3);
   const pricingPreview = pricingPackages
     .filter((item) => item.category === "monthly-retainers")
     .slice(0, 3);

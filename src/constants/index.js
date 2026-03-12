@@ -389,22 +389,29 @@ export const addOns = [
     startingPrice: 150,
     priceRange: [150, 300],
   },
-  { name: "Monthly monitoring / support", startingPrice: 100, priceRange: [100, 300] },
+  {
+    name: "Monthly monitoring / support",
+    startingPrice: 100,
+    priceRange: [100, 300],
+  },
 ];
 
-const placeholderVideoMedia = {
-  poster: "/images/video-placeholder.svg",
-  previewSrc: "/images/screen.mp4",
-  youtubeUrl: "https://www.youtube.com/",
-};
-
+/**
+ * Case studies are the single source of truth for Featured Work content.
+ * Home cards use: `title`, `excerpt`, `category`, `featured`, `featuredRank`, `media.poster`.
+ * Work cards use: `title`, `excerpt`, `category`, `proofLevel`, `outcomes`, `media.poster`.
+ * Case Study page uses: `challenge`, `solution`, `deliverables`, `outcomes`, and full `media`.
+ *
+ * Recommended pattern for a new item:
+ * Copy an existing case object, keep `slug` unique, and include full `media` object.
+ */
 export const caseStudies = [
   {
-    slug: "at-cinema-content-engine",
+    slug: "BLA BLA",
     title: "At Cinema Content Engine",
     category: "Content",
     excerpt:
-      "Built a repeatable monthly short-form system for a local cinema brand to keep output consistent and premium.",
+      "Built a repeatable monthly short-keep output consistent and premium.",
     challenge:
       "The team needed stronger social consistency and better visual quality without heavy in-house production overhead.",
     solution:
@@ -421,146 +428,29 @@ export const caseStudies = [
       "Reusable content operations workflow",
     ],
     media: {
-      ...placeholderVideoMedia,
+      description: "Placeholder video metadata for At Cinema case study.",
+      poster: "/images/video-placeholder.svg",
+      previewSrc: "/images/screen.mp4",
+      youtubeUrl: "",
     },
     featured: true,
+    featuredRank: 1,
     proofLevel: "selected",
-  },
-  {
-    slug: "contractor-service-site-rebuild",
-    title: "Contractor Service Site Rebuild",
-    category: "Web",
-    excerpt:
-      "Reframed a construction service website around clear offers, trust proof, and stronger lead paths.",
-    challenge:
-      "The previous site looked outdated and did not explain service packages clearly, leading to weak inquiry quality.",
-    solution:
-      "Rebuilt page hierarchy, rewrote offer sections in plain language, and tightened CTA placement around high-intent sections.",
-    deliverables: [
-      "5-page business website",
-      "Service architecture",
-      "Lead capture forms",
-      "Mobile-first polish",
-    ],
-    outcomes: [
-      "Better service clarity",
-      "Stronger mobile readability",
-      "Improved inquiry intent",
-    ],
-    media: {
-      ...placeholderVideoMedia,
-    },
-    featured: true,
-    proofLevel: "selected",
-  },
-  {
-    slug: "real-estate-content-workflow-ops",
-    title: "Real Estate Content Workflow Ops",
-    category: "Systems",
-    excerpt:
-      "Connected content capture, editing queue, and approval tracking into one lightweight workflow for a small real estate team.",
-    challenge:
-      "Content requests, revisions, and posting deadlines were tracked manually and caused delays.",
-    solution:
-      "Mapped workflow stages, automated task handoffs, and standardized project states for smoother weekly execution.",
-    deliverables: [
-      "Workflow audit",
-      "Task routing automation",
-      "Revision tracking flow",
-      "Handoff SOP",
-    ],
-    outcomes: [
-      "Reduced repetitive coordination",
-      "Cleaner revision process",
-      "Faster weekly turnaround",
-    ],
-    media: {
-      ...placeholderVideoMedia,
-    },
-    featured: true,
-    proofLevel: "selected",
-  },
-  {
-    slug: "founder-brand-launch-assets",
-    title: "Founder Brand Launch Assets",
-    category: "Content",
-    excerpt:
-      "Built launch-ready visual assets and short-form edits for a founder-led service brand.",
-    challenge:
-      "The founder had no cohesive content pack for launch week and needed polished assets quickly.",
-    solution:
-      "Structured a focused production sprint with platform-ready cuts and fast revision loops.",
-    deliverables: [
-      "Launch content pack",
-      "Platform cutdowns",
-      "Cover / thumbnail assets",
-    ],
-    outcomes: [
-      "Faster launch readiness",
-      "Consistent visual direction",
-      "Higher confidence in first campaign push",
-    ],
-    media: {
-      ...placeholderVideoMedia,
-    },
-    featured: false,
-    proofLevel: "snapshot",
-  },
-  {
-    slug: "property-brand-landing-sprint",
-    title: "Property Brand Landing Sprint",
-    category: "Web",
-    excerpt:
-      "Designed and launched a one-page property offer site focused on local lead capture.",
-    challenge:
-      "The business needed a clean launch page quickly to validate a new service angle.",
-    solution:
-      "Built a conversion-focused landing page with concise messaging, trust prompts, and clear inquiry actions.",
-    deliverables: [
-      "One-page landing build",
-      "Responsive layout",
-      "SEO essentials",
-      "Contact form",
-    ],
-    outcomes: [
-      "Clearer offer communication",
-      "Better CTA visibility",
-      "Faster campaign deployment",
-    ],
-    media: {
-      ...placeholderVideoMedia,
-    },
-    featured: false,
-    proofLevel: "snapshot",
-  },
-  {
-    slug: "local-service-intake-automation",
-    title: "Local Service Intake Automation",
-    category: "Systems",
-    excerpt:
-      "Implemented a lightweight lead-intake automation flow to reduce manual follow-up and missed handoffs.",
-    challenge:
-      "Leads were collected in multiple places and response quality varied by team member workload.",
-    solution:
-      "Connected form intake, notifications, and status tracking into one practical operating flow.",
-    deliverables: [
-      "Lead-routing workflow",
-      "Notification automation",
-      "Simple status board",
-      "Team handoff checklist",
-    ],
-    outcomes: [
-      "Fewer missed inquiries",
-      "More consistent lead response",
-      "Lower admin overhead",
-    ],
-    media: {
-      ...placeholderVideoMedia,
-    },
-    featured: false,
-    proofLevel: "snapshot",
   },
 ];
+
+export const getFeaturedCaseStudies = (limit = 3) =>
+  caseStudies
+    .filter((item) => item.featured)
+    .sort(
+      (a, b) =>
+        (a.featuredRank ?? Number.MAX_SAFE_INTEGER) -
+        (b.featuredRank ?? Number.MAX_SAFE_INTEGER),
+    )
+    .slice(0, limit);
+
+export const getCaseStudyBySlug = (slug) =>
+  caseStudies.find((item) => item.slug === slug);
 
 export const testimonials = [
   {

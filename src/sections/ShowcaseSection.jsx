@@ -1,3 +1,4 @@
+// Legacy section: not used by the current Home "Featured Work" flow.
 import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";

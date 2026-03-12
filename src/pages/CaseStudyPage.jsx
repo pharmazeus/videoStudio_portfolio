@@ -2,11 +2,11 @@ import { Link, Navigate, useParams } from "react-router-dom";
 
 import CTAButton from "../components/CTAButton";
 import SectionTitle from "../components/SectionTitle";
-import { caseStudies } from "../constants";
+import { caseStudies, getCaseStudyBySlug } from "../constants";
 
 function CaseStudyPage() {
   const { slug } = useParams();
-  const caseStudy = caseStudies.find((item) => item.slug === slug);
+  const caseStudy = getCaseStudyBySlug(slug);
 
   if (!caseStudy) {
     return <Navigate to="/work" replace />;
