@@ -1,3 +1,4 @@
+// Legacy section: not used by the current Home "Featured Work" flow.
 import { abilities } from "../constants";
 
 function FeatureCards() {

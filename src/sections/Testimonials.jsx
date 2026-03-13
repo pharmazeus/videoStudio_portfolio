@@ -8,20 +8,19 @@ gsap.registerPlugin(ScrollTrigger);
 
 function Testimonials() {
   const [showReviews, setShowReviews] = useState(false);
-  const [isAtBottom, setIsAtBottom] = useState(false);
+  const [isButtonVisible, setIsButtonVisible] = useState(false);
 
   // Refs for GSAP animations
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
   const buttonRef = useRef(null);
   const cardsRef = useRef([]);
-  const containerRef = useRef(null);
 
   // Initial GSAP animations setup
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Initial setup - hide elements
-      gsap.set([titleRef.current, buttonRef.current], { opacity: 0, y: 50 });
+      // Initial setup - hide title and cards
+      gsap.set(titleRef.current, { opacity: 0, y: 50 });
       gsap.set(cardsRef.current, { opacity: 0, y: 80, scale: 0.8 });
 
       // Title animation on scroll
@@ -39,6 +38,16 @@ function Testimonials() {
           },
         });
       }
+
+      if (sectionRef.current) {
+        ScrollTrigger.create({
+          trigger: sectionRef.current,
+          start: "top 75%",
+          onEnter: () => setIsButtonVisible(true),
+          onEnterBack: () => setIsButtonVisible(true),
+          onLeaveBack: () => setIsButtonVisible(false),
+        });
+      }
     }, sectionRef);
 
     return () => ctx.revert();
@@ -46,15 +55,15 @@ function Testimonials() {
 
   // Button animation when it appears
   useEffect(() => {
-    if (isAtBottom && buttonRef.current) {
+    if (isButtonVisible && !showReviews && buttonRef.current) {
       gsap.to(buttonRef.current, {
         opacity: 1,
         y: 0,
         duration: 1.0,
         ease: "power2.out",
-        delay: 0.3,
+        delay: 0.1,
       });
-    } else if (!isAtBottom && buttonRef.current) {
+    } else if (buttonRef.current) {
       gsap.to(buttonRef.current, {
         opacity: 0,
         y: 20,
@@ -62,7 +71,7 @@ function Testimonials() {
         ease: "power2.inOut",
       });
     }
-  }, [isAtBottom]);
+  }, [isButtonVisible, showReviews]);
 
   // Cards animation when reviews are shown
   useEffect(() => {
@@ -78,34 +87,6 @@ function Testimonials() {
       });
     }
   }, [showReviews]);
-
-  useEffect(() => {
-    let ticking = false;
-
-    const handleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          const scrollTop =
-            window.pageYOffset || document.documentElement.scrollTop;
-          const windowHeight = window.innerHeight;
-          const documentHeight = document.documentElement.scrollHeight;
-
-          // Better mobile detection - trigger earlier on mobile
-          const isMobile = window.innerWidth <= 768;
-          const threshold = isMobile ? 200 : 150;
-          const isNearBottom =
-            scrollTop + windowHeight >= documentHeight - threshold;
-
-          setIsAtBottom(isNearBottom);
-          ticking = false;
-        });
-        ticking = true;
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const handleTriggerReviews = () => {
     setShowReviews(true);
@@ -124,7 +105,7 @@ function Testimonials() {
       id="testimonials"
       className="section-padding flex-center min-h-screen"
     >
-      <div ref={containerRef} className="w-full h-full md:px-20 px-5">
+      <div className="w-full h-full md:px-20 px-5">
         <div ref={titleRef}>
           <TitleHeader
             title="What people say about us ?"
@@ -133,7 +114,7 @@ function Testimonials() {
         </div>
 
         {/* Trigger Button - Shows when user reaches bottom */}
-        {isAtBottom && !showReviews && (
+        {isButtonVisible && !showReviews && (
           <div className="flex-center mt-12 md:mt-16">
             <button
               ref={buttonRef}

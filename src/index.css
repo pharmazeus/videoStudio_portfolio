@@ -115,11 +115,15 @@ section {
     }
 
     .inner {
-      @apply mx-auto flex items-center justify-between;
+      @apply mx-auto flex items-center justify-between gap-2 md:gap-4;
     }
 
     .logo {
-      @apply text-white-50 text-xl md:text-2xl font-semibold transition-transform duration-300 hover:scale-105;
+      @apply text-white-50 text-base md:text-2xl font-semibold transition-transform duration-300 hover:scale-105 whitespace-nowrap;
+    }
+
+    .actions {
+      @apply ml-auto flex items-center gap-2 md:gap-3;
     }
 
     nav.desktop {
@@ -143,14 +147,20 @@ section {
     }
 
     .contact-btn {
-      @apply flex;
+      @apply flex shrink-0;
 
       .inner {
-        @apply px-1 py-2 rounded-lg bg-white text-black group-hover:bg-black-50 transition-colors duration-300;
+        @apply px-3 md:px-4 py-2 rounded-lg bg-white text-black group-hover:bg-black-50 transition-colors duration-300 border border-white/70;
 
         span {
-          @apply group-hover:text-white transition-colors duration-300;
+          @apply text-xs sm:text-sm leading-none whitespace-nowrap group-hover:text-white transition-colors duration-300;
         }
+      }
+    }
+
+    .contact-btn-secondary {
+      .inner {
+        @apply bg-transparent text-white border border-white/30 hover:bg-white/10;
       }
     }
 
@@ -253,6 +263,68 @@ section {
     @apply rounded-xl overflow-hidden border border-white/10 bg-black;
   }
 
+  .video-work-media-shell {
+    @apply overflow-hidden border-b border-black-50 bg-black;
+  }
+
+  .video-work-card {
+    @apply flex flex-col overflow-hidden rounded-xl;
+    height: 33.5rem;
+  }
+
+  .video-work-card-body {
+    @apply flex min-h-0 flex-1 flex-col px-4 py-4 md:px-5 md:py-4;
+  }
+
+  .video-work-card-copy {
+    @apply flex min-h-0 flex-1 flex-col;
+  }
+
+  .video-work-card-text {
+    @apply mt-3 min-h-0 overflow-y-auto pr-1;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+  }
+
+  .video-work-card-title {
+    @apply text-lg font-semibold leading-tight md:text-xl;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+  }
+
+  .video-work-card-excerpt {
+    @apply mt-2 text-sm leading-6 text-white-50;
+    display: block;
+  }
+
+  .video-work-card-actions {
+    @apply mt-4 grid grid-cols-2 gap-2.5 pt-3;
+  }
+
+  .video-work-media-frame {
+    @apply relative isolate flex items-center justify-center overflow-hidden bg-black;
+    height: 20.5rem;
+  }
+
+  .video-work-media-asset {
+    @apply h-full w-full object-contain bg-black p-2 md:p-3;
+  }
+
+  .video-work-media-overlay {
+    @apply absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/80 via-black/30 to-transparent;
+  }
+
+  .video-work-media-copy {
+    @apply absolute inset-x-0 bottom-0 flex items-end justify-start p-3 md:p-4;
+  }
+
+  .video-work-media-label {
+    @apply text-[11px] font-semibold uppercase tracking-[0.18em] text-blue-50;
+  }
+
   .video-preview-copy {
     @apply mt-4 md:mt-5;
 
@@ -270,6 +342,53 @@ section {
 
     img {
       @apply size-4;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .video-work-card {
+      height: 36rem;
+    }
+
+    .video-work-media-frame {
+      height: 22rem;
+    }
+
+    .video-work-card-text {
+      @apply pr-1.5;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(131, 156, 181, 0.6) rgba(255, 255, 255, 0.04);
+      mask-image: linear-gradient(
+        to bottom,
+        transparent 0,
+        black 10px,
+        black calc(100% - 10px),
+        transparent 100%
+      );
+    }
+
+    .video-work-card-text::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .video-work-card-text::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 999px;
+    }
+
+    .video-work-card-text::-webkit-scrollbar-thumb {
+      background: rgba(131, 156, 181, 0.65);
+      border-radius: 999px;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .video-work-card {
+      height: 37rem;
+    }
+
+    .video-work-media-frame {
+      height: 22.5rem;
     }
   }
 

@@ -1,22 +1,128 @@
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import CTAButton from "../components/CTAButton";
 import SectionTitle from "../components/SectionTitle";
+import Testimonials from "../sections/Testimonials";
 import {
   caseStudies,
   faqs,
+  getFeaturedCaseStudies,
   heroContent,
   pricingPackages,
   processSteps,
   services,
-  testimonials,
   valueStrip,
+  videoTypeMeta,
   whyWorkWithMe,
 } from "../constants";
 import { formatFromPrice } from "../lib/formatPrice";
+import { VIDEO_PLACEHOLDER_SRC } from "../lib/youtube.js";
+
+function FeaturedVideoMedia({ item }) {
+  const cardRef = useRef(null);
+  const videoRef = useRef(null);
+  const [isNearViewport, setIsNearViewport] = useState(false);
+  const [videoFailed, setVideoFailed] = useState(false);
+  const hasPreviewClip = Boolean(item.media.previewSrc) && !videoFailed;
+  const posterSrc = item.media.poster || VIDEO_PLACEHOLDER_SRC;
+
+  useEffect(() => {
+    if (!hasPreviewClip || !cardRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsNearViewport(entry.isIntersecting);
+      },
+      {
+        rootMargin: "220px 0px",
+        threshold: 0.25,
+      },
+    );
+
+    observer.observe(cardRef.current);
+    return () => observer.disconnect();
+  }, [hasPreviewClip]);
+
+  useEffect(() => {
+    if (!hasPreviewClip) return;
+
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (!isNearViewport) {
+      video.pause();
+      return;
+    }
+
+    const playPromise = video.play();
+    if (playPromise?.catch) playPromise.catch(() => {});
+  }, [hasPreviewClip, isNearViewport]);
+
+  return (
+    <a
+      ref={cardRef}
+      href={item.media.youtubeUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`Watch on YouTube: ${item.title}`}
+      className="video-work-media-shell block cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-50/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+    >
+      <div className="video-work-media-frame">
+        {hasPreviewClip ? (
+          <video
+            ref={videoRef}
+            className="video-work-media-asset"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="none"
+            poster={posterSrc}
+            onError={() => setVideoFailed(true)}
+          >
+            <source src={item.media.previewSrc} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        ) : (
+          <img
+            src={posterSrc}
+            alt={item.title}
+            loading="lazy"
+            decoding="async"
+            className="video-work-media-asset"
+            onError={(event) => {
+              event.currentTarget.onerror = null;
+              event.currentTarget.src = VIDEO_PLACEHOLDER_SRC;
+            }}
+          />
+        )}
+        <div className="video-work-media-overlay" aria-hidden="true" />
+        {hasPreviewClip ? (
+          <div className="video-work-media-copy">
+            <p className="video-work-media-label">Preview Clip</p>
+          </div>
+        ) : null}
+      </div>
+    </a>
+  );
+}
 
 function HomePage() {
-  const featuredWork = caseStudies.filter((item) => item.featured).slice(0, 3);
+  const featuredWork = useMemo(() => {
+    const selected = getFeaturedCaseStudies(4).filter(
+      (item) => item.slug !== "ai-reveal-ad-house-in-markham",
+    );
+    const aiReveal = caseStudies.find(
+      (item) => item.slug === "ai-reveal-ad-house-in-markham",
+    );
+
+    if (!aiReveal) {
+      return selected.slice(0, 4);
+    }
+
+    return [aiReveal, ...selected].slice(0, 4);
+  }, []);
   const pricingPreview = pricingPackages
     .filter((item) => item.category === "monthly-retainers")
     .slice(0, 3);
@@ -90,35 +196,55 @@ function HomePage() {
       <section id="featured-work" className="py-14 md:py-20">
         <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 xl:px-20">
           <SectionTitle
-            eyebrow="Featured Work"
-            title="Selected proof across content, web, and systems"
-            description="A curated set of projects that show practical digital execution across presentation and operations."
+            eyebrow="Featured Video Work"
+            title="Selected cuts from the live video catalog"
+            description="A first look at ad, tutorial, and showcase edits already live on YouTube, each backed by a fuller case-study breakdown."
           />
 
-          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
             {featuredWork.map((item) => (
-              <article key={item.slug} className="card-border flex h-full flex-col rounded-xl">
-                <div className="overflow-hidden rounded-t-xl border-b border-black-50">
-                  <img
-                    src={item.media.poster}
-                    alt={item.title}
-                    loading="lazy"
-                    decoding="async"
-                    className="h-56 w-full object-cover"
-                  />
-                </div>
-                <div className="flex h-full flex-col p-5">
-                  <p className="text-xs uppercase tracking-[0.14em] text-blue-50">
-                    {item.category}
-                  </p>
-                  <h3 className="mt-2 text-xl font-semibold">{item.title}</h3>
-                  <p className="mt-3 text-sm text-white-50">{item.excerpt}</p>
-                  <Link
-                    to={`/work/${item.slug}`}
-                    className="mt-5 inline-flex text-sm font-semibold text-white transition-colors hover:text-blue-50"
-                  >
-                    View Case Study
-                  </Link>
+              <article key={item.slug} className="video-work-card card-border">
+                <FeaturedVideoMedia item={item} />
+                <div className="video-work-card-body">
+                  <div className="video-work-card-copy">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="rounded-full border border-white/10 bg-black px-3 py-1 text-[11px] font-medium uppercase tracking-[0.16em] text-blue-50">
+                        {videoTypeMeta[item.videoType].singularLabel}
+                      </span>
+                      {item.series ? (
+                        <span className="rounded-full border border-white/10 bg-black px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-white-50">
+                          {`${item.series.name} - Part ${item.series.part}`}
+                        </span>
+                      ) : null}
+                    </div>
+
+                    <div className="video-work-card-text">
+                      <h3 className="video-work-card-title">
+                        {item.title}
+                      </h3>
+                      <p className="video-work-card-excerpt">
+                        {item.excerpt}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="video-work-card-actions">
+                    <CTAButton
+                      to={`/work/${item.slug}`}
+                      size="sm"
+                      className="min-w-0 justify-center"
+                    >
+                      Open Case Study
+                    </CTAButton>
+                    <CTAButton
+                      href={item.media.youtubeUrl}
+                      variant="secondary"
+                      size="sm"
+                      className="min-w-0 justify-center"
+                    >
+                      Watch on YouTube
+                    </CTAButton>
+                  </div>
                 </div>
               </article>
             ))}
@@ -220,23 +346,7 @@ function HomePage() {
         </div>
       </section>
 
-      <section id="testimonials-proof" className="border-y border-black-50 bg-black-100/40 py-14 md:py-20">
-        <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 xl:px-20">
-          <SectionTitle
-            eyebrow="Testimonials"
-            title="Proof near the decision point"
-          />
-          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
-            {testimonials.map((item) => (
-              <article key={item.name} className="card-border rounded-xl p-5">
-                <p className="text-sm text-white-50">"{item.quote}"</p>
-                <p className="mt-5 font-semibold text-white">{item.name}</p>
-                <p className="text-xs text-blue-50">{item.role}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+      <Testimonials />
 
       <section id="faq" className="py-14 md:py-20">
         <div className="mx-auto w-full max-w-[960px] px-5 md:px-10">

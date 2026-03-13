@@ -1,3 +1,9 @@
+import {
+  getYouTubeThumbnailUrl,
+  getYouTubeVideoId,
+  inferYouTubeOrientationFromUrl,
+} from "../lib/youtube.js";
+
 export const navLinks = [
   { label: "Home", path: "/" },
   { label: "Work", path: "/work" },
@@ -389,188 +395,449 @@ export const addOns = [
     startingPrice: 150,
     priceRange: [150, 300],
   },
-  { name: "Monthly monitoring / support", startingPrice: 100, priceRange: [100, 300] },
+  {
+    name: "Monthly monitoring / support",
+    startingPrice: 100,
+    priceRange: [100, 300],
+  },
 ];
 
-export const caseStudies = [
-  {
-    slug: "at-cinema-content-engine",
-    title: "At Cinema Content Engine",
-    category: "Content",
-    excerpt:
-      "Built a repeatable monthly short-form system for a local cinema brand to keep output consistent and premium.",
-    challenge:
-      "The team needed stronger social consistency and better visual quality without heavy in-house production overhead.",
-    solution:
-      "Created a lean shoot-and-edit cadence with reusable hooks, captions, and delivery templates across short-form channels.",
-    deliverables: [
-      "Monthly content shoot blocks",
-      "8 short-form edits",
-      "1 promo cut",
-      "Caption-ready exports",
-    ],
-    outcomes: [
-      "Clearer premium visual positioning",
-      "Faster posting rhythm",
-      "Reusable content operations workflow",
-    ],
-    media: {
-      poster: "/posters/horizontal/CinemaPosterHorizontal.png",
-      previewSrc: "/videos/HorizontalSpaceZoomInAndOutCreatorBgVideo.mp4",
-      youtubeUrl: "https://www.youtube.com/watch?v=M7lc1UVf-VE",
-    },
-    featured: true,
-    proofLevel: "selected",
-  },
-  {
-    slug: "contractor-service-site-rebuild",
-    title: "Contractor Service Site Rebuild",
-    category: "Web",
-    excerpt:
-      "Reframed a construction service website around clear offers, trust proof, and stronger lead paths.",
-    challenge:
-      "The previous site looked outdated and did not explain service packages clearly, leading to weak inquiry quality.",
-    solution:
-      "Rebuilt page hierarchy, rewrote offer sections in plain language, and tightened CTA placement around high-intent sections.",
-    deliverables: [
-      "5-page business website",
-      "Service architecture",
-      "Lead capture forms",
-      "Mobile-first polish",
-    ],
-    outcomes: [
-      "Better service clarity",
-      "Stronger mobile readability",
-      "Improved inquiry intent",
-    ],
-    media: {
-      poster: "/images/project1.png",
-      previewSrc: "/videos/verticalZoomOut.mp4",
-      youtubeUrl: "https://www.youtube.com/watch?v=aqz-KE-bpKQ",
-    },
-    featured: true,
-    proofLevel: "selected",
-  },
-  {
-    slug: "real-estate-content-workflow-ops",
-    title: "Real Estate Content Workflow Ops",
-    category: "Systems",
-    excerpt:
-      "Connected content capture, editing queue, and approval tracking into one lightweight workflow for a small real estate team.",
-    challenge:
-      "Content requests, revisions, and posting deadlines were tracked manually and caused delays.",
-    solution:
-      "Mapped workflow stages, automated task handoffs, and standardized project states for smoother weekly execution.",
-    deliverables: [
-      "Workflow audit",
-      "Task routing automation",
-      "Revision tracking flow",
-      "Handoff SOP",
-    ],
-    outcomes: [
-      "Reduced repetitive coordination",
-      "Cleaner revision process",
-      "Faster weekly turnaround",
-    ],
-    media: {
-      poster: "/images/project2.png",
-      previewSrc: "/videos/HorizontalSpaceZoomInAndOutCreatorBgVideo.mp4",
-      youtubeUrl: "https://www.youtube.com/watch?v=ScMzIvxBSi4",
-    },
-    featured: true,
-    proofLevel: "selected",
-  },
-  {
-    slug: "founder-brand-launch-assets",
-    title: "Founder Brand Launch Assets",
-    category: "Content",
-    excerpt:
-      "Built launch-ready visual assets and short-form edits for a founder-led service brand.",
-    challenge:
-      "The founder had no cohesive content pack for launch week and needed polished assets quickly.",
-    solution:
-      "Structured a focused production sprint with platform-ready cuts and fast revision loops.",
-    deliverables: [
-      "Launch content pack",
-      "Platform cutdowns",
-      "Cover / thumbnail assets",
-    ],
-    outcomes: [
-      "Faster launch readiness",
-      "Consistent visual direction",
-      "Higher confidence in first campaign push",
-    ],
-    media: {
-      poster: "/posters/horizontal/withCameraModerateEnhHorizontal.png",
-      previewSrc: "/videos/verticalZoomOut.mp4",
-      youtubeUrl: "https://www.youtube.com/watch?v=jNQXAC9IVRw",
-    },
-    featured: false,
-    proofLevel: "snapshot",
-  },
-  {
-    slug: "property-brand-landing-sprint",
-    title: "Property Brand Landing Sprint",
-    category: "Web",
-    excerpt:
-      "Designed and launched a one-page property offer site focused on local lead capture.",
-    challenge:
-      "The business needed a clean launch page quickly to validate a new service angle.",
-    solution:
-      "Built a conversion-focused landing page with concise messaging, trust prompts, and clear inquiry actions.",
-    deliverables: [
-      "One-page landing build",
-      "Responsive layout",
-      "SEO essentials",
-      "Contact form",
-    ],
-    outcomes: [
-      "Clearer offer communication",
-      "Better CTA visibility",
-      "Faster campaign deployment",
-    ],
-    media: {
-      poster: "/images/project3.png",
-      previewSrc: "/videos/HorizontalSpaceZoomInAndOutCreatorBgVideo.mp4",
-      youtubeUrl: "https://www.youtube.com/watch?v=ysz5S6PUM-U",
-    },
-    featured: false,
-    proofLevel: "snapshot",
-  },
-  {
-    slug: "local-service-intake-automation",
-    title: "Local Service Intake Automation",
-    category: "Systems",
-    excerpt:
-      "Implemented a lightweight lead-intake automation flow to reduce manual follow-up and missed handoffs.",
-    challenge:
-      "Leads were collected in multiple places and response quality varied by team member workload.",
-    solution:
-      "Connected form intake, notifications, and status tracking into one practical operating flow.",
-    deliverables: [
-      "Lead-routing workflow",
-      "Notification automation",
-      "Simple status board",
-      "Team handoff checklist",
-    ],
-    outcomes: [
-      "Fewer missed inquiries",
-      "More consistent lead response",
-      "Lower admin overhead",
-    ],
-    media: {
-      poster: "/posters/horizontal/readyBlackHorizontalPoster.png",
-      previewSrc: "/videos/verticalZoomOut.mp4",
-      youtubeUrl: "https://www.youtube.com/watch?v=5qap5aO4i9A",
-    },
-    featured: false,
-    proofLevel: "snapshot",
-  },
+export const videoTypeMeta = {
+  ad: { label: "Ads", singularLabel: "Ad" },
+  tutorial: { label: "Tutorials", singularLabel: "Tutorial" },
+  showcase: { label: "Showcase", singularLabel: "Showcase" },
+};
+
+export const videoCatalogFilters = [
+  { id: "all", label: "All" },
+  { id: "ad", label: "Ads" },
+  { id: "tutorial", label: "Tutorials" },
 ];
+
+const generatedVideoMediaByCaseStudy = {
+  "ai-reveal-ad-house-in-markham": {
+    poster: "/posters/portrait/ai-reveal-ad-for-house-in-markham-poster.jpg",
+    previewSrc:
+      "/videos/previews/portrait/ai-reveal-ad-for-house-in-markham-preview.mp4",
+    orientation: "portrait",
+  },
+  "brooke-street-build-preview-ad": {
+    poster: "/posters/portrait/brooke-street-build-preview-ad-poster.jpg",
+    previewSrc:
+      "/videos/previews/portrait/brooke-street-build-preview-ad-preview.mp4",
+    orientation: "portrait",
+  },
+  "yma-brand-positioning-reel": {
+    poster: "/posters/portrait/yma-brand-positioning-reel-poster.jpg",
+    previewSrc:
+      "/videos/previews/portrait/yma-brand-positioning-reel-preview.mp4",
+    orientation: "portrait",
+  },
+  "brick-cleaning-tutorial-film": {
+    poster: "/posters/landscape/brick-cleaning-tutorial-film-poster.jpg",
+    previewSrc:
+      "/videos/previews/landscape/brick-cleaning-tutorial-film-preview.mp4",
+    orientation: "landscape",
+  },
+  "masonry-result-showcase-ad": {
+    poster: "/posters/portrait/masonry-result-showcase-ad-poster.jpg",
+    previewSrc:
+      "/videos/previews/portrait/masonry-result-showcase-ad-preview.mp4",
+    orientation: "portrait",
+  },
+  "markham-house-series-part-3": {
+    poster: "/posters/portrait/markham-house-cinematic-reel-poster.jpg",
+    previewSrc:
+      "/videos/previews/portrait/markham-house-cinematic-reel-preview.mp4",
+    orientation: "portrait",
+  },
+  "markham-house-series-part-2": {
+    poster: "/posters/portrait/markham-house-process-reel-poster.jpg",
+    previewSrc:
+      "/videos/previews/portrait/markham-house-process-reel-preview.mp4",
+    orientation: "portrait",
+  },
+  "brick-factory-tour-tutorial": {
+    poster: "/posters/portrait/brick-factory-tour-tutorial-poster.jpg",
+    previewSrc:
+      "/videos/previews/portrait/brick-factory-tour-tutorial-preview.mp4",
+    orientation: "portrait",
+  },
+  "new-material-launch-reel": {
+    poster: "/posters/portrait/new-material-launch-reel-poster.jpg",
+    previewSrc:
+      "/videos/previews/portrait/new-material-launch-reel-preview.mp4",
+    orientation: "portrait",
+  },
+  "quick-result-highlight-ad": {
+    poster: "/posters/portrait/quick-result-highlight-ad-poster.jpg",
+    previewSrc:
+      "/videos/previews/portrait/quick-result-highlight-ad-preview.mp4",
+    orientation: "portrait",
+  },
+  "column-installation-part-2": {
+    poster: "/posters/portrait/column-installation-reel-poster.jpg",
+    previewSrc:
+      "/videos/previews/portrait/column-installation-reel-preview.mp4",
+    orientation: "portrait",
+  },
+};
+
+function createVideoCaseStudy({
+  slug,
+  title,
+  excerpt,
+  challenge,
+  solution,
+  deliverables,
+  outcomes,
+  youtubeUrl,
+  videoType,
+  videoTags,
+  series = null,
+  proofNote = null,
+  featured = false,
+  featuredRank = null,
+  orientation,
+}) {
+  const youtubeId = getYouTubeVideoId(youtubeUrl);
+  const generatedMedia = generatedVideoMediaByCaseStudy[slug];
+
+  return {
+    slug,
+    title,
+    category: "Content",
+    excerpt,
+    challenge,
+    solution,
+    deliverables,
+    outcomes,
+    workKind: "video",
+    videoType,
+    videoTags,
+    series,
+    proofLevel: proofNote ? "public signal" : "selected",
+    proofNote,
+    media: {
+      description: `${title} preview frame`,
+      poster: generatedMedia?.poster ?? getYouTubeThumbnailUrl(youtubeId),
+      previewSrc: generatedMedia?.previewSrc ?? null,
+      youtubeUrl,
+      youtubeId,
+      orientation:
+        generatedMedia?.orientation ??
+        orientation ??
+        inferYouTubeOrientationFromUrl(youtubeUrl),
+    },
+    featured,
+    featuredRank,
+  };
+}
+
+/**
+ * Case studies are the single source of truth for Featured Work content.
+ * Home cards use: `title`, `excerpt`, `featured`, `featuredRank`, `media.poster`, `videoType`.
+ * Work cards use: `title`, `excerpt`, `videoType`, `series`, `proofNote`, `outcomes`, `media.poster`.
+ * Case Study page uses: `challenge`, `solution`, `deliverables`, `outcomes`, `series`, and full `media`.
+ *
+ * Recommended pattern for a new video item:
+ * Use `createVideoCaseStudy`, keep `slug` unique, and include the YouTube URL plus polished English copy.
+ */
+export const caseStudies = [
+  createVideoCaseStudy({
+    slug: "ai-reveal-ad-house-in-markham",
+    title: "AI Reveal Ad for House in Markham",
+    excerpt:
+      "A short-form property ad that used AI animation, drone footage, and tight post-production to turn one build into a stronger promo piece.",
+    challenge:
+      "The property needed more than a standard jobsite recap. The client needed a reel that felt commercial, showed the craft clearly, and could earn attention quickly.",
+    solution:
+      "Built the edit around AI animation, professional camera work, drone coverage, layered sound design, and a more structured reveal of the house and the work behind it.",
+    deliverables: [
+      "Short-form ad reel",
+      "AI animation accents",
+      "Professional camera coverage",
+      "Drone footage and sound design",
+    ],
+    outcomes: [
+      "Gave the property a more premium short-form presentation",
+      "Combined process footage and finished visuals in one clear ad",
+      "Created a stronger promo asset for social distribution",
+    ],
+    youtubeUrl: "https://youtube.com/shorts/ZHpGl9Aw-m8",
+    videoType: "ad",
+    videoTags: ["ad", "real-estate", "reel", "ai-animation", "drone"],
+    proofNote: "147k views on Instagram",
+  }),
+  createVideoCaseStudy({
+    slug: "brooke-street-build-preview-ad",
+    title: "Brooke Street Build Preview Ad",
+    excerpt:
+      "A progress-stage property ad that visualized the future result while showing the crew, scale, and pace of the build.",
+    challenge:
+      "The house was still in progress, so the content needed to sell the vision before the final result was physically complete.",
+    solution:
+      "Used AI animation to preview the future outcome, then balanced that with dynamic crew footage, drone angles, and on-site detail shots to make the work feel larger and clearer.",
+    deliverables: [
+      "Progress-stage ad reel",
+      "AI-assisted future-state visuals",
+      "Crew and site coverage",
+      "Drone-backed property framing",
+    ],
+    outcomes: [
+      "Made an unfinished project easier to market visually",
+      "Showed both the crew effort and the planned result",
+      "Turned an in-progress build into a stronger promotional asset",
+    ],
+    youtubeUrl: "https://youtube.com/shorts/P9h9_3Q8MLk",
+    videoType: "ad",
+    videoTags: ["ad", "real-estate", "reel", "ai-animation", "drone"],
+  }),
+  createVideoCaseStudy({
+    slug: "yma-brand-positioning-reel",
+    title: "YMA Brand Positioning Reel",
+    excerpt:
+      "A narrated brand reel assembled from long-range footage to give YMA a stronger media-facing introduction and clearer market positioning.",
+    challenge:
+      "YMA needed a stronger public-facing media asset that could present the company with more clarity than scattered project clips alone.",
+    solution:
+      "Shaped footage collected over time into a single narrated reel with deliberate pacing, polished color, smoother transitions, and supportive sound design.",
+    deliverables: [
+      "Narrated brand reel",
+      "Archive and field-footage assembly",
+      "Color correction and transitions",
+      "Sound-supported final edit",
+    ],
+    outcomes: [
+      "Gave YMA a clearer brand-level introduction piece",
+      "Supported stronger positioning across social media",
+      "Created a more useful asset for future client conversations",
+    ],
+    youtubeUrl: "https://youtube.com/shorts/RldM9V5XUUs",
+    videoType: "ad",
+    videoTags: ["ad", "narrated-ad", "brand-positioning", "reel"],
+    proofNote: "340k views on Instagram",
+    featured: true,
+    featuredRank: 1,
+  }),
+  createVideoCaseStudy({
+    slug: "brick-cleaning-tutorial-film",
+    title: "Brick Cleaning Tutorial Film",
+    excerpt:
+      "A production-heavy tutorial that made a technical brick-cleaning process easier to watch, follow, and trust.",
+    challenge:
+      "Chemical brick cleaning is useful but not naturally attention-grabbing on camera. The tutorial needed to stay informative without feeling flat or overly technical.",
+    solution:
+      "Built the piece around a planned full-day shoot, the owner as the on-camera guide, voice support, motion-text callouts, AI animation, and a tighter edit rhythm.",
+    deliverables: [
+      "Tutorial-led YouTube cut",
+      "On-location production day",
+      "Voice and on-camera guidance support",
+      "Motion cues, text design, and AI animation",
+    ],
+    outcomes: [
+      "Made a technical service easier for viewers to understand",
+      "Gave the owner a clearer on-camera teaching asset",
+      "Turned a routine process into a stronger educational video",
+    ],
+    youtubeUrl: "https://youtu.be/zpUtBRHcEck",
+    videoType: "tutorial",
+    videoTags: ["guide", "tutorial", "youtube-video", "reel"],
+    featured: true,
+    featuredRank: 2,
+  }),
+  createVideoCaseStudy({
+    slug: "masonry-result-showcase-ad",
+    title: "Masonry Result Showcase Ad",
+    excerpt:
+      "A fast result-led ad cut that shows the build process and the final masonry finish in one clean, high-energy reel.",
+    challenge:
+      "The client needed a fast promotional cut that showed enough of the work process to feel credible while still landing on a strong visual payoff.",
+    solution:
+      "Edited the reel around quick process beats, a clear result reveal, rich color finishing, and a more commercial pace that kept the transformation easy to read.",
+    deliverables: [
+      "Short-form ad reel",
+      "Process-to-result edit structure",
+      "Color-rich finishing pass",
+      "Social-ready delivery",
+    ],
+    outcomes: [
+      "Highlighted the transformation without slowing the pace",
+      "Gave the client a stronger result-first promo asset",
+      "Made the finished masonry work feel more visually memorable",
+    ],
+    youtubeUrl: "https://youtube.com/shorts/NzxAmM4Kug8",
+    videoType: "ad",
+    videoTags: ["ad", "real-estate", "reel", "showcase"],
+    proofNote: "348k views on Instagram",
+    featured: true,
+    featuredRank: 3,
+  }),
+  createVideoCaseStudy({
+    slug: "markham-house-series-part-3",
+    title: "Markham House Cinematic Reel",
+    excerpt:
+      "A compact cinematic cut from the Markham house project, focused on one more polished look at the build in motion.",
+    challenge:
+      "The reel needed to add another strong visual angle to the Markham house project without relying on a repetitive recap structure.",
+    solution:
+      "Kept the edit short, cinematic, and process-led, using a cleaner rhythm and carefully selected shots to make the footage feel intentional on its own.",
+    deliverables: [
+      "Short cinematic reel",
+      "Process detail coverage",
+      "Atmosphere-led edit pacing",
+      "Social-ready export",
+    ],
+    outcomes: [
+      "Added another polished visual angle to the project",
+      "Kept the build process watchable without overexplaining it",
+      "Delivered a clean standalone social asset",
+    ],
+    youtubeUrl: "https://youtube.com/shorts/DVixU5KEdMM",
+    videoType: "showcase",
+    videoTags: ["reel", "showcase", "work", "cinematic"],
+  }),
+  createVideoCaseStudy({
+    slug: "markham-house-series-part-2",
+    title: "Markham House Process Reel",
+    excerpt:
+      "A cinematic process-first cut from the Markham house project with fresh action, pacing, and a tighter on-site rhythm.",
+    challenge:
+      "The footage needed to feel sharp and energetic enough to stand alone while still keeping the focus on real process work.",
+    solution:
+      "Built the edit around new site action, tighter pacing, and a more cinematic structure so the project felt clear and visually intentional.",
+    deliverables: [
+      "Process-led reel",
+      "Fresh site coverage",
+      "Cinematic edit pass",
+      "Social delivery cut",
+    ],
+    outcomes: [
+      "Turned routine process footage into a stronger standalone reel",
+      "Added visual energy without losing clarity",
+      "Gave the project another usable promotional asset",
+    ],
+    youtubeUrl: "https://youtube.com/shorts/lMRAo-wmWnA",
+    videoType: "ad",
+    videoTags: ["ad", "real-estate", "reel"],
+  }),
+  createVideoCaseStudy({
+    slug: "brick-factory-tour-tutorial",
+    title: "Brick Factory Tour Tutorial",
+    excerpt:
+      "A tutorial-style factory tour that followed YMA through a brick production facility and kept a fast-moving shoot readable.",
+    challenge:
+      "The assignment involved a busy location and a moving tour, so the footage had to stay clear even while the shooting conditions changed quickly.",
+    solution:
+      "Captured the day in a more documentary-style way, then edited it into a tutorial-leaning walkthrough that stayed practical and easy to follow.",
+    deliverables: [
+      "Factory tour tutorial",
+      "Fast-moving on-site coverage",
+      "Documentary-style edit structure",
+      "Educational social cut",
+    ],
+    outcomes: [
+      "Turned a difficult shoot day into useful behind-the-scenes content",
+      "Expanded the educational side of the content library",
+      "Made the factory visit more accessible to viewers",
+    ],
+    youtubeUrl: "https://youtube.com/shorts/6omI3v2h4No",
+    videoType: "tutorial",
+    videoTags: ["tutorial", "showcase", "blog", "factory-tour"],
+  }),
+  createVideoCaseStudy({
+    slug: "new-material-launch-reel",
+    title: "New Material Launch Reel",
+    excerpt:
+      "A launch-style reel built to introduce a newer material through direct application footage and a sharp result reveal.",
+    challenge:
+      "The material was new to the market at the time, so the reel needed to quickly show what it looked like in use and why it mattered visually.",
+    solution:
+      "Focused on direct application footage, a clean result payoff, and a music-led edit that kept the presentation concise and audience-friendly.",
+    deliverables: [
+      "Material launch reel",
+      "Application footage coverage",
+      "Music-led pacing",
+      "Result reveal edit",
+    ],
+    outcomes: [
+      "Introduced the material in a more watchable way",
+      "Gave viewers a clearer visual sense of the result",
+      "Created a concise launch-ready video asset",
+    ],
+    youtubeUrl: "https://youtube.com/shorts/TW4ZDdtOOhI",
+    videoType: "ad",
+    videoTags: ["ad", "real-estate", "reel", "showcase", "material-launch"],
+  }),
+  createVideoCaseStudy({
+    slug: "quick-result-highlight-ad",
+    title: "Quick Result Highlight Ad",
+    excerpt:
+      "A compact result-first ad that relied on rich color, quick pacing, and a clean finish to keep the message direct.",
+    challenge:
+      "The brief called for a very short piece, so the reel had to feel polished and representative without relying on a longer explanation.",
+    solution:
+      "Leaned on saturated color, simple structure, and direct result framing to make the short format feel intentional instead of rushed.",
+    deliverables: [
+      "Short-form highlight ad",
+      "Compact edit structure",
+      "Color-forward finishing",
+      "Social delivery cut",
+    ],
+    outcomes: [
+      "Kept the message compact without losing clarity",
+      "Delivered a strong first visual impression",
+      "Produced a clean representative short-form asset",
+    ],
+    youtubeUrl: "https://youtube.com/shorts/ypTBi27T8js",
+    videoType: "ad",
+    videoTags: ["ad", "real-estate", "reel"],
+  }),
+  createVideoCaseStudy({
+    slug: "column-installation-part-2",
+    title: "Column Installation Reel",
+    excerpt:
+      "A heavy-build installation reel that keeps the focus on motion, structure, and the physical weight of the work on site.",
+    challenge:
+      "The footage needed to feel substantial and readable at the same time, despite the physical scale and intensity of the installation work.",
+    solution:
+      "Trimmed the cut around stronger follow-through moments and a tighter pace so the reel felt purposeful and complete as a standalone piece.",
+    deliverables: [
+      "Installation showcase reel",
+      "Installation detail coverage",
+      "Momentum-focused edit pass",
+      "Social-ready export",
+    ],
+    outcomes: [
+      "Presented the installation work as a strong standalone asset",
+      "Made a complex on-site process easier to read",
+      "Preserved the physical intensity of the project on screen",
+    ],
+    youtubeUrl: "https://youtube.com/shorts/7D3KGSwvBxE",
+    videoType: "showcase",
+    videoTags: ["reel", "work", "showcase"],
+  }),
+];
+
+export const getFeaturedCaseStudies = (limit = 3) =>
+  caseStudies
+    .filter((item) => item.featured)
+    .sort(
+      (a, b) =>
+        (a.featuredRank ?? Number.MAX_SAFE_INTEGER) -
+        (b.featuredRank ?? Number.MAX_SAFE_INTEGER),
+    )
+    .slice(0, limit);
+
+export const getCaseStudyBySlug = (slug) =>
+  caseStudies.find((item) => item.slug === slug);
 
 export const testimonials = [
   {
     name: "Maya R.",
+    mentions: "@maya-r",
+    review:
+      "The biggest win was clarity. We finally had content, website updates, and workflows moving together instead of separately.",
     role: "Founder, Local Wellness Studio",
     quote:
       "The biggest win was clarity. We finally had content, website updates, and workflows moving together instead of separately.",
@@ -578,6 +845,9 @@ export const testimonials = [
   },
   {
     name: "Daniel T.",
+    mentions: "@daniel-t",
+    review:
+      "The site and content now reflect how we actually work. We get better-fit inquiries and spend less time explaining basic scope.",
     role: "Owner, Construction Services",
     quote:
       "The site and content now reflect how we actually work. We get better-fit inquiries and spend less time explaining basic scope.",
@@ -585,6 +855,9 @@ export const testimonials = [
   },
   {
     name: "Sofia L.",
+    mentions: "@sofia-l",
+    review:
+      "Execution got faster across the board. The workflow cleanup saved our team hours every week.",
     role: "Marketing Lead, Property Team",
     quote:
       "Execution got faster across the board. The workflow cleanup saved our team hours every week.",

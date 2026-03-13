@@ -2,18 +2,25 @@ import { useMemo } from "react";
 
 import TitleHeader from "../components/TitleHeader";
 import VideoPreviewCard from "../components/VideoPreviewCard";
-import { videoCatalog } from "../constants";
+import { caseStudies } from "../constants";
 
 function VideoShowcase({ mode = "home", compactHeader = false }) {
   const isCatalogMode = mode === "catalog";
 
   const videos = useMemo(() => {
-    const selected = videoCatalog
-      .filter((item) => item.placement === mode)
-      .sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
+    const selected = caseStudies
+      .filter((item) => item.workKind === "video")
+      .sort((a, b) => {
+        const featuredGap =
+          (a.featuredRank ?? Number.MAX_SAFE_INTEGER) -
+          (b.featuredRank ?? Number.MAX_SAFE_INTEGER);
+
+        if (featuredGap !== 0) return featuredGap;
+        return a.title.localeCompare(b.title);
+      });
 
     return isCatalogMode ? selected : selected.slice(0, 6);
-  }, [isCatalogMode, mode]);
+  }, [isCatalogMode]);
 
   return (
     <section
@@ -32,8 +39,8 @@ function VideoShowcase({ mode = "home", compactHeader = false }) {
             />
             <p className="text-white-50 md:text-xl text-center max-w-3xl">
               {isCatalogMode
-                ? "Browse the full collection. Every card contains an on-site preview and a direct link to the full cut on YouTube."
-                : "A curated selection of branded edits with quick on-site previews and full-watch access on YouTube."}
+                ? "Browse the full collection. Each card uses a YouTube thumbnail today and links directly to the published cut."
+                : "A curated selection of branded edits with thumbnail previews and full-watch access on YouTube."}
             </p>
           </div>
 
@@ -45,7 +52,7 @@ function VideoShowcase({ mode = "home", compactHeader = false }) {
             }
           >
             {videos.map((item) => (
-              <VideoPreviewCard key={item.id} item={item} mode={mode} />
+              <VideoPreviewCard key={item.slug} item={item} mode={mode} />
             ))}
           </div>
         </div>
