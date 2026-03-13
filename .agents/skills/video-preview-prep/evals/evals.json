@@ -1,0 +1,46 @@
+{
+  "skill": "video-preview-prep",
+  "scenarios": [
+    {
+      "id": "portrait-single",
+      "prompt": "Prepare a preview clip and poster from one portrait source video.",
+      "assertions": [
+        "preview file exists",
+        "poster file exists",
+        "orientation is portrait",
+        "preview dimensions are 720x1280",
+        "manifest row is written"
+      ]
+    },
+    {
+      "id": "landscape-single",
+      "prompt": "Prepare a preview clip and poster from one landscape source video.",
+      "assertions": [
+        "preview file exists",
+        "poster file exists",
+        "orientation is landscape",
+        "preview dimensions are 1280x720",
+        "manifest row is written"
+      ]
+    },
+    {
+      "id": "mixed-batch",
+      "prompt": "Process a directory with mixed portrait and landscape videos and generate a manifest.",
+      "assertions": [
+        "all valid inputs are inspected before export",
+        "portrait and landscape outputs are routed to the correct folders",
+        "manifest contains one row per processed source",
+        "existing outputs are skipped unless force is passed"
+      ]
+    },
+    {
+      "id": "failure-blockers",
+      "prompt": "Run the tool with a corrupted file or without ffmpeg available.",
+      "assertions": [
+        "invalid input returns actionable error",
+        "missing ffmpeg or ffprobe returns actionable blocker",
+        "tool does not pretend work succeeded when dependencies are absent"
+      ]
+    }
+  ]
+}

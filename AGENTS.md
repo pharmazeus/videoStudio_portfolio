@@ -245,3 +245,5 @@ Optimize continuity for:
 7. [ARCH] Always keep continuity/logging protocol documents under `specs/`, while `docs/` remains app-facing documentation only — project documentation boundary decision.
 8. [PROCESS] Never keep legacy vendor-specific path references in local skills when `.agents` is the active structure — user requested full migration across all skills.
 9. [PROCESS] Always append a concise session log entry after completing any task, including minor fixes — keeps a complete recent-change trail across sessions.
+10. [PROCESS] Always ask the user for preview duration before running `video-preview-prep`; if the user says `default`, use `5` seconds — user-defined skill workflow.
+10. [PROCESS] Always ask the user for preview duration before running `video-preview-prep`; if the user says `default`, use `5` seconds — user-defined skill workflow.
