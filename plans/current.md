@@ -1,7 +1,7 @@
 # Current Execution State
 
 ## Current objective
-Maintain the first production-ready video catalog on `/work` and the new local `video-preview-prep` skill that will replace temporary placeholders with real preview assets.
+Maintain the production-ready video catalog system across `/work` and the homepage featured-video section, plus the local `video-preview-prep` skill that prepares real preview assets.
 
 ## Success criteria
 - Core routes remain live and navigable: `/`, `/work`, `/work/:slug`, `/services`, `/pricing`, `/about`, `/contact`.
@@ -28,7 +28,7 @@ Maintain the first production-ready video catalog on `/work` and the new local `
 - Real production contact channels (email/booking URL) are placeholders and should still be replaced.
 
 ## Next concrete step
-Review the fixed-height `/work` cards in the live UI and decide whether the desktop text-scroll zone needs any further polish or whether some excerpts should be shortened at the content layer.
+Review the homepage featured-video section on real tablet and desktop viewports and decide whether the new media-driven card height plus the added `/work` CTA need one more spacing pass.
 
 ## Relevant files
 - `Videos.md`

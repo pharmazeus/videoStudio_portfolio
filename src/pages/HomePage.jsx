@@ -201,9 +201,15 @@ function HomePage() {
             description="A first look at ad, tutorial, and showcase edits already live on YouTube, each backed by a fuller case-study breakdown."
           />
 
-          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-8 flex justify-center">
+            <CTAButton to="/work" variant="secondary">
+              View Full Work Catalog
+            </CTAButton>
+          </div>
+
+          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-2">
             {featuredWork.map((item) => (
-              <article key={item.slug} className="video-work-card card-border">
+              <article key={item.slug} className="video-work-card home-featured-card card-border">
                 <FeaturedVideoMedia item={item} />
                 <div className="video-work-card-body">
                   <div className="video-work-card-copy">
@@ -232,7 +238,7 @@ function HomePage() {
                     <CTAButton
                       to={`/work/${item.slug}`}
                       size="sm"
-                      className="min-w-0 justify-center"
+                      className="min-w-0 justify-center px-5 py-3 md:text-base"
                     >
                       Open Case Study
                     </CTAButton>
@@ -240,7 +246,7 @@ function HomePage() {
                       href={item.media.youtubeUrl}
                       variant="secondary"
                       size="sm"
-                      className="min-w-0 justify-center"
+                      className="min-w-0 justify-center px-5 py-3 md:text-base"
                     >
                       Watch on YouTube
                     </CTAButton>
