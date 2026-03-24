@@ -109,6 +109,7 @@ function FeaturedVideoMedia({ item }) {
 }
 
 function HomePage() {
+  const [isHeroReady, setIsHeroReady] = useState(false);
   const featuredWork = useMemo(() => {
     const selected = getFeaturedCaseStudies(4).filter(
       (item) => item.slug !== "ai-reveal-ad-house-in-markham",
@@ -127,9 +128,20 @@ function HomePage() {
     .filter((item) => item.category === "monthly-retainers")
     .slice(0, 3);
 
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      setIsHeroReady(true);
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
   return (
     <>
-      <section id="hero" className="relative overflow-hidden border-b border-black-50">
+      <section
+        id="hero"
+        className={`home-hero ${isHeroReady ? "home-hero-ready" : ""}`}
+      >
         <picture className="pointer-events-none absolute inset-0 block h-full w-full select-none">
           <source
             media="(min-width: 1024px)"
@@ -149,35 +161,48 @@ function HomePage() {
             src="/posters/at_cinema/960_alt/960_cinema.jpg"
             alt=""
             aria-hidden="true"
-            className="h-full w-full object-cover object-center"
+            className="home-hero-media"
             loading="eager"
             decoding="async"
             fetchPriority="high"
           />
         </picture>
-        <div className="absolute inset-0 bg-black/65" aria-hidden="true" />
+        <div className="home-hero-shade" aria-hidden="true" />
+        <div className="home-hero-vignette" aria-hidden="true" />
+        <div className="home-hero-glow" aria-hidden="true" />
 
         <div className="relative mx-auto w-full max-w-[1280px] px-5 pb-12 pt-28 md:px-10 md:pb-16 md:pt-32 xl:px-20">
-          <div className="flex min-h-[64vh] flex-col justify-between lg:min-h-[58vh] lg:justify-center">
-            <div className="max-w-3xl">
-              <p className="inline-flex rounded-full border border-white/20 bg-black/40 px-3 py-1 text-xs uppercase tracking-[0.16em] text-white-50">
-                Digital Systems Creator
+          <div className="flex min-h-[66vh] flex-col justify-center py-6 md:min-h-[72vh]">
+            <div className="home-hero-copy-shell">
+              <p className="hero-badge">
+                {heroContent.eyebrow}
               </p>
-              <h1 className="mt-4 text-4xl font-semibold leading-tight text-white md:text-6xl">
-                {heroContent.headline}
+              <h1
+                className="home-hero-title"
+                aria-label={`${heroContent.headline.intro} ${heroContent.headline.focus} ${heroContent.headline.outro}`}
+              >
+                <span className="home-hero-title-line">
+                  {heroContent.headline.intro}
+                </span>
+                <span className="home-hero-title-line home-hero-title-line-accent">
+                  {heroContent.headline.focus}
+                </span>
+                <span className="home-hero-title-line">
+                  {heroContent.headline.outro}
+                </span>
               </h1>
-              <p className="mt-5 max-w-2xl text-base text-white-50 md:text-xl">
+              <p className="home-hero-body">
                 {heroContent.subheadline}
               </p>
-            </div>
 
-            <div className="mt-8 flex flex-wrap items-center gap-3 md:gap-4">
-              <CTAButton to={heroContent.primaryCta.path}>
-                {heroContent.primaryCta.label}
-              </CTAButton>
-              <CTAButton to={heroContent.secondaryCta.path} variant="secondary">
-                {heroContent.secondaryCta.label}
-              </CTAButton>
+              <div className="mt-8 flex flex-wrap items-center gap-3 md:gap-4">
+                <CTAButton to={heroContent.primaryCta.path}>
+                  {heroContent.primaryCta.label}
+                </CTAButton>
+                <CTAButton to={heroContent.secondaryCta.path} variant="secondary">
+                  {heroContent.secondaryCta.label}
+                </CTAButton>
+              </div>
             </div>
           </div>
         </div>
@@ -201,9 +226,15 @@ function HomePage() {
             description="A first look at ad, tutorial, and showcase edits already live on YouTube, each backed by a fuller case-study breakdown."
           />
 
-          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-4">
+          <div className="mt-8 flex justify-center">
+            <CTAButton to="/work" variant="secondary">
+              View Full Work Catalog
+            </CTAButton>
+          </div>
+
+          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-2">
             {featuredWork.map((item) => (
-              <article key={item.slug} className="video-work-card card-border">
+              <article key={item.slug} className="video-work-card home-featured-card card-border">
                 <FeaturedVideoMedia item={item} />
                 <div className="video-work-card-body">
                   <div className="video-work-card-copy">
@@ -232,7 +263,7 @@ function HomePage() {
                     <CTAButton
                       to={`/work/${item.slug}`}
                       size="sm"
-                      className="min-w-0 justify-center"
+                      className="min-w-0 justify-center px-5 py-3 md:text-base"
                     >
                       Open Case Study
                     </CTAButton>
@@ -240,7 +271,7 @@ function HomePage() {
                       href={item.media.youtubeUrl}
                       variant="secondary"
                       size="sm"
-                      className="min-w-0 justify-center"
+                      className="min-w-0 justify-center px-5 py-3 md:text-base"
                     >
                       Watch on YouTube
                     </CTAButton>
@@ -366,10 +397,10 @@ function HomePage() {
 
       <section id="final-cta" className="border-t border-black-50 bg-black-100/40 py-14 md:py-20">
         <div className="mx-auto w-full max-w-[960px] px-5 text-center md:px-10">
-          <h2 className="text-3xl font-semibold md:text-5xl">
+          <h2 className="section-heading">
             Let's build the right digital system for your business.
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-white-50">
+          <p className="section-description mx-auto mt-4 max-w-2xl">
             Start with one priority or a mixed scope. The goal is practical execution that improves how your brand presents, launches, and operates.
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-3">

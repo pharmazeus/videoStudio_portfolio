@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 
 import { navLinks } from "../constants";
 
@@ -7,7 +7,29 @@ function NavBar() {
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const pathname = location.pathname.replace(/\/+$/, "") || "/";
+  const isHomePage = pathname === "/";
+  const isContactPage = pathname === "/contact";
   const isWorkPage = pathname === "/work" || pathname.startsWith("/work/");
+  const shouldShowWorkCurrent = isWorkPage;
+  const shouldShowContactCurrent = isContactPage;
+
+  const scrollToHero = () => {
+    const heroSection = document.getElementById("hero");
+
+    if (heroSection) {
+      heroSection.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleHomeHeroClick = (event) => {
+    if (!isHomePage) return;
+
+    event.preventDefault();
+    scrollToHero();
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,46 +46,69 @@ function NavBar() {
   return (
     <header className={`navbar ${scrolled ? "scrolled" : "not-scrolled"}`}>
       <div className="inner">
-        <a className="logo" href={isWorkPage ? "/" : "#hero"}>
+        <Link
+          className="logo"
+          to="/"
+          onClick={handleHomeHeroClick}
+          aria-label="Go to the homepage"
+        >
           Vladyslav Maidanskyi |
-        </a>
+        </Link>
         <nav className="desktop">
           <ul>
-            {isWorkPage ? (
-              <li className="group">
-                <a href="/">
-                  <span>Home</span>
+            {navLinks.map(({ label, path }) => (
+              <li key={path} className="group">
+                <NavLink
+                  to={path}
+                  className={({ isActive }) =>
+                    `nav-link ${isActive ? "is-active" : ""}`
+                  }
+                  onClick={path === "/" ? handleHomeHeroClick : undefined}
+                >
+                  <span>{label}</span>
                   <span className="underline" />
-                </a>
+                </NavLink>
               </li>
-            ) : (
-              navLinks.map(({ label, path }) => (
-                <li key={path} className="group">
-                  <a href={path}>
-                    <span>{label}</span>
-                    <span className="underline" />
-                  </a>
-                </li>
-              ))
-            )}
+            ))}
           </ul>
         </nav>
         <div className="actions">
-          {!isWorkPage && (
-            <a href="/work" className="contact-btn contact-btn-secondary group">
-              <div className="inner">
+          {shouldShowWorkCurrent ? (
+            <div
+              className="contact-btn contact-btn-current"
+              aria-current="page"
+            >
+              <div className="button-inner">
                 <span>Work</span>
               </div>
-            </a>
-          )}
-          <a href={isWorkPage ? "/" : "/contact"} className="contact-btn group">
-            <div className="inner">
-              <span className="sm:hidden">{isWorkPage ? "Home" : "Start"}</span>
-              <span className="hidden sm:inline">
-                {isWorkPage ? "Back Home" : "Start a Project"}
-              </span>
             </div>
-          </a>
+          ) : (
+            <Link to="/work" className="contact-btn contact-btn-secondary">
+              <div className="button-inner">
+                <span>Work</span>
+              </div>
+            </Link>
+          )}
+          {shouldShowContactCurrent ? (
+            <div
+              className="contact-btn contact-btn-current"
+              aria-current="page"
+            >
+              <div className="button-inner">
+                <span className="sm:hidden">Here</span>
+                <span className="hidden sm:inline">Contact</span>
+              </div>
+            </div>
+          ) : (
+            <Link to="/contact" className="contact-btn">
+              <div className="button-inner">
+                <span className="sm:hidden">Start</span>
+                <span className="hidden sm:inline">
+                  Start a Project
+                </span>
+              </div>
+            </Link>
+          )}
         </div>
       </div>
     </header>

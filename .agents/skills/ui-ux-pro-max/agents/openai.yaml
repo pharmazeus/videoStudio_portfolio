@@ -1,0 +1,4 @@
+interface:
+  display_name: "UI/UX Pro Max"
+  short_description: "UI/UX design intelligence with style, color, typography, and UX recommendations"
+  default_prompt: "Provide UI/UX design recommendations using the searchable design database."

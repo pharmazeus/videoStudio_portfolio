@@ -247,3 +247,9 @@ Optimize continuity for:
 9. [PROCESS] Always append a concise session log entry after completing any task, including minor fixes — keeps a complete recent-change trail across sessions.
 10. [PROCESS] Always ask the user for preview duration before running `video-preview-prep`; if the user says `default`, use `5` seconds — user-defined skill workflow.
 10. [PROCESS] Always ask the user for preview duration before running `video-preview-prep`; if the user says `default`, use `5` seconds — user-defined skill workflow.
+11. [UX] Never keep a glass or liquid-glass panel behind the homepage hero copy when it obscures the face in the hero image — user wants the subject fully visible.
+12. [STYLE] Always refer to the warm orange-brown accent as `copper` in docs and UI notes — avoids future naming conflicts across header and hero styling.
+13. [UX] Never leave a black gap above the homepage hero; the home route should start directly with the hero image behind the floating header — user wants the hero to reach the very top of the page.
+14. [UX] Never crop the homepage hero image when the user asks to see it full size — preserve the full frame instead of using `object-cover`.
+15. [UX] Always restore the homepage hero to its previous cropped fill composition when the user asks to bring it back as it was — this supersedes the temporary full-frame request.
+16. [UX] Always keep the full shared header navigation visible on `/work` and other pages; never collapse it to a single Home link — user wants consistent cross-page navigation with the current page emphasized.

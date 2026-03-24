@@ -14,7 +14,12 @@ export const navLinks = [
 ];
 
 export const heroContent = {
-  headline: "I build digital systems for modern brands.",
+  eyebrow: "Digital Systems Creator",
+  headline: {
+    intro: "I build",
+    focus: "digital systems",
+    outro: "for modern brands.",
+  },
   subheadline:
     "From content and websites to AI-assisted workflows, I help businesses present better, move faster, and operate smarter.",
   primaryCta: { label: "Start a Project", path: "/contact" },
@@ -29,7 +34,7 @@ export const homeSections = [
   { id: "why-work", label: "Why Work With Me" },
   { id: "process", label: "Process" },
   { id: "pricing-preview", label: "Pricing Preview" },
-  { id: "testimonials-proof", label: "Testimonials / Proof" },
+  { id: "testimonials-proof", label: "Long-term Clients / Proof" },
   { id: "faq", label: "FAQ" },
   { id: "final-cta", label: "Final CTA" },
 ];
@@ -832,36 +837,13 @@ export const getFeaturedCaseStudies = (limit = 3) =>
 export const getCaseStudyBySlug = (slug) =>
   caseStudies.find((item) => item.slug === slug);
 
-export const testimonials = [
+export const longTermClients = [
   {
-    name: "Maya R.",
-    mentions: "@maya-r",
-    review:
-      "The biggest win was clarity. We finally had content, website updates, and workflows moving together instead of separately.",
-    role: "Founder, Local Wellness Studio",
-    quote:
-      "The biggest win was clarity. We finally had content, website updates, and workflows moving together instead of separately.",
-    imgPath: "/images/client1.png",
-  },
-  {
-    name: "Daniel T.",
-    mentions: "@daniel-t",
-    review:
-      "The site and content now reflect how we actually work. We get better-fit inquiries and spend less time explaining basic scope.",
-    role: "Owner, Construction Services",
-    quote:
-      "The site and content now reflect how we actually work. We get better-fit inquiries and spend less time explaining basic scope.",
-    imgPath: "/images/client3.png",
-  },
-  {
-    name: "Sofia L.",
-    mentions: "@sofia-l",
-    review:
-      "Execution got faster across the board. The workflow cleanup saved our team hours every week.",
-    role: "Marketing Lead, Property Team",
-    quote:
-      "Execution got faster across the board. The workflow cleanup saved our team hours every week.",
-    imgPath: "/images/client2.png",
+    company: "YMA Masonry",
+    logoPath: "/images/yma-logo.jpg",
+    relationshipLabel: "Ongoing video partner since 2023",
+    note:
+      "Working together since 2023 across multiple video projects, delivery goals, and content use cases. The collaboration is still active, with continued video support as new projects and marketing needs come up.",
   },
 ];
 
