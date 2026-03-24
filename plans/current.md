@@ -1,60 +1,45 @@
 # Current Execution State
 
 ## Current objective
-Maintain the production-ready video catalog system across `/work` and the homepage featured-video section, plus the local `video-preview-prep` skill that prepares real preview assets.
+Stabilize the refreshed homepage hero, the new Long-term Clients section, and the shared header navigation so the homepage feels stronger and the main brand/logo navigation behaves correctly across all routes.
 
 ## Success criteria
-- Core routes remain live and navigable: `/`, `/work`, `/work/:slug`, `/services`, `/pricing`, `/about`, `/contact`.
-- `/work` shows 11 currently available video case studies with working `All`, `Ads`, and `Tutorials` filters.
-- `/work` uses generated local preview clips when available, falls back to generated posters, and only uses a placeholder as the final reserve state.
-- `/work` cards use a fixed-height, media-first layout with a shared media viewport, compact copy, and bounded overflow behavior.
-- `/work/:slug` detail pages render generated preview clips or posters from `caseStudies` with orientation-aware presentation.
-- Homepage featured work reflects real video case studies.
-- The local `video-preview-prep` skill exists with bundled scripts, eval scaffolding, and output manifest structure.
+- Homepage hero uses the staged 3-line headline, brighter layered image reveal, and restrained 3D text treatment.
+- The hero copy sits directly on the image with no glass panel behind it, and the face in the background image remains fully visible.
+- The hero image keeps the intended fill/crop composition.
+- Shared heading, eyebrow, and CTA styling carry the same hero-inspired accent language across the site.
+- The shared header uses a subtle liquid-glass shell with the `copper` accent, stays visually centered at the top of the page, and avoids a flat black appearance.
+- The shared header shows the same full navigation set on `/work` and other internal pages, with the current page emphasized instead of collapsing the nav.
+- The homepage opens with the hero image flush to the top of the viewport, with no black gap above it.
+- `#testimonials` keeps the existing reveal mechanics while presenting Long-term Clients content instead of generic testimonials.
+- YMA Masonry is the first and only client card for now, with the provided logo and collaboration note.
+- Clicking `Vladyslav Maidanskyi` in the shared header returns to `/` from secondary pages and smooth-scrolls to the hero when already on `/`.
 - Verification passes for `npm run lint` and `npm run build`.
 
 ## Constraints
-- Keep visual direction dark, cinematic, and clean.
-- Keep `caseStudies` as the single source of truth for portfolio content.
-- Keep all portfolio copy truthful and English-only.
-- Do not invent business metrics, outcomes, or urgency.
-- Leave room for future optional `media.previewSrc` clips and future web/automation case studies.
-- Keep the video-prep workflow local-first: Node scripts plus `ffmpeg/ffprobe`, no MCP in v1.
-- Ask the user for preview duration before each `video-preview-prep` run; if they say `default`, use `5` seconds.
+- Keep the dark cinematic direction and Mona Sans typography.
+- Do not change route structure, CTA destinations, or existing homepage reveal mechanics for the clients section.
+- Keep the hero intro mount-only; do not persist state in storage.
+- Keep all client proof truthful and framed as collaboration notes unless a direct review exists.
+- Keep the header fix scoped to `NavBar`; do not refactor unrelated navigation components.
+- Keep copper usage restrained so the header still feels clean and modern, not orange-heavy.
 
 ## Known blockers
-- Four unavailable video projects were removed from the active catalog and can be restored later if assets return.
-- Non-video portfolio work for websites and automation is still being prepared.
-- Real production contact channels (email/booking URL) are placeholders and should still be replaced.
+- Real browser automation is not available locally because Playwright is not installed in this repo, so final visual QA still needs a manual check in the browser.
+- Only one client proof card is live right now, so future additions should be tested against the centered single-card layout before expanding the grid.
 
 ## Next concrete step
-Review the homepage featured-video section on real tablet and desktop viewports and decide whether the new media-driven card height plus the added `/work` CTA need one more spacing pass.
+Review the refreshed homepage, `/work`, and the shared header in a real browser on mobile, tablet, and desktop to confirm the restored hero framing, the liquid-glass header, and the full cross-page navigation behavior.
 
 ## Relevant files
-- `Videos.md`
-- `.agents/skills/video-preview-prep/SKILL.md`
-- `.agents/skills/video-preview-prep/references/asset-spec.md`
-- `.agents/skills/video-preview-prep/evals/evals.json`
-- `.agents/skills/video-preview-prep/scripts/inspect-video.js`
-- `.agents/skills/video-preview-prep/scripts/make-preview.js`
-- `.agents/skills/video-preview-prep/scripts/extract-poster.js`
-- `.agents/skills/video-preview-prep/scripts/prepare-video-assets.js`
-- `.agents/skills/video-preview-prep/scripts/print-case-study-patch.js`
-- `.agents/skills/conversion-copywriter/SKILL.md`
-- `specs/video-work-catalog.md`
-- `specs/video-preview-prep-skill.md`
-- `public/videos/previews/manifest.json`
-- `public/videos/previews/portrait/ai-reveal-ad-for-house-in-markham-preview.mp4`
-- `public/posters/portrait/ai-reveal-ad-for-house-in-markham-poster.jpg`
-- `public/videos/previews/portrait/`
-- `public/videos/previews/landscape/`
-- `public/posters/portrait/`
-- `public/posters/landscape/`
+- `.agents/skills/ui-builder/design-system.md`
+- `specs/homepage-hero-long-term-clients-refresh.md`
+- `src/components/NavBar.jsx`
+- `src/components/SiteLayout.jsx`
 - `src/constants/index.js`
-- `src/lib/youtube.js`
+- `src/components/CTAButton.jsx`
+- `src/components/SectionTitle.jsx`
+- `src/components/TitleHeader.jsx`
 - `src/pages/HomePage.jsx`
-- `src/pages/WorkPage.jsx`
-- `src/pages/CaseStudyPage.jsx`
+- `src/sections/Testimonials.jsx`
 - `src/index.css`
-- `src/sections/VideoShowcase.jsx`
-- `src/components/VideoPreviewCard.jsx`

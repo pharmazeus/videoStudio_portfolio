@@ -1,14 +1,16 @@
 import { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import CTAButton from "../components/CTAButton";
 import TitleHeader from "../components/TitleHeader";
-import { testimonials } from "../constants";
+import { longTermClients } from "../constants";
 
 gsap.registerPlugin(ScrollTrigger);
 
 function Testimonials() {
-  const [showReviews, setShowReviews] = useState(false);
+  const [showClients, setShowClients] = useState(false);
   const [isButtonVisible, setIsButtonVisible] = useState(false);
+  const [expandedClients, setExpandedClients] = useState({});
 
   // Refs for GSAP animations
   const sectionRef = useRef(null);
@@ -55,7 +57,7 @@ function Testimonials() {
 
   // Button animation when it appears
   useEffect(() => {
-    if (isButtonVisible && !showReviews && buttonRef.current) {
+    if (isButtonVisible && !showClients && buttonRef.current) {
       gsap.to(buttonRef.current, {
         opacity: 1,
         y: 0,
@@ -71,32 +73,39 @@ function Testimonials() {
         ease: "power2.inOut",
       });
     }
-  }, [isButtonVisible, showReviews]);
+  }, [isButtonVisible, showClients]);
 
-  // Cards animation when reviews are shown
+  // Cards animation when clients are shown
   useEffect(() => {
-    if (showReviews && cardsRef.current.length > 0) {
+    if (showClients && cardsRef.current.length > 0) {
       gsap.to(cardsRef.current, {
         opacity: 1,
         y: 0,
         scale: 1,
         duration: 1.2,
-        ease: "easeInOut",
+        ease: "power2.inOut",
         stagger: 0.1,
         delay: 0.1,
       });
     }
-  }, [showReviews]);
+  }, [showClients]);
 
-  const handleTriggerReviews = () => {
-    setShowReviews(true);
-    // Smooth scroll to testimonials section with better timing
+  const handleTriggerClients = () => {
+    setShowClients(true);
+
     setTimeout(() => {
       document.getElementById("testimonials").scrollIntoView({
         behavior: "smooth",
         block: "center",
       });
     }, 200);
+  };
+
+  const toggleClientNote = (company) => {
+    setExpandedClients((current) => ({
+      ...current,
+      [company]: !current[company],
+    }));
   };
 
   return (
@@ -108,66 +117,89 @@ function Testimonials() {
       <div className="w-full h-full md:px-20 px-5">
         <div ref={titleRef}>
           <TitleHeader
-            title="What people say about us ?"
-            sub="Client Feedback"
+            title="Partnerships built through repeat delivery."
+            sub="Long-term Clients"
           />
         </div>
 
         {/* Trigger Button - Shows when user reaches bottom */}
-        {isButtonVisible && !showReviews && (
+        {isButtonVisible && !showClients && (
           <div className="flex-center mt-12 md:mt-16">
-            <button
+            <CTAButton
               ref={buttonRef}
-              onClick={handleTriggerReviews}
-              className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 md:px-8 md:py-4 rounded-full font-semibold text-base md:text-lg hover:from-purple-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl active:scale-95"
+              onClick={handleTriggerClients}
+              size="lg"
+              className="min-w-[14rem] md:min-w-[16rem]"
             >
-              <span className="block md:hidden">View Reviews</span>
-              <span className="hidden md:block">View Client Reviews</span>
-            </button>
+              <span className="block md:hidden">View Clients</span>
+              <span className="hidden md:block">View Long-term Clients</span>
+            </CTAButton>
           </div>
         )}
 
-        {/* Reviews Section with GSAP Animation */}
-        <div className={`${showReviews ? "block" : "hidden"}`}>
-          <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-8 mt-16">
-            {testimonials.map((testimonial, index) => (
-              <div
-                key={testimonial.name}
-                ref={(el) => (cardsRef.current[index] = el)}
-                className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20 hover:bg-white/20 transition-all duration-300 transform hover:scale-105 shadow-lg"
-              >
-                <div className="flex items-center mb-4">
-                  <img
-                    src={testimonial.imgPath}
-                    alt={testimonial.name}
-                    className="w-12 h-12 rounded-full mr-4 object-cover"
-                  />
-                  <div>
-                    <h4 className="font-semibold text-white">
-                      {testimonial.name}
-                    </h4>
-                    <p className="text-gray-400 text-sm">
-                      {testimonial.mentions}
-                    </p>
+        {/* Clients Section with GSAP Animation */}
+        <div className={`${showClients ? "block" : "hidden"}`}>
+          <div className="mx-auto mt-16 grid max-w-[56rem] grid-cols-1 gap-8">
+            {longTermClients.map((client, index) => {
+              const noteContent = client.note ?? client.review;
+              const isExpanded = Boolean(expandedClients[client.company]);
+
+              return (
+                <article
+                  key={client.company}
+                  ref={(el) => (cardsRef.current[index] = el)}
+                  className="long-term-client-card"
+                >
+                  <div className="long-term-client-card-header">
+                    <div className="long-term-client-logo-shell">
+                      <img
+                        src={client.logoPath}
+                        alt={`${client.company} logo`}
+                        loading="lazy"
+                        decoding="async"
+                        className="long-term-client-logo"
+                      />
+                    </div>
+
+                    <div className="long-term-client-copy">
+                      <p className="long-term-client-kicker">Client</p>
+                      <h3 className="long-term-client-title">
+                        {client.company}
+                      </h3>
+                      <p className="long-term-client-meta">
+                        {client.relationshipLabel}
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <p className="text-gray-200 leading-relaxed italic">
-                  "{testimonial.review}"
-                </p>
-                <div className="flex mt-4">
-                  {[...Array(5)].map((_, i) => (
-                    <svg
-                      key={i}
-                      className="w-4 h-4 text-yellow-400"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
-              </div>
-            ))}
+
+                  {noteContent ? (
+                    <div className="mt-6">
+                      <CTAButton
+                        onClick={() => toggleClientNote(client.company)}
+                        variant="secondary"
+                        size="sm"
+                        aria-expanded={isExpanded}
+                        className="long-term-client-note-button"
+                      >
+                        {isExpanded
+                          ? "Hide Collaboration Note"
+                          : "Show Collaboration Note"}
+                      </CTAButton>
+
+                      <div
+                        className={`long-term-client-note-wrapper ${
+                          isExpanded ? "is-open" : ""
+                        }`}
+                      >
+                        <p className="long-term-client-note">
+                          {noteContent}
+                        </p>
+                      </div>
+                    </div>
+                  ) : null}
+                </article>
+              );
+            })}
           </div>
         </div>
       </div>

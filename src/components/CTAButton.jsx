@@ -1,12 +1,13 @@
+import { forwardRef } from "react";
 import { Link } from "react-router-dom";
 
 const variantClasses = {
   primary:
-    "bg-white text-black hover:bg-black-50 hover:text-white border border-white/70",
+    "border border-white/70 bg-white text-black shadow-[0_18px_40px_rgba(0,0,0,0.28)] hover:border-[#d4865d]/60 hover:bg-[#d4865d] hover:text-black",
   secondary:
-    "bg-transparent text-white hover:bg-white/10 border border-white/30",
+    "border border-white/30 bg-white/[0.03] text-white hover:border-[#d4865d]/55 hover:bg-[#d4865d]/12 hover:text-white",
   ghost:
-    "bg-black-100 text-white hover:bg-black-50 border border-black-50",
+    "border border-black-50 bg-black-100 text-white hover:border-[#d4865d]/45 hover:bg-[#d4865d]/10 hover:text-white",
 };
 
 const sizeClasses = {
@@ -15,22 +16,26 @@ const sizeClasses = {
   lg: "px-6 py-3.5 text-base",
 };
 
-function CTAButton({
-  to,
-  href,
-  children,
-  variant = "primary",
-  size = "md",
-  className = "",
-  ...rest
-}) {
-  const classNames = `inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition-colors duration-300 ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
+const CTAButton = forwardRef(function CTAButton(
+  {
+    to,
+    href,
+    children,
+    variant = "primary",
+    size = "md",
+    className = "",
+    ...rest
+  },
+  ref,
+) {
+  const classNames = `inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d4865d]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
 
   if (href) {
     const isExternal = /^https?:\/\//.test(href);
 
     return (
       <a
+        ref={ref}
         href={href}
         className={classNames}
         target={isExternal ? "_blank" : undefined}
@@ -44,17 +49,17 @@ function CTAButton({
 
   if (to) {
     return (
-      <Link to={to} className={classNames} {...rest}>
+      <Link ref={ref} to={to} className={classNames} {...rest}>
         {children}
       </Link>
     );
   }
 
   return (
-    <button type="button" className={classNames} {...rest}>
+    <button ref={ref} type="button" className={classNames} {...rest}>
       {children}
     </button>
   );
-}
+});
 
 export default CTAButton;

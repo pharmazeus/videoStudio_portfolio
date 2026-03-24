@@ -1,6 +1,6 @@
 # Design System
 Project: 3D Portfolio
-Last updated: 2026-03-12
+Last updated: 2026-03-24
 Stack: React 19 + Vite 7 + Tailwind CSS v4 (`@theme` in `src/index.css`) + GSAP
 
 ## Purpose
@@ -12,6 +12,8 @@ Any new UI must look native to the existing app, not like a separate template.
 - High contrast: black surfaces + cool light text.
 - 3D/creative portfolio tone with restrained, polished motion.
 - Content-first hierarchy: strong section headers, compact supporting copy.
+- Warm copper accent is now used sparingly to complement the cool palette, especially in hero depth, CTA hover states, and proof/client surfaces.
+- The shared header now uses a restrained liquid-glass shell with a subtle copper sheen instead of a flat black bar.
 
 ## Theme
 - Dark-only.
@@ -27,12 +29,15 @@ Defined in `src/index.css` under `@theme`.
 - `--color-black-200: #282732`
 - `--color-blue-50: #839cb5`
 - `--color-blue-100: #2d2d38`
+- `--color-copper-50: #d4865d`
+- `--color-copper-100: #8c5139`
+- Name this accent `copper` in docs and implementation notes to avoid future naming drift.
 
 ### Typography
 - Font family: `Mona Sans` only (`--font-sans`).
 - Typical hierarchy in current app:
-  - Hero lines: `text-[30px]` mobile, `md:text-[50px]`, `font-semibold`.
-  - Section titles: `text-3xl` to `md:text-5xl`, `font-semibold`.
+  - Hero lines: staged 3-line composition with gradient-filled text, restrained stacked shadows, and a highlighted middle line.
+  - Section titles: `section-heading` shared class with subtle gradient fill, tighter tracking, and balanced wrapping.
   - Card titles: `text-xl` to `text-2xl`, `font-semibold`.
   - Body copy: `text-base` to `md:text-xl`, usually `text-white-50`.
 
@@ -53,6 +58,9 @@ Use existing utility/component classes before inventing new ones.
 
 ### Core shared UI classes
 - `hero-badge` for pill labels.
+- `section-eyebrow` for section-level pills.
+- `section-heading` for major section headlines.
+- `section-description` for supporting copy under shared headings.
 - `card-border` for dark card surfaces.
 - `navbar` for fixed top navigation behavior.
 - `cta-wrapper` + `cta-button` for CTA pattern.
@@ -61,20 +69,26 @@ Use existing utility/component classes before inventing new ones.
 
 ### Navigation
 - Reuse `src/components/NavBar.jsx`.
-- Keep nav links understated; hover uses subtle underline growth.
+- Keep nav links understated; hover uses subtle underline growth and the active page should be visually apparent.
 - Primary action at right keeps light background / dark text style.
+- The header shell should read as liquid glass: dark translucent base, soft blur, subtle white highlight, and a restrained copper tint rather than a strong orange gradient.
+- On the homepage, content should begin directly under the floating header with no black spacer above the hero image; secondary pages can keep the shared top content offset.
+- Keep the same full center navigation visible across pages, including `/work`; emphasize the current page instead of replacing the nav with a single fallback link.
 
 ### Section headers
 - Reuse `src/components/TitleHeader.jsx` for section-level headings.
-- Structure: badge (`sub`) + centered title (`title`).
+- Reuse `src/components/SectionTitle.jsx` for left-aligned page/section intros.
+- Structure: badge (`sub` or `eyebrow`) + gradient heading + restrained supporting copy.
 
 ### Cards
 - Default card shell: `card-border rounded-xl`.
 - Common card rhythm: icon/media block first, then heading, then supporting text.
+- Featured proof/client cards can use warmer surface gradients, larger radius, and centered logo framing as long as they stay within the dark cinematic palette.
 
 ### Buttons/CTA
 - Use `src/components/Button.jsx` for main CTA interactions.
 - Keep existing animated arrow behavior and circular reveal motif.
+- `src/components/CTAButton.jsx` is the shared page-level CTA primitive; hover/focus states should use the copper accent rather than unrelated bright colors.
 
 ## Motion System
 - Primary animation library: GSAP + ScrollTrigger.
@@ -83,11 +97,15 @@ Use existing utility/component classes before inventing new ones.
   - Duration near `0.8` to `1.4`.
 - Motion should reveal content, not distract from readability.
 - Prefer scroll-triggered fade/translate and stagger patterns already used.
+- Above-the-fold hero media can use a one-time mount reveal with slow brightness/scale easing, but reduced-motion users should receive the settled state immediately.
 
 ## Imagery and Media
 - Assets live under `public/`.
 - Preserve image/video path stability once used.
 - Prefer cinematic posters and high-contrast media overlays consistent with Hero.
+- Hero overlays should use layered gradients and localized glow rather than flat black covers so the subject stays readable and visible.
+- Hero copy should sit directly over the image without a dedicated glass panel when the subject's face needs to remain fully visible.
+- Homepage hero media should keep its intentional fill/crop composition unless a longer-lived design decision explicitly replaces it.
 
 ## Responsive Rules
 - Mobile-first Tailwind usage.
