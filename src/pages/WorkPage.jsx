@@ -7,6 +7,7 @@ import {
   videoCatalogFilters,
   videoTypeMeta,
 } from "../constants";
+import { getSafeExternalLinkAttributes } from "../lib/safeExternalLink";
 import { VIDEO_PLACEHOLDER_SRC } from "../lib/youtube.js";
 
 function WorkCardMedia({ item }) {
@@ -16,6 +17,8 @@ function WorkCardMedia({ item }) {
   const [videoFailed, setVideoFailed] = useState(false);
   const hasPreviewClip = Boolean(item.media.previewSrc) && !videoFailed;
   const posterSrc = item.media.poster || VIDEO_PLACEHOLDER_SRC;
+  const safeLink = getSafeExternalLinkAttributes(item.media.youtubeUrl);
+  const MediaTag = safeLink ? "a" : "div";
 
   useEffect(() => {
     if (!hasPreviewClip || !cardRef.current) return;
@@ -50,12 +53,13 @@ function WorkCardMedia({ item }) {
   }, [hasPreviewClip, isNearViewport]);
 
   return (
-    <a
+    <MediaTag
       ref={cardRef}
-      href={item.media.youtubeUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={`Watch on YouTube: ${item.title}`}
+      href={safeLink?.href}
+      target={safeLink?.target}
+      rel={safeLink?.rel}
+      aria-label={safeLink ? `Watch on YouTube: ${item.title}` : undefined}
+      aria-disabled={safeLink ? undefined : "true"}
       className="video-work-media-shell block cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-50/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
     >
       <div className="video-work-media-frame">
@@ -93,7 +97,7 @@ function WorkCardMedia({ item }) {
           </div>
         ) : null}
       </div>
-    </a>
+    </MediaTag>
   );
 }
 

@@ -908,9 +908,16 @@ export const processSteps = [
 ];
 
 export const socialLinks = [
-  { label: "Instagram", href: "https://instagram.com/", icon: "insta" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/", icon: "linkedin" },
-  { label: "X", href: "https://x.com/", icon: "x" },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/pharma.zeus?igsh=OGg2YjdhcmlmOGYw&utm_source=qr",
+    icon: "insta",
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/vladyslav-maidansky-full-stack-developer/",
+    icon: "linkedin",
+  },
 ];
 
 export const contactFormOptions = [

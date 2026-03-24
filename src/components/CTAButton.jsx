@@ -1,6 +1,8 @@
 import { forwardRef } from "react";
 import { Link } from "react-router-dom";
 
+import { getSafeExternalLinkAttributes } from "../lib/safeExternalLink";
+
 const variantClasses = {
   primary:
     "border border-white/70 bg-white text-black shadow-[0_18px_40px_rgba(0,0,0,0.28)] hover:border-[#d4865d]/60 hover:bg-[#d4865d] hover:text-black",
@@ -31,15 +33,28 @@ const CTAButton = forwardRef(function CTAButton(
   const classNames = `inline-flex items-center justify-center gap-2 rounded-lg font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#d4865d]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-black ${variantClasses[variant]} ${sizeClasses[size]} ${className}`;
 
   if (href) {
-    const isExternal = /^https?:\/\//.test(href);
+    const safeLink = getSafeExternalLinkAttributes(href);
+
+    if (!safeLink) {
+      return (
+        <span
+          ref={ref}
+          className={`${classNames} cursor-not-allowed opacity-60`}
+          aria-disabled="true"
+          {...rest}
+        >
+          {children}
+        </span>
+      );
+    }
 
     return (
       <a
         ref={ref}
-        href={href}
+        href={safeLink.href}
         className={classNames}
-        target={isExternal ? "_blank" : undefined}
-        rel={isExternal ? "noopener noreferrer" : undefined}
+        target={safeLink.target}
+        rel={safeLink.rel}
         {...rest}
       >
         {children}

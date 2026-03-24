@@ -253,3 +253,10 @@ Optimize continuity for:
 14. [UX] Never crop the homepage hero image when the user asks to see it full size — preserve the full frame instead of using `object-cover`.
 15. [UX] Always restore the homepage hero to its previous cropped fill composition when the user asks to bring it back as it was — this supersedes the temporary full-frame request.
 16. [UX] Always keep the full shared header navigation visible on `/work` and other pages; never collapse it to a single Home link — user wants consistent cross-page navigation with the current page emphasized.
+17. [UX] Never use nested page `section` wrappers without overriding the global `section { width: 100dvw; }` rule — it can cause horizontal overflow and clipped layouts on desktop.
+18. [UX] Always keep the right-side header action buttons visible on mobile and tablet; on `/contact` they should still show `Work` and the current-page `Here` state as before — user wants responsive header behavior preserved across devices.
+19. [PROCESS] Always inspect existing responsive behavior before changing shared navigation or layout logic — user explicitly requires slick cross-device behavior and pre-checking how the code already works.
+20. [UX] Always keep shared header CTA labels compact enough at tablet widths so they never compress or clip at around 1024px — user requires polished responsive behavior across devices.
+21. [UX] Always keep the homepage hero accent text clean and artifact-free; never leave muddy grey spotting at the bottom of the highlighted words — user flagged the `digital systems` line specifically.
+22. [UX] Always render the homepage highlighted hero words with a clean copper gradient only; never keep grey tray-like shadow blocks under the letters — user explicitly requested removing them.
+23. [PROCESS] Always keep `.agents` and any future `.claude` folders public only when they contain no sensitive or prohibited information and are safe to share as work examples — user wants them visible on GitHub only under that condition.

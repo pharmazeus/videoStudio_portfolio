@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 
 import CTAButton from "../components/CTAButton";
 import SectionTitle from "../components/SectionTitle";
@@ -7,6 +8,10 @@ import {
   contactFormOptions,
   socialLinks,
 } from "../constants";
+import {
+  getSafeExternalHref,
+  getSafeExternalLinkAttributes,
+} from "../lib/safeExternalLink";
 
 const initialState = {
   name: "",
@@ -16,9 +21,38 @@ const initialState = {
   message: "",
 };
 
+const validProjectTypeValues = new Set(
+  contactFormOptions.map((option) => option.value),
+);
+
+function resolveProjectType(value) {
+  if (value && validProjectTypeValues.has(value)) {
+    return value;
+  }
+
+  return "mixed-scope";
+}
+
+function createSelectedServiceMessage(serviceName) {
+  return [
+    `Selected service: ${serviceName}`,
+    "Primary goal:",
+    "Timeline:",
+    "Anything already in place:",
+  ].join("\n");
+}
+
 function ContactPage() {
+  const [searchParams] = useSearchParams();
   const [formState, setFormState] = useState(initialState);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const prefilledProjectTypeParam = searchParams.get("projectType");
+  const selectedServiceFromPricing = searchParams.get("service")?.trim() ?? "";
+  const hasPricingPrefill = Boolean(
+    prefilledProjectTypeParam || selectedServiceFromPricing,
+  );
+  const prefilledProjectType = resolveProjectType(prefilledProjectTypeParam);
 
   const selectedProjectLabel = useMemo(() => {
     const selected = contactFormOptions.find(
@@ -27,6 +61,21 @@ function ContactPage() {
 
     return selected?.label ?? "Mixed Scope";
   }, [formState.projectType]);
+
+  useEffect(() => {
+    if (!hasPricingPrefill) {
+      return;
+    }
+
+    setFormState((prev) => ({
+      ...prev,
+      projectType: prefilledProjectType,
+      message: selectedServiceFromPricing
+        ? createSelectedServiceMessage(selectedServiceFromPricing)
+        : prev.message,
+    }));
+    setIsSubmitted(false);
+  }, [hasPricingPrefill, prefilledProjectType, selectedServiceFromPricing]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -42,14 +91,22 @@ function ContactPage() {
       `Email: ${formState.email}`,
       `Business: ${formState.company || "Not provided"}`,
       `Project type: ${selectedProjectLabel}`,
+      ...(selectedServiceFromPricing
+        ? [`Selected service: ${selectedServiceFromPricing}`]
+        : []),
       "",
       "Project details:",
       formState.message,
     ].join("\n");
 
     const mailto = `mailto:${contactDetails.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const safeMailto = getSafeExternalHref(mailto);
 
-    window.location.href = mailto;
+    if (!safeMailto) {
+      return;
+    }
+
+    window.location.href = safeMailto;
     setIsSubmitted(true);
   };
 
@@ -68,6 +125,21 @@ function ContactPage() {
             onSubmit={handleSubmit}
             className="card-border rounded-xl p-5 md:p-6"
           >
+            {selectedServiceFromPricing ? (
+              <div className="mb-5 rounded-xl border border-white/12 bg-white/[0.04] p-4 shadow-[0_18px_40px_rgba(0,0,0,0.16)]">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-copper-50">
+                  Selected from Pricing
+                </p>
+                <p className="mt-2 text-base font-semibold text-white md:text-lg">
+                  {selectedServiceFromPricing}
+                </p>
+                <p className="mt-2 text-sm leading-6 text-white-50">
+                  The form is prefilled so you can keep moving without repeating
+                  the service you selected.
+                </p>
+              </div>
+            ) : null}
+
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
               <div>
                 <label htmlFor="name">Name</label>
@@ -178,17 +250,33 @@ function ContactPage() {
             <article className="card-border rounded-xl p-5 md:p-6">
               <h2 className="text-xl font-semibold">Social links</h2>
               <div className="mt-4 flex flex-wrap gap-3">
-                {socialLinks.map((item) => (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="rounded-md border border-black-50 bg-black-100 px-3 py-2 text-sm text-white-50 transition-colors hover:text-white"
-                  >
-                    {item.label}
-                  </a>
-                ))}
+                {socialLinks.map((item) => {
+                  const safeLink = getSafeExternalLinkAttributes(item.href);
+
+                  if (!safeLink) {
+                    return (
+                      <span
+                        key={item.label}
+                        className="rounded-md border border-black-50 bg-black-100 px-3 py-2 text-sm text-white-50 opacity-60"
+                        aria-disabled="true"
+                      >
+                        {item.label}
+                      </span>
+                    );
+                  }
+
+                  return (
+                    <a
+                      key={item.label}
+                      href={safeLink.href}
+                      target={safeLink.target}
+                      rel={safeLink.rel}
+                      className="rounded-md border border-black-50 bg-black-100 px-3 py-2 text-sm text-white-50 transition-colors hover:text-white"
+                    >
+                      {item.label}
+                    </a>
+                  );
+                })}
               </div>
             </article>
           </aside>

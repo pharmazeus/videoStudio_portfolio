@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
+import { getSafeExternalLinkAttributes } from "../lib/safeExternalLink";
 import { VIDEO_PLACEHOLDER_SRC } from "../lib/youtube.js";
 
 function VideoPreviewCard({ item, mode = "home" }) {
@@ -11,6 +12,8 @@ function VideoPreviewCard({ item, mode = "home" }) {
   const hasPreviewClip = Boolean(media.previewSrc) && !videoFailed;
   const posterSrc = media.poster || VIDEO_PLACEHOLDER_SRC;
   const isPortrait = media.orientation === "portrait";
+  const safeLink = getSafeExternalLinkAttributes(media.youtubeUrl);
+  const LinkTag = safeLink ? "a" : "div";
   const frameClassName =
     mode === "catalog"
       ? isPortrait
@@ -90,16 +93,17 @@ function VideoPreviewCard({ item, mode = "home" }) {
         {(item.excerpt ?? item.details) && <p>{item.excerpt ?? item.details}</p>}
       </div>
 
-      <a
+      <LinkTag
         className="video-preview-cta"
-        href={media.youtubeUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label={`Watch full video on YouTube: ${item.title}`}
+        href={safeLink?.href}
+        target={safeLink?.target}
+        rel={safeLink?.rel}
+        aria-label={safeLink ? `Watch full video on YouTube: ${item.title}` : undefined}
+        aria-disabled={safeLink ? undefined : "true"}
       >
         <span>Watch Full Video on YouTube</span>
         <img src="/images/arrow-right.svg" alt="" aria-hidden="true" />
-      </a>
+      </LinkTag>
     </article>
   );
 }

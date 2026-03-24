@@ -17,6 +17,7 @@ import {
   whyWorkWithMe,
 } from "../constants";
 import { formatFromPrice } from "../lib/formatPrice";
+import { getSafeExternalLinkAttributes } from "../lib/safeExternalLink";
 import { VIDEO_PLACEHOLDER_SRC } from "../lib/youtube.js";
 
 function FeaturedVideoMedia({ item }) {
@@ -26,6 +27,8 @@ function FeaturedVideoMedia({ item }) {
   const [videoFailed, setVideoFailed] = useState(false);
   const hasPreviewClip = Boolean(item.media.previewSrc) && !videoFailed;
   const posterSrc = item.media.poster || VIDEO_PLACEHOLDER_SRC;
+  const safeLink = getSafeExternalLinkAttributes(item.media.youtubeUrl);
+  const MediaTag = safeLink ? "a" : "div";
 
   useEffect(() => {
     if (!hasPreviewClip || !cardRef.current) return;
@@ -60,12 +63,13 @@ function FeaturedVideoMedia({ item }) {
   }, [hasPreviewClip, isNearViewport]);
 
   return (
-    <a
+    <MediaTag
       ref={cardRef}
-      href={item.media.youtubeUrl}
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label={`Watch on YouTube: ${item.title}`}
+      href={safeLink?.href}
+      target={safeLink?.target}
+      rel={safeLink?.rel}
+      aria-label={safeLink ? `Watch on YouTube: ${item.title}` : undefined}
+      aria-disabled={safeLink ? undefined : "true"}
       className="video-work-media-shell block cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-50/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
     >
       <div className="video-work-media-frame">
@@ -104,7 +108,7 @@ function FeaturedVideoMedia({ item }) {
           </div>
         ) : null}
       </div>
-    </a>
+    </MediaTag>
   );
 }
 
@@ -208,212 +212,220 @@ function HomePage() {
         </div>
       </section>
 
-      <section id="value-strip" className="border-b border-black-50 bg-black-100/50">
-        <div className="mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-4 px-5 py-8 md:grid-cols-3 md:px-10 xl:px-20">
-          {valueStrip.map((item) => (
-            <div key={item} className="card-border rounded-xl p-4 text-sm text-white-50">
-              {item}
+      <div className="homepage-atmosphere">
+        <div aria-hidden="true" className="homepage-atmosphere-glow homepage-atmosphere-glow-top" />
+        <div aria-hidden="true" className="homepage-atmosphere-glow homepage-atmosphere-glow-middle" />
+        <div aria-hidden="true" className="homepage-atmosphere-glow homepage-atmosphere-glow-bottom" />
+
+        <section id="value-strip" className="home-value-strip border-b border-black-50">
+          <div className="mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-4 px-5 py-8 md:grid-cols-3 md:px-10 xl:px-20">
+            {valueStrip.map((item) => (
+              <article key={item} className="home-value-chip">
+                <p className="home-value-chip-text">{item}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section id="featured-work" className="home-section py-14 md:py-20">
+          <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 xl:px-20">
+            <SectionTitle
+              eyebrow="Featured Video Work"
+              title="Selected cuts from the live video catalog"
+              description="A first look at ad, tutorial, and showcase edits already live on YouTube, each backed by a fuller case-study breakdown."
+            />
+
+            <div className="mt-8 flex justify-center">
+              <CTAButton to="/work" variant="secondary">
+                View Full Work Catalog
+              </CTAButton>
             </div>
-          ))}
-        </div>
-      </section>
 
-      <section id="featured-work" className="py-14 md:py-20">
-        <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 xl:px-20">
-          <SectionTitle
-            eyebrow="Featured Video Work"
-            title="Selected cuts from the live video catalog"
-            description="A first look at ad, tutorial, and showcase edits already live on YouTube, each backed by a fuller case-study breakdown."
-          />
-
-          <div className="mt-8 flex justify-center">
-            <CTAButton to="/work" variant="secondary">
-              View Full Work Catalog
-            </CTAButton>
-          </div>
-
-          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-2">
-            {featuredWork.map((item) => (
-              <article key={item.slug} className="video-work-card home-featured-card card-border">
-                <FeaturedVideoMedia item={item} />
-                <div className="video-work-card-body">
-                  <div className="video-work-card-copy">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="rounded-full border border-white/10 bg-black px-3 py-1 text-[11px] font-medium uppercase tracking-[0.16em] text-blue-50">
-                        {videoTypeMeta[item.videoType].singularLabel}
-                      </span>
-                      {item.series ? (
-                        <span className="rounded-full border border-white/10 bg-black px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-white-50">
-                          {`${item.series.name} - Part ${item.series.part}`}
+            <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-2">
+              {featuredWork.map((item) => (
+                <article key={item.slug} className="video-work-card home-featured-card card-border">
+                  <FeaturedVideoMedia item={item} />
+                  <div className="video-work-card-body">
+                    <div className="video-work-card-copy">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="rounded-full border border-white/10 bg-black px-3 py-1 text-[11px] font-medium uppercase tracking-[0.16em] text-blue-50">
+                          {videoTypeMeta[item.videoType].singularLabel}
                         </span>
-                      ) : null}
+                        {item.series ? (
+                          <span className="rounded-full border border-white/10 bg-black px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-white-50">
+                            {`${item.series.name} - Part ${item.series.part}`}
+                          </span>
+                        ) : null}
+                      </div>
+
+                      <div className="video-work-card-text">
+                        <h3 className="video-work-card-title">
+                          {item.title}
+                        </h3>
+                        <p className="video-work-card-excerpt">
+                          {item.excerpt}
+                        </p>
+                      </div>
                     </div>
 
-                    <div className="video-work-card-text">
-                      <h3 className="video-work-card-title">
-                        {item.title}
-                      </h3>
-                      <p className="video-work-card-excerpt">
-                        {item.excerpt}
-                      </p>
+                    <div className="video-work-card-actions">
+                      <CTAButton
+                        to={`/work/${item.slug}`}
+                        size="sm"
+                        className="min-w-0 justify-center px-5 py-3 md:text-base"
+                      >
+                        Open Case Study
+                      </CTAButton>
+                      <CTAButton
+                        href={item.media.youtubeUrl}
+                        variant="secondary"
+                        size="sm"
+                        className="min-w-0 justify-center px-5 py-3 md:text-base"
+                      >
+                        Watch on YouTube
+                      </CTAButton>
                     </div>
                   </div>
-
-                  <div className="video-work-card-actions">
-                    <CTAButton
-                      to={`/work/${item.slug}`}
-                      size="sm"
-                      className="min-w-0 justify-center px-5 py-3 md:text-base"
-                    >
-                      Open Case Study
-                    </CTAButton>
-                    <CTAButton
-                      href={item.media.youtubeUrl}
-                      variant="secondary"
-                      size="sm"
-                      className="min-w-0 justify-center px-5 py-3 md:text-base"
-                    >
-                      Watch on YouTube
-                    </CTAButton>
-                  </div>
-                </div>
-              </article>
-            ))}
+                </article>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section id="services-overview" className="border-y border-black-50 bg-black-100/40 py-14 md:py-20">
-        <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 xl:px-20">
-          <SectionTitle
-            eyebrow="Services"
-            title="Three connected layers of one digital system"
-            description="Content, web, and automation are delivered as one execution model, not separate career tracks."
-          />
+        <section id="services-overview" className="home-section-band border-y border-black-50 py-14 md:py-20">
+          <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 xl:px-20">
+            <SectionTitle
+              eyebrow="Services"
+              title="Three connected layers of one digital system"
+              description="Content, web, and automation are delivered as one execution model, not separate career tracks."
+            />
 
-          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
-            {services.map((item) => (
-              <article key={item.slug} className="card-border rounded-xl p-5">
-                <h3 className="text-2xl font-semibold">{item.title}</h3>
-                <p className="mt-3 text-sm text-white-50">{item.summary}</p>
-                <ul className="mt-5 space-y-2 text-sm text-white-50">
-                  {item.deliverables.slice(0, 3).map((point) => (
-                    <li key={point}>- {point}</li>
-                  ))}
-                </ul>
-              </article>
-            ))}
+            <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
+              {services.map((item) => (
+                <article key={item.slug} className="card-border rounded-xl p-5">
+                  <h3 className="text-2xl font-semibold">{item.title}</h3>
+                  <p className="mt-3 text-sm text-white-50">{item.summary}</p>
+                  <ul className="mt-5 space-y-2 text-sm text-white-50">
+                    {item.deliverables.slice(0, 3).map((point) => (
+                      <li key={point}>- {point}</li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section id="why-work" className="py-14 md:py-20">
-        <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 xl:px-20">
-          <SectionTitle
-            eyebrow="Why Work With Me"
-            title="Creative execution meets digital systems thinking"
-          />
-          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
-            {whyWorkWithMe.map((item) => (
-              <article key={item.title} className="card-border rounded-xl p-5">
-                <h3 className="text-xl font-semibold">{item.title}</h3>
-                <p className="mt-3 text-sm text-white-50">{item.description}</p>
-              </article>
-            ))}
+        <section id="why-work" className="home-section py-14 md:py-20">
+          <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 xl:px-20">
+            <SectionTitle
+              eyebrow="Why Work With Me"
+              title="Creative execution meets digital systems thinking"
+            />
+            <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
+              {whyWorkWithMe.map((item) => (
+                <article key={item.title} className="card-border rounded-xl p-5">
+                  <h3 className="text-xl font-semibold">{item.title}</h3>
+                  <p className="mt-3 text-sm text-white-50">{item.description}</p>
+                </article>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section id="process" className="border-y border-black-50 bg-black-100/40 py-14 md:py-20">
-        <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 xl:px-20">
-          <SectionTitle
-            eyebrow="Process"
-            title="A focused build flow from scope to launch"
-          />
-          <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
-            {processSteps.map((item) => (
-              <article key={item.step} className="card-border rounded-xl p-5">
-                <p className="text-sm font-semibold text-blue-50">Step {item.step}</p>
-                <h3 className="mt-2 text-xl font-semibold">{item.title}</h3>
-                <p className="mt-3 text-sm text-white-50">{item.description}</p>
-              </article>
-            ))}
+        <section id="process" className="home-section-band border-y border-black-50 py-14 md:py-20">
+          <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 xl:px-20">
+            <SectionTitle
+              eyebrow="Process"
+              title="A focused build flow from scope to launch"
+            />
+            <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+              {processSteps.map((item) => (
+                <article key={item.step} className="card-border rounded-xl p-5">
+                  <p className="text-sm font-semibold text-blue-50">Step {item.step}</p>
+                  <h3 className="mt-2 text-xl font-semibold">{item.title}</h3>
+                  <p className="mt-3 text-sm text-white-50">{item.description}</p>
+                </article>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section id="pricing-preview" className="py-14 md:py-20">
-        <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 xl:px-20">
-          <SectionTitle
-            eyebrow="Pricing Preview"
-            title="Simple starting points for monthly content"
-            description="Public pricing is shown as starting prices in CAD. Final quotes are scoped to project reality."
-          />
+        <section id="pricing-preview" className="home-section-surface py-14 md:py-20">
+          <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 xl:px-20">
+            <SectionTitle
+              eyebrow="Pricing Preview"
+              title="Simple starting points for monthly content"
+              description="Public pricing is shown as starting prices in CAD. Final quotes are scoped to project reality."
+            />
 
-          <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
-            {pricingPreview.map((item) => (
-              <article
-                key={item.slug}
-                className={`rounded-xl p-5 ${
-                  item.featured
-                    ? "border border-white/30 bg-white/[0.04]"
-                    : "card-border"
-                }`}
-              >
-                <h3 className="text-xl font-semibold">{item.name}</h3>
-                <p className="mt-2 text-lg text-white">{formatFromPrice(item.startingPrice)}</p>
-                <p className="mt-3 text-xs uppercase tracking-[0.12em] text-white-50">
-                  {item.billingType}
-                </p>
-                <Link
-                  to="/pricing"
-                  className="mt-5 inline-flex text-sm font-semibold text-white transition-colors hover:text-blue-50"
+            <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
+              {pricingPreview.map((item) => (
+                <article
+                  key={item.slug}
+                  className={`rounded-xl p-5 ${
+                    item.featured
+                      ? "border border-white/30 bg-white/[0.04]"
+                      : "card-border"
+                  }`}
                 >
-                  See Full Pricing
-                </Link>
-              </article>
-            ))}
+                  <h3 className="text-xl font-semibold">{item.name}</h3>
+                  <p className="mt-2 text-lg text-white">{formatFromPrice(item.startingPrice)}</p>
+                  <p className="mt-3 text-xs uppercase tracking-[0.12em] text-white-50">
+                    {item.billingType}
+                  </p>
+                  <Link
+                    to="/pricing"
+                    className="mt-5 inline-flex text-sm font-semibold text-white transition-colors hover:text-blue-50"
+                  >
+                    See Full Pricing
+                  </Link>
+                </article>
+              ))}
+            </div>
           </div>
+        </section>
+
+        <div className="home-section">
+          <Testimonials />
         </div>
-      </section>
 
-      <Testimonials />
-
-      <section id="faq" className="py-14 md:py-20">
-        <div className="mx-auto w-full max-w-[960px] px-5 md:px-10">
-          <SectionTitle eyebrow="FAQ" title="Common questions before we scope" />
-          <div className="mt-8 space-y-4">
-            {faqs.map((item) => (
-              <details key={item.question} className="card-border rounded-xl p-4">
-                <summary className="cursor-pointer text-base font-semibold text-white">
-                  {item.question}
-                </summary>
-                <p className="mt-3 text-sm text-white-50">{item.answer}</p>
-              </details>
-            ))}
+        <section id="faq" className="home-section py-14 md:py-20">
+          <div className="mx-auto w-full max-w-[960px] px-5 md:px-10">
+            <SectionTitle eyebrow="FAQ" title="Common questions before we scope" />
+            <div className="mt-8 space-y-4">
+              {faqs.map((item) => (
+                <details key={item.question} className="card-border rounded-xl p-4">
+                  <summary className="cursor-pointer text-base font-semibold text-white">
+                    {item.question}
+                  </summary>
+                  <p className="mt-3 text-sm text-white-50">{item.answer}</p>
+                </details>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section id="final-cta" className="border-t border-black-50 bg-black-100/40 py-14 md:py-20">
-        <div className="mx-auto w-full max-w-[960px] px-5 text-center md:px-10">
-          <h2 className="section-heading">
-            Let's build the right digital system for your business.
-          </h2>
-          <p className="section-description mx-auto mt-4 max-w-2xl">
-            Start with one priority or a mixed scope. The goal is practical execution that improves how your brand presents, launches, and operates.
-          </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-            <CTAButton to="/contact">Start a Project</CTAButton>
-            <CTAButton to="/contact" variant="secondary">
-              Request a Quote
-            </CTAButton>
-            <CTAButton to="/contact" variant="ghost">
-              Book a Call
-            </CTAButton>
+        <section id="final-cta" className="home-section-band border-t border-black-50 py-14 md:py-20">
+          <div className="mx-auto w-full max-w-[960px] px-5 text-center md:px-10">
+            <h2 className="section-heading">
+              Let's build the right digital system for your business.
+            </h2>
+            <p className="section-description mx-auto mt-4 max-w-2xl">
+              Start with one priority or a mixed scope. The goal is practical execution that improves how your brand presents, launches, and operates.
+            </p>
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+              <CTAButton to="/contact">Start a Project</CTAButton>
+              <CTAButton to="/contact" variant="secondary">
+                Request a Quote
+              </CTAButton>
+              <CTAButton to="/contact" variant="ghost">
+                Book a Call
+              </CTAButton>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
     </>
   );
 }

@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 import { socialLinks } from "../constants";
+import { getSafeExternalLinkAttributes } from "../lib/safeExternalLink";
 
 function SiteFooter() {
   return (
@@ -9,17 +10,33 @@ function SiteFooter() {
         <p>Digital Systems Creator for modern brands.</p>
 
         <div className="flex flex-wrap items-center gap-4">
-          {socialLinks.map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="transition-colors hover:text-white"
-            >
-              {item.label}
-            </a>
-          ))}
+          {socialLinks.map((item) => {
+            const safeLink = getSafeExternalLinkAttributes(item.href);
+
+            if (!safeLink) {
+              return (
+                <span
+                  key={item.label}
+                  className="cursor-not-allowed opacity-60"
+                  aria-disabled="true"
+                >
+                  {item.label}
+                </span>
+              );
+            }
+
+            return (
+              <a
+                key={item.label}
+                href={safeLink.href}
+                target={safeLink.target}
+                rel={safeLink.rel}
+                className="transition-colors hover:text-white"
+              >
+                {item.label}
+              </a>
+            );
+          })}
           <Link to="/contact" className="transition-colors hover:text-white">
             Contact
           </Link>

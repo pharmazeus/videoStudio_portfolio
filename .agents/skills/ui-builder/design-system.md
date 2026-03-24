@@ -14,6 +14,7 @@ Any new UI must look native to the existing app, not like a separate template.
 - Content-first hierarchy: strong section headers, compact supporting copy.
 - Warm copper accent is now used sparingly to complement the cool palette, especially in hero depth, CTA hover states, and proof/client surfaces.
 - The shared header now uses a restrained liquid-glass shell with a subtle copper sheen instead of a flat black bar.
+- Homepage atmosphere now continues below the hero with low-opacity copper and cool-blue ambient glows instead of dropping immediately into flat black sections.
 
 ## Theme
 - Dark-only.
@@ -106,6 +107,15 @@ Use existing utility/component classes before inventing new ones.
 - Hero overlays should use layered gradients and localized glow rather than flat black covers so the subject stays readable and visible.
 - Hero copy should sit directly over the image without a dedicated glass panel when the subject's face needs to remain fully visible.
 - Homepage hero media should keep its intentional fill/crop composition unless a longer-lived design decision explicitly replaces it.
+- The `digital systems` accent line in the hero should keep a clean copper gradient and restrained shadowing; avoid muddy lower stops or heavy brown shadows that create grey artifacts in the letterforms.
+
+## Homepage-Specific Patterns
+- Use a shared homepage atmosphere shell to carry subtle ambient color below the hero.
+- Keep atmosphere layers blurred, low-opacity, and behind content only; they should improve depth, not become visible blobs.
+- The value strip below the hero should feel like a premium credibility row:
+  - each card can use a darker layered surface
+  - each card can use a subtle gradient edge treatment
+  - hover states may add a soft glow border and light lift, but should stay restrained and elegant
 
 ## Responsive Rules
 - Mobile-first Tailwind usage.

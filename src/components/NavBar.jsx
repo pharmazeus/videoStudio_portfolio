@@ -95,15 +95,15 @@ function NavBar() {
               aria-current="page"
             >
               <div className="button-inner">
-                <span className="sm:hidden">Here</span>
-                <span className="hidden sm:inline">Contact</span>
+                <span className="xl:hidden">Here</span>
+                <span className="hidden xl:inline">Contact</span>
               </div>
             </div>
           ) : (
             <Link to="/contact" className="contact-btn">
               <div className="button-inner">
-                <span className="sm:hidden">Start</span>
-                <span className="hidden sm:inline">
+                <span className="xl:hidden">Start</span>
+                <span className="hidden xl:inline">
                   Start a Project
                 </span>
               </div>
