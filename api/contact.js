@@ -2,7 +2,7 @@ import {
   CONTACT_API_ERRORS,
   buildContactEmail,
   validateContactPayload,
-} from "../src/lib/contactForm";
+} from "../src/lib/contactForm.js";
 
 function sendJson(res, statusCode, payload) {
   if (typeof res.status === "function") {

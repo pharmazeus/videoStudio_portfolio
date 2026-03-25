@@ -265,3 +265,4 @@ Optimize continuity for:
 26. [ARCH] Always align `vercel.json` CSP headers with every external resource the frontend actually loads, especially fonts and media domains — local builds can look fine while production silently blocks them.
 27. [ARCH] Always add explicit Vercel rewrites for every BrowserRouter page route used in production — otherwise direct loads like `/contact` can 404 even when client-side navigation works locally.
 28. [ARCH] Never let Vercel serverless functions depend on broad frontend constants modules that pull client-only helpers or assets — isolate server-safe config in a small shared module instead.
+29. [ARCH] Always use explicit `.js` extensions in server-side ESM import chains under this `type: module` repo — Vercel’s Node runtime can fail to start functions on extensionless imports even when Vite/Vitest still pass.

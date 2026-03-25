@@ -9,6 +9,7 @@ Finish deployed verification for the new contact system while preserving the in-
 - Gmail reply behavior uses the submitted visitor email through the Resend `reply_to` field, with the visitor email also visible as a clickable fallback in the message body.
 - Production CSP allows the current Mona Sans Google Fonts import instead of blocking it.
 - Production direct loads for `/contact` and other BrowserRouter routes no longer 404.
+- The serverless contact function import chain is valid under native Node ESM, so production no longer crashes with `FUNCTION_INVOCATION_FAILED` before returning JSON.
 - Contact failure states preserve user-entered values and keep the Gmail / Telegram / Instagram fallback paths usable.
 - Homepage pricing preview browser QA is still completed across the target breakpoints without regressions.
 - Local verification remains green for `npm run lint`, `npm run test`, and `npm run build`.

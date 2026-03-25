@@ -1,4 +1,4 @@
-import { contactFormOptions } from "./contactConfig";
+import { contactFormOptions } from "./contactConfig.js";
 
 export const CONTACT_API_ERRORS = {
   validation: "validation",
