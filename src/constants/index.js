@@ -3,6 +3,11 @@ import {
   getYouTubeVideoId,
   inferYouTubeOrientationFromUrl,
 } from "../lib/youtube.js";
+import {
+  contactDetails as contactDetailsConfig,
+  contactDirectChannels as contactDirectChannelsConfig,
+  contactFormOptions as contactFormOptionsConfig,
+} from "../lib/contactConfig.js";
 
 export const navLinks = [
   { label: "Home", path: "/" },
@@ -920,12 +925,7 @@ export const socialLinks = [
   },
 ];
 
-export const contactFormOptions = [
-  { value: "content", label: "Content" },
-  { value: "website", label: "Website" },
-  { value: "automation", label: "Automation" },
-  { value: "mixed-scope", label: "Mixed Scope" },
-];
+export const contactFormOptions = contactFormOptionsConfig;
 
 export const valueStrip = [
   "Content + Web + Automation under one execution layer",
@@ -951,18 +951,6 @@ export const whyWorkWithMe = [
   },
 ];
 
-export const contactDetails = {
-  email: "vladmaidanskyi46@gmail.com",
-  directEmailMailto: "mailto:vladmaidanskyi46@gmail.com",
-};
+export const contactDetails = contactDetailsConfig;
 
-export const contactDirectChannels = [
-  {
-    label: "Telegram",
-    href: "https://t.me/pharmazeus",
-  },
-  {
-    label: "Instagram",
-    href: "https://www.instagram.com/pharma.zeus?igsh=OGg2YjdhcmlmOGYw&utm_source=qr",
-  },
-];
+export const contactDirectChannels = contactDirectChannelsConfig;

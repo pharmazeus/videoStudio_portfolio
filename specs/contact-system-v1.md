@@ -6,6 +6,7 @@ Replace the Contact page `mailto:` submission with a real same-origin API flow t
 ## Scope
 - `POST /api/contact` Vercel endpoint in `api/contact.js`
 - Vite dev middleware so `/api/contact` also works on local `vite dev`
+- server-safe contact config split out of `src/constants/index.js`
 - shared contact validation + email payload helpers
 - Contact page async submit states
 - direct fallback channels for Gmail, Telegram, and Instagram
@@ -37,6 +38,7 @@ Replace the Contact page `mailto:` submission with a real same-origin API flow t
 ## Acceptance Criteria
 - Contact page submits to `/api/contact` with JSON payload.
 - Local `vite dev` serves `/api/contact` through the same handler so the form does not 404 on `localhost`.
+- Production Vercel routing serves direct BrowserRouter page loads such as `/contact` and `/work/:slug` without 404ing.
 - Existing Pricing query params still prefill `projectType` and selected service context.
 - Entered values remain in the form after any failed submit.
 - Successful submit clears user-entered values.

@@ -1,4 +1,30 @@
 {
+  "rewrites": [
+    {
+      "source": "/work",
+      "destination": "/"
+    },
+    {
+      "source": "/work/(.*)",
+      "destination": "/"
+    },
+    {
+      "source": "/services",
+      "destination": "/"
+    },
+    {
+      "source": "/pricing",
+      "destination": "/"
+    },
+    {
+      "source": "/about",
+      "destination": "/"
+    },
+    {
+      "source": "/contact",
+      "destination": "/"
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
