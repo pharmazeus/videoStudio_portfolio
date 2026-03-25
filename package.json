@@ -19,7 +19,7 @@
     "@tailwindcss/vite": "^4.1.11",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
-    "gsap": "^3.13.0",
+    "gsap": "^3.14.2",
     "lucide-react": "^1.0.1",
     "modern-normalize": "^3.0.1",
     "react": "^19.1.1",
