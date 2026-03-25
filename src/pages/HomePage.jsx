@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link } from "react-router-dom";
 
 import CTAButton from "../components/CTAButton";
+import PricingPackageCard from "../components/PricingPackageCard";
 import SectionTitle from "../components/SectionTitle";
 import Testimonials from "../sections/Testimonials";
 import {
@@ -16,7 +16,6 @@ import {
   videoTypeMeta,
   whyWorkWithMe,
 } from "../constants";
-import { formatFromPrice } from "../lib/formatPrice";
 import { getSafeExternalLinkAttributes } from "../lib/safeExternalLink";
 import { VIDEO_PLACEHOLDER_SRC } from "../lib/youtube.js";
 
@@ -355,33 +354,39 @@ function HomePage() {
           <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 xl:px-20">
             <SectionTitle
               eyebrow="Pricing Preview"
-              title="Simple starting points for monthly content"
-              description="Public pricing is shown as starting prices in CAD. Final quotes are scoped to project reality."
+              title="Monthly retainers built for consistent content output"
+              description="Start with a monthly content system, then scale into campaigns or standalone production as needed. Public pricing is shown in CAD and finalized around real scope."
             />
 
-            <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
+            <div className="pricing-package-grid home-pricing-preview-grid mt-10">
               {pricingPreview.map((item) => (
-                <article
+                <PricingPackageCard
                   key={item.slug}
-                  className={`rounded-xl p-5 ${
-                    item.featured
-                      ? "border border-white/30 bg-white/[0.04]"
-                      : "card-border"
-                  }`}
-                >
-                  <h3 className="text-xl font-semibold">{item.name}</h3>
-                  <p className="mt-2 text-lg text-white">{formatFromPrice(item.startingPrice)}</p>
-                  <p className="mt-3 text-xs uppercase tracking-[0.12em] text-white-50">
-                    {item.billingType}
-                  </p>
-                  <Link
-                    to="/pricing"
-                    className="mt-5 inline-flex text-sm font-semibold text-white transition-colors hover:text-blue-50"
-                  >
-                    See Full Pricing
-                  </Link>
-                </article>
+                  item={item}
+                  ctaTo="/pricing"
+                  ctaLabel="See full pricing"
+                  ctaSize="sm"
+                  ctaClassName="home-pricing-preview-card-cta"
+                />
               ))}
+            </div>
+
+            <div className="home-pricing-preview-callout">
+              <p className="home-pricing-preview-callout-kicker">Also available</p>
+              <h3 className="home-pricing-preview-callout-title">
+                One-off services are available alongside retainers.
+              </h3>
+              <p className="home-pricing-preview-callout-body">
+                If you need a campaign shoot, promo piece, social ad, or a
+                tightly scoped production day instead of ongoing monthly work,
+                the full pricing page includes focused one-off options built
+                for launches, seasonal pushes, and standalone deliverables.
+              </p>
+              <div className="home-pricing-preview-callout-actions">
+                <CTAButton to="/pricing" variant="secondary" size="sm">
+                  See available services
+                </CTAButton>
+              </div>
             </div>
           </div>
         </section>

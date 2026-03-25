@@ -1,30 +1,27 @@
 # Current Execution State
 
 ## Current objective
-Harden the public portfolio repo and runtime link handling while preserving the recent homepage, pricing, and shared navigation work already in progress.
+Refresh the homepage pricing preview so it matches the Pricing page card system and clearly signals that one-off services are available too.
 
 ## Success criteria
-- Repo-level security guardrails exist: `SECURITY.md`, Vercel headers, CI, CodeQL, and Dependabot configuration.
-- External links only allow approved `https` hosts and approved `mailto:` destinations, with unsafe values degrading safely instead of rendering as raw links.
-- Verification passes for `npm run lint`, `npm run test`, `npm run build`, and `npm run security:deps`.
-- Remaining deployment verification is limited to checking live Vercel response headers after deploy.
+- Homepage pricing preview shows exactly 3 monthly retainer cards using the same visual language as `/pricing`.
+- Each homepage pricing card shows a compact `See full pricing` CTA at the bottom.
+- The section includes a distinct one-off-services callout with clear, confident copy and its own small CTA to the pricing page.
+- Verification passes for `npm run lint` and `npm run build`.
 
 ## Constraints
-- Keep the current route structure, shared UI patterns, and existing in-progress homepage/pricing/header changes intact.
-- Keep `.agents` public by choice, but only with scrubbed, public-safe content.
-- Do not introduce backend-only secret assumptions into this static frontend repo.
+- Keep homepage pricing preview limited to monthly retainers; introduce one-off work through supporting copy while routing full pricing details through the card CTAs.
+- Reuse the existing `PricingPackageCard` component and pricing visual language instead of creating a disconnected homepage card style.
+- Keep routes, pricing data shape, and `/pricing` CTA behavior unchanged.
 
 ## Known blockers
-- Live response-header verification cannot be completed locally because the new `vercel.json` headers need a deployed Vercel environment to inspect with `curl -I`.
+- No code blockers. Manual browser QA is still needed to confirm spacing and hierarchy across responsive breakpoints.
 
 ## Next concrete step
-Deploy the current branch to Vercel, then run `curl -I` against `/`, `/work`, `/contact`, and one `/work/:slug` page to confirm the CSP and related headers are present without breaking thumbnails, previews, or external CTA flows.
+Open `/` and `/pricing` in a real browser, then verify the refreshed homepage pricing section at 375px, 768px, 1024px, and 1280px for card height consistency, per-card CTA placement, and the new one-off callout button spacing/readability.
 
 ## Relevant files
-- `SECURITY.md`
-- `.github/workflows/ci.yml`
-- `.github/workflows/codeql.yml`
-- `vercel.json`
-- `src/lib/safeExternalLink.js`
-- `src/components/CTAButton.jsx`
-- `src/components/VideoPreviewCard.jsx`
+- `src/pages/HomePage.jsx`
+- `src/components/PricingPackageCard.jsx`
+- `src/index.css`
+- `specs/homepage-pricing-preview-refresh.md`

@@ -1338,6 +1338,73 @@ section {
     color: #ffffff;
   }
 
+  .home-pricing-preview-grid .pricing-package-card {
+    height: 100%;
+  }
+
+  .home-pricing-preview-grid .pricing-package-card-footer {
+    @apply mt-5;
+  }
+
+  .home-pricing-preview-card-cta {
+    width: auto;
+    min-width: 0;
+  }
+
+  .home-pricing-preview-callout {
+    @apply relative mt-8 overflow-hidden rounded-[1.5rem] border p-6 md:p-8;
+    border-color: rgba(255, 255, 255, 0.12);
+    background:
+      radial-gradient(
+        circle at top right,
+        rgba(212, 134, 93, 0.16) 0%,
+        rgba(212, 134, 93, 0) 32%
+      ),
+      linear-gradient(
+        140deg,
+        rgba(17, 17, 20, 0.95) 0%,
+        rgba(14, 14, 16, 0.95) 48%,
+        rgba(26, 21, 19, 0.95) 100%
+      );
+    box-shadow:
+      0 28px 64px rgba(0, 0, 0, 0.24),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+
+  .home-pricing-preview-callout::before {
+    position: absolute;
+    inset: -30% auto auto 58%;
+    width: min(20rem, 48vw);
+    height: min(20rem, 48vw);
+    content: "";
+    pointer-events: none;
+    background: radial-gradient(
+      circle,
+      rgba(212, 134, 93, 0.16) 0%,
+      rgba(212, 134, 93, 0.08) 28%,
+      rgba(212, 134, 93, 0) 72%
+    );
+    filter: blur(14px);
+  }
+
+  .home-pricing-preview-callout-kicker {
+    @apply relative text-[11px] font-semibold uppercase tracking-[0.22em] text-copper-50;
+  }
+
+  .home-pricing-preview-callout-title {
+    @apply relative mt-4 max-w-3xl text-2xl font-semibold leading-tight text-white md:text-[2rem];
+    letter-spacing: -0.05em;
+    text-wrap: balance;
+  }
+
+  .home-pricing-preview-callout-body {
+    @apply relative mt-4 max-w-3xl text-sm leading-7 text-white-50 md:text-base;
+  }
+
+  .home-pricing-preview-callout-actions {
+    @apply relative mt-6 flex flex-wrap gap-3;
+  }
+
   .pricing-addon-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));

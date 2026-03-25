@@ -20,7 +20,14 @@ function getPriceRangeLabel(item) {
   )}`;
 }
 
-function PricingPackageCard({ item, ctaTo, ctaLabel = "Select service" }) {
+function PricingPackageCard({
+  item,
+  ctaTo,
+  ctaLabel = "Select service",
+  ctaSize = "md",
+  ctaClassName = "",
+  showCta = true,
+}) {
   return (
     <article
       className={`pricing-package-card ${item.featured ? "is-featured" : ""}`}
@@ -64,15 +71,18 @@ function PricingPackageCard({ item, ctaTo, ctaLabel = "Select service" }) {
           <p className="pricing-package-card-note">Custom scope required</p>
         ) : null}
 
-        <div className="pricing-package-card-footer">
-          <CTAButton
-            to={ctaTo}
-            variant="secondary"
-            className="pricing-package-card-cta"
-          >
-            {ctaLabel}
-          </CTAButton>
-        </div>
+        {showCta ? (
+          <div className="pricing-package-card-footer">
+            <CTAButton
+              to={ctaTo}
+              variant="secondary"
+              size={ctaSize}
+              className={`pricing-package-card-cta ${ctaClassName}`.trim()}
+            >
+              {ctaLabel}
+            </CTAButton>
+          </div>
+        ) : null}
       </div>
     </article>
   );
