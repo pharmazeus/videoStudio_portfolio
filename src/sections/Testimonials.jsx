@@ -143,6 +143,18 @@ function Testimonials() {
             {longTermClients.map((client, index) => {
               const noteContent = client.note ?? client.review;
               const isExpanded = Boolean(expandedClients[client.company]);
+              const logoShellClassName = [
+                "long-term-client-logo-shell",
+                client.logoShellClassName,
+              ]
+                .filter(Boolean)
+                .join(" ");
+              const logoClassName = [
+                "long-term-client-logo",
+                client.logoClassName,
+              ]
+                .filter(Boolean)
+                .join(" ");
 
               return (
                 <article
@@ -151,13 +163,13 @@ function Testimonials() {
                   className="long-term-client-card"
                 >
                   <div className="long-term-client-card-header">
-                    <div className="long-term-client-logo-shell">
+                    <div className={logoShellClassName}>
                       <img
                         src={client.logoPath}
                         alt={`${client.company} logo`}
                         loading="lazy"
                         decoding="async"
-                        className="long-term-client-logo"
+                        className={logoClassName}
                       />
                     </div>
 

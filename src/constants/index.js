@@ -845,7 +845,9 @@ export const getCaseStudyBySlug = (slug) =>
 export const longTermClients = [
   {
     company: "YMA Masonry",
-    logoPath: "/images/yma-logo.jpg",
+    logoPath: "/images/yma-logo.png",
+    logoShellClassName: "long-term-client-logo-shell--wide",
+    logoClassName: "long-term-client-logo--wide",
     relationshipLabel: "Ongoing video partner since 2023",
     note:
       "Working together since 2023 across multiple video projects, delivery goals, and content use cases. The collaboration is still active, with continued video support as new projects and marketing needs come up.",

@@ -17,6 +17,7 @@
 - Shared heading system lives in `src/index.css` and is consumed by `SectionTitle`, `TitleHeader`, and `CTAButton`.
 - `#testimonials` remains the section anchor and keeps title reveal, button appearance timing, hidden cards, and staggered card entrance.
 - Client data is now company-first: company name, logo path, relationship label, and optional note/review.
+- Long-term client logos may use wider framed shells when the supplied asset is a transparent horizontal PNG that needs more breathing room than the default square frame.
 - YMA Masonry uses a collaboration note, not a quoted testimonial.
 
 ## Acceptance Criteria

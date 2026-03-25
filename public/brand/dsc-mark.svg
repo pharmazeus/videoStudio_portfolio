@@ -1,0 +1,58 @@
+<svg
+  width="64"
+  height="64"
+  viewBox="0 0 64 64"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <linearGradient id="dsc-mark-panel" x1="8" y1="4" x2="56" y2="60">
+      <stop offset="0%" stop-color="#191A20" />
+      <stop offset="52%" stop-color="#0F1014" />
+      <stop offset="100%" stop-color="#1F1816" />
+    </linearGradient>
+    <linearGradient id="dsc-mark-stroke" x1="10" y1="6" x2="56" y2="58">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.58" />
+      <stop offset="55%" stop-color="#D9ECFF" stop-opacity="0.2" />
+      <stop offset="100%" stop-color="#D4865D" stop-opacity="0.62" />
+    </linearGradient>
+  </defs>
+  <rect
+    x="2.5"
+    y="2.5"
+    width="59"
+    height="59"
+    rx="18"
+    fill="url(#dsc-mark-panel)"
+  />
+  <rect
+    x="2.5"
+    y="2.5"
+    width="59"
+    height="59"
+    rx="18"
+    stroke="url(#dsc-mark-stroke)"
+  />
+  <path
+    d="M20.5 17.5V46.5H31.6C41.2 46.5 47.2 40.62 47.2 32C47.2 23.38 41.2 17.5 31.6 17.5H20.5Z"
+    stroke="#EAF6FF"
+    stroke-width="4.2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M40.8 20.9C38.3 18.42 34.5 17 30.74 17C24.74 17 20.55 20.08 20.55 24.72C20.55 29.17 24.61 31.19 30.02 32.34C35.65 33.56 39.05 35.12 39.05 39.2C39.05 43.65 34.84 46.7 28.9 46.7C25.18 46.7 21.54 45.47 18.95 43.18"
+    stroke="#D4865D"
+    stroke-width="3.1"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M45.4 18.4H51.2"
+    stroke="#D4865D"
+    stroke-width="2"
+    stroke-linecap="round"
+    opacity="0.82"
+  />
+  <circle cx="45.2" cy="18.4" r="2.15" fill="#D9ECFF" opacity="0.92" />
+</svg>

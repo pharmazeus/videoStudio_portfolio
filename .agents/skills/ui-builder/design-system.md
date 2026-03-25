@@ -85,6 +85,7 @@ Use existing utility/component classes before inventing new ones.
 - Default card shell: `card-border rounded-xl`.
 - Common card rhythm: icon/media block first, then heading, then supporting text.
 - Featured proof/client cards can use warmer surface gradients, larger radius, and centered logo framing as long as they stay within the dark cinematic palette.
+- Transparent partner/client logos can use a wider framed shell instead of a forced square crop when the supplied mark is horizontal and needs more breathing room.
 
 ### Buttons/CTA
 - Use `src/components/Button.jsx` for main CTA interactions.
