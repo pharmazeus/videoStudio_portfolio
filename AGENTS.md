@@ -262,3 +262,4 @@ Optimize continuity for:
 23. [PROCESS] Always keep `.agents` and any future `.claude` folders public only when they contain no sensitive or prohibited information and are safe to share as work examples — user wants them visible on GitHub only under that condition.
 24. [ARCH] Always make new `/api/*` flows work in local Vite development as well as deployed Vercel routing — otherwise frontend integrations can pass tests but still 404 on `localhost`.
 25. [CODE] Always use Resend REST payload field `reply_to` when sending through direct HTTP fetch instead of SDK-style `replyTo` — otherwise Gmail reply behavior can fall back to the sender identity.
+26. [ARCH] Always align `vercel.json` CSP headers with every external resource the frontend actually loads, especially fonts and media domains — local builds can look fine while production silently blocks them.

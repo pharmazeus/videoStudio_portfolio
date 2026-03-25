@@ -122,7 +122,11 @@ export async function handleContactRequest(
   const { RESEND_API_KEY, CONTACT_FROM_EMAIL, CONTACT_TO_EMAIL } = env;
 
   if (!RESEND_API_KEY || !CONTACT_FROM_EMAIL || !CONTACT_TO_EMAIL) {
-    console.error("Contact form send failed: missing Resend environment config.");
+    console.error("Contact form send failed: missing Resend environment config.", {
+      hasApiKey: Boolean(RESEND_API_KEY),
+      hasFromEmail: Boolean(CONTACT_FROM_EMAIL),
+      hasToEmail: Boolean(CONTACT_TO_EMAIL),
+    });
 
     return sendJson(res, 500, {
       ok: false,

@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import { Analytics } from "@vercel/analytics/react";
 
 import SiteLayout from "./components/SiteLayout";
 import AboutPage from "./pages/AboutPage";
@@ -27,6 +28,7 @@ function App() {
         </Route>
       </Routes>
       <SpeedInsights />
+      <Analytics />
     </>
   );
 }
