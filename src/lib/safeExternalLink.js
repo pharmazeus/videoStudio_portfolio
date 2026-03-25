@@ -3,11 +3,12 @@ const ALLOWED_HTTPS_HOSTS = [
   "youtu.be",
   "instagram.com",
   "linkedin.com",
-  "cal.com",
+  "t.me",
+  "telegram.me",
 ];
 
 const ALLOWED_MAILTO_RECIPIENTS = new Set([
-  "hello@digitalsystemscreator.com",
+  "vladmaidanskyi46@gmail.com",
 ]);
 
 const ALLOWED_MAILTO_PARAMS = new Set(["subject", "body", "cc", "bcc"]);

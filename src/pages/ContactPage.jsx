@@ -1,51 +1,27 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
 import CTAButton from "../components/CTAButton";
 import SectionTitle from "../components/SectionTitle";
 import {
   contactDetails,
+  contactDirectChannels,
   contactFormOptions,
-  socialLinks,
 } from "../constants";
+import { getSafeExternalLinkAttributes } from "../lib/safeExternalLink";
 import {
-  getSafeExternalHref,
-  getSafeExternalLinkAttributes,
-} from "../lib/safeExternalLink";
+  CONTACT_API_ERRORS,
+  createContactApiPayload,
+  createContactFormState,
+  resolveProjectType,
+} from "../lib/contactForm";
 
-const initialState = {
-  name: "",
-  email: "",
-  company: "",
-  projectType: "mixed-scope",
-  message: "",
-};
-
-const validProjectTypeValues = new Set(
-  contactFormOptions.map((option) => option.value),
-);
-
-function resolveProjectType(value) {
-  if (value && validProjectTypeValues.has(value)) {
-    return value;
-  }
-
-  return "mixed-scope";
-}
-
-function createSelectedServiceMessage(serviceName) {
-  return [
-    `Selected service: ${serviceName}`,
-    "Primary goal:",
-    "Timeline:",
-    "Anything already in place:",
-  ].join("\n");
-}
+const initialState = createContactFormState();
 
 function ContactPage() {
   const [searchParams] = useSearchParams();
   const [formState, setFormState] = useState(initialState);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitState, setSubmitState] = useState("idle");
 
   const prefilledProjectTypeParam = searchParams.get("projectType");
   const selectedServiceFromPricing = searchParams.get("service")?.trim() ?? "";
@@ -54,61 +30,85 @@ function ContactPage() {
   );
   const prefilledProjectType = resolveProjectType(prefilledProjectTypeParam);
 
-  const selectedProjectLabel = useMemo(() => {
-    const selected = contactFormOptions.find(
-      (item) => item.value === formState.projectType,
-    );
-
-    return selected?.label ?? "Mixed Scope";
-  }, [formState.projectType]);
-
   useEffect(() => {
     if (!hasPricingPrefill) {
       return;
     }
 
-    setFormState((prev) => ({
-      ...prev,
-      projectType: prefilledProjectType,
-      message: selectedServiceFromPricing
-        ? createSelectedServiceMessage(selectedServiceFromPricing)
-        : prev.message,
-    }));
-    setIsSubmitted(false);
+    setFormState(
+      createContactFormState(prefilledProjectType, selectedServiceFromPricing),
+    );
+    setSubmitState("idle");
   }, [hasPricingPrefill, prefilledProjectType, selectedServiceFromPricing]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormState((prev) => ({ ...prev, [name]: value }));
+
+    if (submitState !== "idle") {
+      setSubmitState("idle");
+    }
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const subject = `${selectedProjectLabel} inquiry - ${formState.company || formState.name}`;
-    const body = [
-      `Name: ${formState.name}`,
-      `Email: ${formState.email}`,
-      `Business: ${formState.company || "Not provided"}`,
-      `Project type: ${selectedProjectLabel}`,
-      ...(selectedServiceFromPricing
-        ? [`Selected service: ${selectedServiceFromPricing}`]
-        : []),
-      "",
-      "Project details:",
-      formState.message,
-    ].join("\n");
-
-    const mailto = `mailto:${contactDetails.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    const safeMailto = getSafeExternalHref(mailto);
-
-    if (!safeMailto) {
+    if (submitState === "submitting") {
       return;
     }
 
-    window.location.href = safeMailto;
-    setIsSubmitted(true);
+    setSubmitState("submitting");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(
+          createContactApiPayload(formState, selectedServiceFromPricing),
+        ),
+      });
+
+      const payload = await response.json().catch(() => null);
+
+      if (response.ok && payload?.ok) {
+        setFormState(
+          createContactFormState(
+            hasPricingPrefill ? prefilledProjectType : "mixed-scope",
+            selectedServiceFromPricing,
+          ),
+        );
+        setSubmitState("success");
+        return;
+      }
+
+      if (payload?.error === CONTACT_API_ERRORS.validation) {
+        setSubmitState("validation_error");
+        return;
+      }
+
+      setSubmitState("send_failed");
+    } catch {
+      setSubmitState("send_failed");
+    }
   };
+
+  const directEmailLink = getSafeExternalLinkAttributes(
+    contactDetails.directEmailMailto,
+  );
+  const statusMessage =
+    submitState === "success"
+      ? "Your project request has been sent. If you want to add anything else, you can still message directly using the options on the right."
+      : submitState === "validation_error"
+        ? "A few details need another look before the request can be sent. Please check your email, project type, and project details."
+        : submitState === "send_failed"
+          ? "The form could not send right now. Your details are still here, and you can reach me directly by email, Telegram, or Instagram."
+          : null;
+  const statusToneClass =
+    submitState === "success"
+      ? "border-copper-50/35 bg-copper-50/10 text-copper-50"
+      : "border-white/12 bg-white/[0.04] text-white-50";
 
   return (
     <section className="py-12 md:py-16">
@@ -179,6 +179,19 @@ function ContactPage() {
                 />
               </div>
 
+              <div className="hidden" aria-hidden="true">
+                <label htmlFor="website">Website</label>
+                <input
+                  id="website"
+                  name="website"
+                  type="text"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={formState.website}
+                  onChange={handleChange}
+                />
+              </div>
+
               <div className="md:col-span-2">
                 <label htmlFor="projectType">Project type</label>
                 <select
@@ -212,14 +225,18 @@ function ContactPage() {
 
             <button
               type="submit"
-              className="mt-5 inline-flex items-center justify-center rounded-lg border border-white/70 bg-white px-5 py-3 font-semibold text-black transition-colors duration-300 hover:bg-black-50 hover:text-white"
+              disabled={submitState === "submitting"}
+              className="mt-5 inline-flex items-center justify-center rounded-lg border border-white/70 bg-white px-5 py-3 font-semibold text-black transition-colors duration-300 hover:bg-black-50 hover:text-white disabled:cursor-wait disabled:opacity-75"
             >
-              Start a Project
+              {submitState === "submitting" ? "Sending..." : "Start a Project"}
             </button>
 
-            {isSubmitted ? (
-              <p className="mt-3 text-sm text-white-50">
-                If your email app did not open, use the direct links on the right.
+            {statusMessage ? (
+              <p
+                className={`mt-4 rounded-xl border px-4 py-3 text-sm leading-6 ${statusToneClass}`}
+                role="status"
+              >
+                {statusMessage}
               </p>
             ) : null}
           </form>
@@ -228,13 +245,22 @@ function ContactPage() {
             <article className="card-border rounded-xl p-5 md:p-6">
               <h2 className="text-xl font-semibold">Quick actions</h2>
               <p className="mt-3 text-sm text-white-50">
-                Choose the fastest path based on where you are in the process.
+                Choose the fastest path if you want to reach out directly while
+                the request is in motion.
               </p>
               <div className="mt-5 flex flex-col gap-3">
-                <CTAButton href={contactDetails.quoteMailto}>Request a Quote</CTAButton>
-                <CTAButton href={contactDetails.bookingUrl} variant="secondary">
-                  Book a Call
-                </CTAButton>
+                {directEmailLink ? (
+                  <CTAButton href={directEmailLink.href}>Email Directly</CTAButton>
+                ) : null}
+                {contactDirectChannels.map((channel) => (
+                  <CTAButton
+                    key={channel.label}
+                    href={channel.href}
+                    variant="secondary"
+                  >
+                    {channel.label}
+                  </CTAButton>
+                ))}
               </div>
             </article>
 
@@ -248,9 +274,9 @@ function ContactPage() {
             </article>
 
             <article className="card-border rounded-xl p-5 md:p-6">
-              <h2 className="text-xl font-semibold">Social links</h2>
+              <h2 className="text-xl font-semibold">Direct channels</h2>
               <div className="mt-4 flex flex-wrap gap-3">
-                {socialLinks.map((item) => {
+                {contactDirectChannels.map((item) => {
                   const safeLink = getSafeExternalLinkAttributes(item.href);
 
                   if (!safeLink) {

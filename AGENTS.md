@@ -260,3 +260,5 @@ Optimize continuity for:
 21. [UX] Always keep the homepage hero accent text clean and artifact-free; never leave muddy grey spotting at the bottom of the highlighted words — user flagged the `digital systems` line specifically.
 22. [UX] Always render the homepage highlighted hero words with a clean copper gradient only; never keep grey tray-like shadow blocks under the letters — user explicitly requested removing them.
 23. [PROCESS] Always keep `.agents` and any future `.claude` folders public only when they contain no sensitive or prohibited information and are safe to share as work examples — user wants them visible on GitHub only under that condition.
+24. [ARCH] Always make new `/api/*` flows work in local Vite development as well as deployed Vercel routing — otherwise frontend integrations can pass tests but still 404 on `localhost`.
+25. [CODE] Always use Resend REST payload field `reply_to` when sending through direct HTTP fetch instead of SDK-style `replyTo` — otherwise Gmail reply behavior can fall back to the sender identity.

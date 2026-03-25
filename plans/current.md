@@ -1,26 +1,35 @@
 # Current Execution State
 
 ## Current objective
-Refresh the homepage pricing preview so it matches the Pricing page card system and clearly signals that one-off services are available too.
+Finish deployed verification for the new contact system while preserving the in-progress homepage pricing preview work that still needs manual QA.
 
 ## Success criteria
-- Homepage pricing preview shows exactly 3 monthly retainer cards using the same visual language as `/pricing`.
-- Each homepage pricing card shows a compact `See full pricing` CTA at the bottom.
-- The section includes a distinct one-off-services callout with clear, confident copy and its own small CTA to the pricing page.
-- Verification passes for `npm run lint` and `npm run build`.
+- The Contact page submits through `POST /api/contact` and sends a notification email with the configured Resend envs on deployed Vercel.
+- Local `vite dev` also serves `POST /api/contact` without the old 404.
+- Gmail reply behavior uses the submitted visitor email through the Resend `reply_to` field, with the visitor email also visible as a clickable fallback in the message body.
+- Contact failure states preserve user-entered values and keep the Gmail / Telegram / Instagram fallback paths usable.
+- Homepage pricing preview browser QA is still completed across the target breakpoints without regressions.
+- Local verification remains green for `npm run lint`, `npm run test`, and `npm run build`.
 
 ## Constraints
-- Keep homepage pricing preview limited to monthly retainers; introduce one-off work through supporting copy while routing full pricing details through the card CTAs.
-- Reuse the existing `PricingPackageCard` component and pricing visual language instead of creating a disconnected homepage card style.
-- Keep routes, pricing data shape, and `/pricing` CTA behavior unchanged.
+- Keep the current route structure, shared cinematic UI patterns, and existing homepage/pricing changes intact.
+- Public contact API contract stays limited to `200 ok`, `400 validation`, `405 method_not_allowed`, and `500 send_failed`.
+- V1 contact system stays minimal: no database, CRM sync, autoresponder, analytics pipeline, CAPTCHA, or file uploads.
 
 ## Known blockers
-- No code blockers. Manual browser QA is still needed to confirm spacing and hierarchy across responsive breakpoints.
+- Real email delivery still depends on deployed Vercel env vars and the already-verified Resend sender.
+- Manual browser QA is still needed for both the homepage pricing preview and the deployed contact flow.
 
 ## Next concrete step
-Open `/` and `/pricing` in a real browser, then verify the refreshed homepage pricing section at 375px, 768px, 1024px, and 1280px for card height consistency, per-card CTA placement, and the new one-off callout button spacing/readability.
+Deploy the branch to Vercel, confirm `RESEND_API_KEY`, `CONTACT_FROM_EMAIL`, and `CONTACT_TO_EMAIL` are present, then send one real contact submission and use Gmail’s Reply button to confirm the message targets the submitted visitor email before running the remaining homepage pricing preview browser QA.
 
 ## Relevant files
+- `api/contact.js`
+- `vite.config.js`
+- `src/lib/contactForm.js`
+- `src/pages/ContactPage.jsx`
+- `src/pages/ContactPage.test.jsx`
+- `specs/contact-system-v1.md`
 - `src/pages/HomePage.jsx`
 - `src/components/PricingPackageCard.jsx`
 - `src/index.css`

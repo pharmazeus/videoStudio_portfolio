@@ -18,10 +18,16 @@ describe("getSafeExternalHref", () => {
   it("accepts approved mailto links", () => {
     expect(
       getSafeExternalHref(
-        "mailto:hello@digitalsystemscreator.com?subject=Request%20a%20Quote",
+        "mailto:vladmaidanskyi46@gmail.com?subject=Request%20a%20Quote",
       ),
     ).toBe(
-      "mailto:hello@digitalsystemscreator.com?subject=Request%20a%20Quote",
+      "mailto:vladmaidanskyi46@gmail.com?subject=Request%20a%20Quote",
+    );
+  });
+
+  it("accepts approved Telegram links", () => {
+    expect(getSafeExternalHref("https://t.me/pharmazeus")).toBe(
+      "https://t.me/pharmazeus",
     );
   });
 
@@ -37,9 +43,10 @@ describe("getSafeExternalHref", () => {
     expect(getSafeExternalHref("mailto:test@example.com")).toBeNull();
     expect(
       getSafeExternalHref(
-        "mailto:hello@digitalsystemscreator.com?attach=/tmp/private.pdf",
+        "mailto:vladmaidanskyi46@gmail.com?attach=/tmp/private.pdf",
       ),
     ).toBeNull();
+    expect(getSafeExternalHref("https://telegram.example.com/pharmazeus")).toBeNull();
   });
 });
 
@@ -56,9 +63,9 @@ describe("getSafeExternalLinkAttributes", () => {
 
   it("returns mailto attributes without blank-target behavior", () => {
     expect(
-      getSafeExternalLinkAttributes("mailto:hello@digitalsystemscreator.com"),
+      getSafeExternalLinkAttributes("mailto:vladmaidanskyi46@gmail.com"),
     ).toEqual({
-      href: "mailto:hello@digitalsystemscreator.com",
+      href: "mailto:vladmaidanskyi46@gmail.com",
       target: undefined,
       rel: undefined,
     });

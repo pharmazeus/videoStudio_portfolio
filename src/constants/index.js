@@ -952,8 +952,17 @@ export const whyWorkWithMe = [
 ];
 
 export const contactDetails = {
-  email: "hello@digitalsystemscreator.com",
-  bookingUrl: "https://cal.com/",
-  quoteMailto:
-    "mailto:hello@digitalsystemscreator.com?subject=Request%20a%20Quote",
+  email: "vladmaidanskyi46@gmail.com",
+  directEmailMailto: "mailto:vladmaidanskyi46@gmail.com",
 };
+
+export const contactDirectChannels = [
+  {
+    label: "Telegram",
+    href: "https://t.me/pharmazeus",
+  },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/pharma.zeus?igsh=OGg2YjdhcmlmOGYw&utm_source=qr",
+  },
+];
