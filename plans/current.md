@@ -1,51 +1,38 @@
 # Current Execution State
 
 ## Current objective
-Finish deployed verification for the new contact system while preserving the in-progress homepage pricing preview work and manually QA the new browser-tab branding plus the updated long-term client logo treatment.
+Pre-launch hardening for the `refactoring-ui` branch is complete locally; next step is to merge the PR into `main` and verify the production deploy on Vercel.
 
 ## Success criteria
-- The Contact page submits through `POST /api/contact` and sends a notification email with the configured Resend envs on deployed Vercel.
-- Local `vite dev` also serves `POST /api/contact` without the old 404.
-- Gmail reply behavior uses the submitted visitor email through the Resend `reply_to` field, with the visitor email also visible as a clickable fallback in the message body.
-- Production CSP allows the current Mona Sans Google Fonts import instead of blocking it.
-- Production direct loads for `/contact` and other BrowserRouter routes no longer 404.
-- The serverless contact function import chain is valid under native Node ESM, so production no longer crashes with `FUNCTION_INVOCATION_FAILED` before returning JSON.
-- Contact failure states preserve user-entered values and keep the Gmail / Telegram / Instagram fallback paths usable.
-- The browser tab now shows the custom site mark and `Digital Systems Creator` title instead of the default Vite branding.
-- The Long-term Clients section renders the new transparent YMA Masonry PNG cleanly inside a wider framed shell without forcing the logo into the old square treatment.
-- Homepage pricing preview browser QA is still completed across the target breakpoints without regressions.
-- Local verification remains green for `npm run lint`, `npm run test`, and `npm run build`.
+- PR opened from `refactoring-ui` into `main` with the full pre-launch hardening changeset.
+- Vercel preview deploy of the PR loads cleanly: `/`, `/work`, `/about`, `/contact` render without console errors.
+- `/api/contact` POST returns `200 ok` on a real submission; 4th submission within 60s from the same IP returns `429 rate_limited`.
+- Production headers include `Strict-Transport-Security: max-age=31536000; includeSubDomains; preload` and `Content-Security-Policy` no longer contains `mailto:` in `form-action`.
+- Initial JS payload on `/` is materially smaller than before (lazy routes confirmed via Network tab — non-Home routes load their own chunk only on navigation).
+- Lighthouse mobile Performance score > 80 on the deployed preview.
+- No horizontal scroll on iPhone 12 viewport; hero image visible; header nav fully functional on mobile.
 
 ## Constraints
-- Keep the current route structure, shared cinematic UI patterns, and existing homepage/pricing changes intact.
-- Keep the visible site header unchanged while adding browser-level branding.
-- Keep the Long-term Clients reveal flow and card rhythm intact while adapting the logo frame for the new transparent asset.
-- Public contact API contract stays limited to `200 ok`, `400 validation`, `405 method_not_allowed`, and `500 send_failed`.
-- V1 contact system stays minimal: no database, CRM sync, autoresponder, analytics pipeline, CAPTCHA, or file uploads.
+- Do not touch unrelated branches.
+- Public contact API contract is now: `200 ok` / `400 validation` / `405 method_not_allowed` / `429 rate_limited` / `500 send_failed`.
+- Keep the existing routing, layout, and design tokens intact — this PR is hardening, not redesign.
 
 ## Known blockers
-- Real email delivery still depends on deployed Vercel env vars and the already-verified Resend sender.
-- Manual browser QA is still needed for the new favicon/title, the updated YMA long-term client logo, the homepage pricing preview, and the deployed contact flow.
+- Local `npm run test` cannot start: jsdom `CustomElementRegistry.js` MODULE_NOT_FOUND. Environmental (corrupt or version-mismatched `node_modules`), not a code regression. Lint and build pass. Fix candidates for the next session: `rm -rf node_modules package-lock.json && npm install`, or pin `jsdom` to a known-good major in `package.json`, or switch the test environment to `happy-dom`.
+- The current Resend API key may have appeared in screenshots/dev logs before this hardening pass. Rotation in [resend.com/api-keys](https://resend.com/api-keys) and updating Vercel project env (`RESEND_API_KEY`, both Production and Preview) is a recommended pre-launch step. User action, not automatable here.
 
 ## Next concrete step
-Open `/` in a real browser and verify two things first: the new favicon/tab title and the updated YMA Masonry logo framing in the Long-term Clients card. Then continue the deployed Vercel contact checks (`/contact` direct load, Google Fonts CSP, `/api/contact` production response, and Gmail Reply behavior) before running the remaining homepage pricing preview QA.
+Open the created PR and confirm the Vercel preview deploy URL renders. Then run the `/contact` rate-limit smoke test on the preview (4 rapid POSTs from the same IP — 4th should return 429), check response headers for HSTS, and run a mobile Lighthouse audit on the preview URL.
 
 ## Relevant files
 - `api/contact.js`
-- `vite.config.js`
-- `src/lib/contactConfig.js`
 - `src/lib/contactForm.js`
 - `src/pages/ContactPage.jsx`
-- `src/pages/ContactPage.test.jsx`
-- `specs/contact-system-v1.md`
-- `index.html`
-- `public/brand/dsc-mark.svg`
+- `src/App.jsx`
 - `src/pages/HomePage.jsx`
-- `src/sections/Testimonials.jsx`
-- `src/constants/index.js`
 - `src/index.css`
-- `public/images/yma-logo.png`
-- `src/components/PricingPackageCard.jsx`
-- `specs/homepage-pricing-preview-refresh.md`
-- `specs/homepage-hero-long-term-clients-refresh.md`
-- `specs/site-logo-refresh.md`
+- `index.html`
+- `vite.config.js`
+- `vercel.json`
+- `.gitignore`
+- `.env.example`

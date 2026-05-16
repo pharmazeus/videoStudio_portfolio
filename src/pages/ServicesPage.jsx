@@ -8,11 +8,11 @@ function ServicesPage() {
       <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 xl:px-20">
         <SectionTitle
           eyebrow="Services"
-          title="Services built around one digital system."
-          description="I help businesses improve how they present, launch, and operate by combining content, websites, and automation into one execution layer."
+          title="Web, video, and content that make the offer easier to understand."
+          description="I help businesses turn scattered digital presence into a clear path: what you do, why it matters, what proof supports it, and how someone can take the next step."
         />
 
-        <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
           {services.map((service) => (
             <article key={service.slug} className="card-border rounded-xl p-5 md:p-6">
               <h2 className="text-2xl font-semibold">{service.title}</h2>
@@ -41,11 +41,12 @@ function ServicesPage() {
 
         <div className="mt-10 rounded-xl border border-black-50 bg-black-100/60 p-6 md:p-8">
           <h2 className="text-2xl font-semibold md:text-3xl">
-            One operator. Three mechanisms. One connected system.
+            One operator. Four practical ways to make the brand clearer.
           </h2>
           <p className="mt-4 max-w-3xl text-white-50">
-            Content gets attention, websites turn that attention into action, and
-            automation reduces friction in day-to-day execution.
+            Websites turn attention into action, video editing sharpens the
+            story, on-location filming gives the brand fresh material, and
+            ongoing content keeps the presence consistent.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <CTAButton to="/pricing">Request a Quote</CTAButton>

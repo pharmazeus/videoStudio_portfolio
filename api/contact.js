@@ -4,7 +4,52 @@ import {
   validateContactPayload,
 } from "../src/lib/contactForm.js";
 
-function sendJson(res, statusCode, payload) {
+const RATE_LIMIT_WINDOW_MS = 60_000;
+const RATE_LIMIT_MAX_REQUESTS = 3;
+const rateLimitBuckets = new Map();
+
+function getClientIp(req) {
+  const forwarded = req.headers?.["x-forwarded-for"];
+
+  if (typeof forwarded === "string" && forwarded.length > 0) {
+    return forwarded.split(",")[0].trim();
+  }
+
+  const realIp = req.headers?.["x-real-ip"];
+
+  if (typeof realIp === "string" && realIp.length > 0) {
+    return realIp;
+  }
+
+  return req.socket?.remoteAddress ?? "unknown";
+}
+
+export function checkRateLimit(ip, now = Date.now()) {
+  const bucket = rateLimitBuckets.get(ip);
+
+  if (!bucket || now >= bucket.resetAt) {
+    rateLimitBuckets.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW_MS });
+    return { allowed: true, retryAfterSeconds: 0 };
+  }
+
+  if (bucket.count >= RATE_LIMIT_MAX_REQUESTS) {
+    return {
+      allowed: false,
+      retryAfterSeconds: Math.max(1, Math.ceil((bucket.resetAt - now) / 1000)),
+    };
+  }
+
+  bucket.count += 1;
+  return { allowed: true, retryAfterSeconds: 0 };
+}
+
+function sendJson(res, statusCode, payload, extraHeaders) {
+  if (extraHeaders && typeof res.setHeader === "function") {
+    for (const [key, value] of Object.entries(extraHeaders)) {
+      res.setHeader(key, value);
+    }
+  }
+
   if (typeof res.status === "function") {
     return res.status(statusCode).json(payload);
   }
@@ -101,13 +146,24 @@ export async function sendContactEmail(
 export async function handleContactRequest(
   req,
   res,
-  { env = globalThis.process?.env ?? {}, fetchImpl = fetch } = {},
+  { env = globalThis.process?.env ?? {}, fetchImpl = fetch, now = Date.now() } = {},
 ) {
   if (req.method !== "POST") {
     return sendJson(res, 405, {
       ok: false,
       error: CONTACT_API_ERRORS.methodNotAllowed,
     });
+  }
+
+  const rate = checkRateLimit(getClientIp(req), now);
+
+  if (!rate.allowed) {
+    return sendJson(
+      res,
+      429,
+      { ok: false, error: CONTACT_API_ERRORS.rateLimited },
+      { "Retry-After": String(rate.retryAfterSeconds) },
+    );
   }
 
   const validation = validateContactPayload(await getRequestBody(req));
@@ -152,7 +208,7 @@ export async function handleContactRequest(
 
     return sendJson(res, 200, { ok: true });
   } catch (error) {
-    console.error("Contact form send failed.", error);
+    console.error("Contact form send failed:", error?.message ?? "unknown error");
 
     return sendJson(res, 500, {
       ok: false,

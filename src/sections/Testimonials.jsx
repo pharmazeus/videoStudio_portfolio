@@ -184,19 +184,35 @@ function Testimonials() {
                     </div>
                   </div>
 
-                  {noteContent ? (
+                  {noteContent || client.instagramUrl ? (
                     <div className="mt-6">
-                      <CTAButton
-                        onClick={() => toggleClientNote(client.company)}
-                        variant="secondary"
-                        size="sm"
-                        aria-expanded={isExpanded}
-                        className="long-term-client-note-button"
-                      >
-                        {isExpanded
-                          ? "Hide Collaboration Note"
-                          : "Show Collaboration Note"}
-                      </CTAButton>
+                      <div className="flex flex-wrap items-center gap-3">
+                        {noteContent ? (
+                          <CTAButton
+                            onClick={() => toggleClientNote(client.company)}
+                            variant="secondary"
+                            size="sm"
+                            aria-expanded={isExpanded}
+                            className="long-term-client-note-button"
+                          >
+                            {isExpanded
+                              ? "Hide Collaboration Note"
+                              : "Show Collaboration Note"}
+                          </CTAButton>
+                        ) : null}
+
+                        {client.instagramUrl ? (
+                          <CTAButton
+                            href={client.instagramUrl}
+                            variant="secondary"
+                            size="sm"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            See Instagram Profile
+                          </CTAButton>
+                        ) : null}
+                      </div>
 
                       <div
                         className={`long-term-client-note-wrapper ${

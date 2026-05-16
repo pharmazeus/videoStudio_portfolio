@@ -14,14 +14,17 @@ import {
   createContactApiPayload,
   createContactFormState,
   resolveProjectType,
+  validateContactPayload,
 } from "../lib/contactForm";
 
 const initialState = createContactFormState();
+const initialFieldErrors = {};
 
 function ContactPage() {
   const [searchParams] = useSearchParams();
   const [formState, setFormState] = useState(initialState);
   const [submitState, setSubmitState] = useState("idle");
+  const [fieldErrors, setFieldErrors] = useState(initialFieldErrors);
 
   const prefilledProjectTypeParam = searchParams.get("projectType");
   const selectedServiceFromPricing = searchParams.get("service")?.trim() ?? "";
@@ -39,11 +42,21 @@ function ContactPage() {
       createContactFormState(prefilledProjectType, selectedServiceFromPricing),
     );
     setSubmitState("idle");
+    setFieldErrors(initialFieldErrors);
   }, [hasPricingPrefill, prefilledProjectType, selectedServiceFromPricing]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormState((prev) => ({ ...prev, [name]: value }));
+    setFieldErrors((prev) => {
+      if (!prev[name]) {
+        return prev;
+      }
+
+      const nextErrors = { ...prev };
+      delete nextErrors[name];
+      return nextErrors;
+    });
 
     if (submitState !== "idle") {
       setSubmitState("idle");
@@ -57,6 +70,19 @@ function ContactPage() {
       return;
     }
 
+    const contactPayload = createContactApiPayload(
+      formState,
+      selectedServiceFromPricing,
+    );
+    const validation = validateContactPayload(contactPayload);
+
+    if (!validation.isValid) {
+      setFieldErrors(validation.errors);
+      setSubmitState("validation_error");
+      return;
+    }
+
+    setFieldErrors(initialFieldErrors);
     setSubmitState("submitting");
 
     try {
@@ -65,9 +91,7 @@ function ContactPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(
-          createContactApiPayload(formState, selectedServiceFromPricing),
-        ),
+        body: JSON.stringify(contactPayload),
       });
 
       const payload = await response.json().catch(() => null);
@@ -79,12 +103,21 @@ function ContactPage() {
             selectedServiceFromPricing,
           ),
         );
+        setFieldErrors(initialFieldErrors);
         setSubmitState("success");
         return;
       }
 
       if (payload?.error === CONTACT_API_ERRORS.validation) {
+        setFieldErrors({
+          message: "Please check the highlighted fields and try again.",
+        });
         setSubmitState("validation_error");
+        return;
+      }
+
+      if (payload?.error === CONTACT_API_ERRORS.rateLimited) {
+        setSubmitState("rate_limited");
         return;
       }
 
@@ -99,12 +132,14 @@ function ContactPage() {
   );
   const statusMessage =
     submitState === "success"
-      ? "Your project request has been sent. If you want to add anything else, you can still message directly using the options on the right."
+      ? "Project request sent. You can add more by email, Telegram, or Instagram."
       : submitState === "validation_error"
-        ? "A few details need another look before the request can be sent. Please check your email, project type, and project details."
-        : submitState === "send_failed"
-          ? "The form could not send right now. Your details are still here, and you can reach me directly by email, Telegram, or Instagram."
-          : null;
+        ? "Fix the highlighted fields, then send again."
+        : submitState === "rate_limited"
+          ? "Too many submissions in a short time. Please wait a minute and try again, or reach out by direct email, Telegram, or Instagram."
+          : submitState === "send_failed"
+            ? "The form could not send right now. Your details are still here; try direct email, Telegram, or Instagram."
+            : null;
   const statusToneClass =
     submitState === "success"
       ? "border-copper-50/35 bg-copper-50/10 text-copper-50"
@@ -148,10 +183,17 @@ function ContactPage() {
                   name="name"
                   type="text"
                   required
+                  aria-invalid={Boolean(fieldErrors.name)}
+                  aria-describedby={fieldErrors.name ? "name-error" : undefined}
                   value={formState.name}
                   onChange={handleChange}
                   autoComplete="name"
                 />
+                {fieldErrors.name ? (
+                  <p id="name-error" className="form-field-error">
+                    {fieldErrors.name}
+                  </p>
+                ) : null}
               </div>
 
               <div>
@@ -161,10 +203,17 @@ function ContactPage() {
                   name="email"
                   type="email"
                   required
+                  aria-invalid={Boolean(fieldErrors.email)}
+                  aria-describedby={fieldErrors.email ? "email-error" : undefined}
                   value={formState.email}
                   onChange={handleChange}
                   autoComplete="email"
                 />
+                {fieldErrors.email ? (
+                  <p id="email-error" className="form-field-error">
+                    {fieldErrors.email}
+                  </p>
+                ) : null}
               </div>
 
               <div className="md:col-span-2">
@@ -173,10 +222,17 @@ function ContactPage() {
                   id="company"
                   name="company"
                   type="text"
+                  aria-invalid={Boolean(fieldErrors.company)}
+                  aria-describedby={fieldErrors.company ? "company-error" : undefined}
                   value={formState.company}
                   onChange={handleChange}
                   autoComplete="organization"
                 />
+                {fieldErrors.company ? (
+                  <p id="company-error" className="form-field-error">
+                    {fieldErrors.company}
+                  </p>
+                ) : null}
               </div>
 
               <div className="hidden" aria-hidden="true">
@@ -198,6 +254,8 @@ function ContactPage() {
                   id="projectType"
                   name="projectType"
                   required
+                  aria-invalid={Boolean(fieldErrors.projectType)}
+                  aria-describedby={fieldErrors.projectType ? "projectType-error" : undefined}
                   value={formState.projectType}
                   onChange={handleChange}
                   className="w-full rounded-md bg-blue-100 px-4 py-4 text-sm text-white placeholder:text-blue-50 md:text-base"
@@ -208,6 +266,11 @@ function ContactPage() {
                     </option>
                   ))}
                 </select>
+                {fieldErrors.projectType ? (
+                  <p id="projectType-error" className="form-field-error">
+                    {fieldErrors.projectType}
+                  </p>
+                ) : null}
               </div>
 
               <div className="md:col-span-2">
@@ -217,9 +280,16 @@ function ContactPage() {
                   name="message"
                   required
                   rows={6}
+                  aria-invalid={Boolean(fieldErrors.message)}
+                  aria-describedby={fieldErrors.message ? "message-error" : undefined}
                   value={formState.message}
                   onChange={handleChange}
                 />
+                {fieldErrors.message ? (
+                  <p id="message-error" className="form-field-error">
+                    Add at least 10 characters about what you want to improve.
+                  </p>
+                ) : null}
               </div>
             </div>
 

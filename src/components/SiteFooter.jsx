@@ -40,6 +40,9 @@ function SiteFooter() {
           <Link to="/contact" className="transition-colors hover:text-white">
             Contact
           </Link>
+          <Link to="/recruiters" className="transition-colors hover:text-white">
+            Recruiter Portfolio
+          </Link>
         </div>
       </div>
     </footer>

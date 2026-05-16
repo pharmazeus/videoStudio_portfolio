@@ -33,6 +33,35 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [tailwindcss(), react(), contactApiDevPlugin(env)],
+    build: {
+      chunkSizeWarningLimit: 900,
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (!id.includes("node_modules")) {
+              return undefined;
+            }
+            if (id.includes("/react-router") || id.includes("/react-router-dom")) {
+              return "vendor-router";
+            }
+            if (
+              id.includes("/react/") ||
+              id.includes("/react-dom/") ||
+              id.includes("/scheduler/")
+            ) {
+              return "vendor-react";
+            }
+            if (id.includes("/gsap")) {
+              return "vendor-gsap";
+            }
+            if (id.includes("/@vercel/")) {
+              return "vendor-vercel";
+            }
+            return "vendor";
+          },
+        },
+      },
+    },
     test: {
       environment: "jsdom",
       setupFiles: "./src/test/setup.js",

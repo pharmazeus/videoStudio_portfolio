@@ -37,10 +37,10 @@ describe("contact form helpers", () => {
     const result = validateContactPayload({
       name: "Vlad",
       email: "vlad@example.com",
-      company: "Digital Systems Creator",
-      projectType: "automation",
-      message: "Need a workflow that qualifies leads before I answer manually.",
-      service: "Lead flow design",
+      company: "Maidanskyi Studio",
+      projectType: "video",
+      message: "Need a promo video edited from existing footage for a product launch.",
+      service: "Promo / Brand Film",
       website: "",
     });
 

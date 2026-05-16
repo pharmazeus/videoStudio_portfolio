@@ -4,6 +4,7 @@ export const CONTACT_API_ERRORS = {
   validation: "validation",
   methodNotAllowed: "method_not_allowed",
   sendFailed: "send_failed",
+  rateLimited: "rate_limited",
 };
 
 const CONTACT_PROJECT_TYPE_LABELS = new Map(
