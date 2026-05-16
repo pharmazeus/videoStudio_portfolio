@@ -43,6 +43,10 @@ export function checkRateLimit(ip, now = Date.now()) {
   return { allowed: true, retryAfterSeconds: 0 };
 }
 
+export function __resetRateLimit() {
+  rateLimitBuckets.clear();
+}
+
 function sendJson(res, statusCode, payload, extraHeaders) {
   if (extraHeaders && typeof res.setHeader === "function") {
     for (const [key, value] of Object.entries(extraHeaders)) {

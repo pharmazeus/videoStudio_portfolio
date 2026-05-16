@@ -2,7 +2,7 @@ import { Readable } from "node:stream";
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { handleContactRequest } from "./contact";
+import { __resetRateLimit, handleContactRequest } from "./contact";
 
 function createMockResponse() {
   return {
@@ -22,15 +22,16 @@ const validBody = {
   name: "Vlad Maidanskyi",
   email: "lead@example.com",
   company: "Digital Systems Creator",
-  projectType: "automation",
-  message: "Need an automation system that qualifies leads before I reply.",
-  service: "Automation sprint",
+  projectType: "mixed-scope",
+  message: "Need a system that connects content, the site, and a lead workflow.",
+  service: "Mixed scope sprint",
   website: "",
 };
 
 describe("api/contact", () => {
   beforeEach(() => {
     vi.restoreAllMocks();
+    __resetRateLimit();
   });
 
   it("returns 405 for non-POST requests", async () => {
