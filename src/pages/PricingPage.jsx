@@ -5,10 +5,9 @@ import { addOns, pricingCategories, pricingPackages } from "../constants";
 import { formatFromPrice } from "../lib/formatPrice";
 
 const pricingCategoryToProjectType = {
-  "monthly-retainers": "content",
-  "one-off-projects": "content",
   "web-offers": "website",
-  "automation-offers": "automation",
+  "monthly-retainers": "content",
+  "one-off-projects": "video",
 };
 
 function createServiceSelectionPath(item) {
@@ -31,7 +30,7 @@ function PricingPage() {
       <div className="pricing-page-shell mx-auto box-border w-full max-w-[1280px] px-5 md:px-10 xl:px-16">
         <SectionTitle
           eyebrow="Pricing"
-          title="Clear starting prices for content, websites, and automation"
+          title="Clear starting prices for websites, video, and brand content"
           description="These public starting rates are shown in CAD. Final quotes depend on scope, revisions, travel, complexity, and delivery timeline."
         />
 
@@ -82,12 +81,12 @@ function PricingPage() {
 
         <div className="pricing-mixed-scope mt-14 rounded-[1.5rem] p-6 md:p-8">
           <h2 className="text-2xl font-semibold md:text-3xl">
-            Need content, web, and automation in one scope?
+            Need a website, video, and ongoing content in one scope?
           </h2>
           <p className="mt-3 max-w-3xl text-white-50">
-            If your project spans production, website work, and backend systems,
-            the cleanest route is a phased quote with clear priorities,
-            deliverables, and timeline.
+            If your project spans web development, video production, and ongoing
+            brand content, the cleanest route is a phased quote with clear
+            priorities, deliverables, and timeline.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
             <CTAButton to="/contact">Request a Quote</CTAButton>

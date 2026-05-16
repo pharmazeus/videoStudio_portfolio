@@ -40,3 +40,7 @@ reports/security/
 *.njsproj
 *.sln
 *.sw?
+
+# Local dev scratch files and tool artifacts
+scratch.*
+.playwright-cli/

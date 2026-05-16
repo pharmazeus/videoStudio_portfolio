@@ -54,7 +54,7 @@ describe("ContactPage", () => {
     });
 
     expect(
-      await screen.findByText(/Your project request has been sent/i),
+      await screen.findByText(/Project request sent/i),
     ).toBeInTheDocument();
     expect(screen.getByLabelText("Name")).toHaveValue("");
     expect(screen.getByLabelText("Email")).toHaveValue("");

@@ -30,10 +30,4 @@ export const videoLibrary = {
     previewSrc: "/images/screen.mp4",
     youtubeUrl: "https://www.youtube.com/",
   },
-  "local-service-intake-automation": {
-    description: "Placeholder video metadata for Intake Automation case study.",
-    poster: "/images/video-placeholder.svg",
-    previewSrc: "/images/screen.mp4",
-    youtubeUrl: "https://www.youtube.com/",
-  },
 };

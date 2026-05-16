@@ -1,7 +1,7 @@
 export const contactFormOptions = [
-  { value: "content", label: "Content" },
   { value: "website", label: "Website" },
-  { value: "automation", label: "Automation" },
+  { value: "video", label: "Video (editing or filming)" },
+  { value: "content", label: "Brand Content" },
   { value: "mixed-scope", label: "Mixed Scope" },
 ];
 

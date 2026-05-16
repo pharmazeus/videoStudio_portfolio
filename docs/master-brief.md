@@ -218,15 +218,19 @@ Look at bundles_prices.md
 
 ### Heading
 
-**Creative execution meets digital systems thinking.**
+**I build digital presence that makes businesses easier to understand and easier to choose.**
 
 ### Opening paragraph
 
-I work at the intersection of creative production and digital execution. My focus is helping brands build stronger digital presence through content, websites, and systems that are actually useful in day-to-day business.
+Vlad Maidanskyi is positioned as a digital systems creator working across websites, video, content, and practical automation. The page should feel personal, visual, premium, and client-facing: sharper pages, better proof, and assets a business can actually use.
 
 ### Positioning line
 
-I am not trying to be a full agency. I build focused digital systems that help businesses look sharper, launch faster, and reduce friction.
+I do not treat websites, videos, and workflows as separate islands. They should point in the same direction, support the same sales story, and make the next move obvious.
+
+### Visual direction
+
+Use a dark editorial layout with copper accents, a portrait-led hero, liquid-glass photo treatment, concise expertise cards, and subtle motion that respects reduced-motion preferences.
 
 ---
 

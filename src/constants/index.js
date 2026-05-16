@@ -19,61 +19,38 @@ export const navLinks = [
 ];
 
 export const heroContent = {
-  eyebrow: "Digital Systems Creator",
   headline: {
-    intro: "I build",
-    focus: "digital systems",
-    outro: "for modern brands.",
+    intro: "I help businesses",
+    focus: "look clear online",
+    outro: "and turn attention into action.",
   },
-  subheadline:
-    "From content and websites to AI-assisted workflows, I help businesses present better, move faster, and operate smarter.",
+  subheadline: "Make your offer clear, trusted, and easy to act on.",
   primaryCta: { label: "Start a Project", path: "/contact" },
   secondaryCta: { label: "See My Work", path: "/work" },
 };
 
 export const homeSections = [
   { id: "hero", label: "Hero" },
-  { id: "value-strip", label: "Value Strip" },
   { id: "featured-work", label: "Featured Work" },
   { id: "services-overview", label: "Services Overview" },
-  { id: "why-work", label: "Why Work With Me" },
-  { id: "process", label: "Process" },
-  { id: "pricing-preview", label: "Pricing Preview" },
-  { id: "testimonials-proof", label: "Long-term Clients / Proof" },
-  { id: "faq", label: "FAQ" },
   { id: "final-cta", label: "Final CTA" },
 ];
 
 export const services = [
   {
-    slug: "content-creative",
-    title: "Content & Creative",
+    slug: "web-development",
+    title: "Web Development & Launch",
+    image: "/posters/services/web-app-development.jpg",
+    imageAlt:
+      "Dark studio desk with laptop and phone showing abstract website and app interfaces.",
     summary:
-      "Short-form content, brand visuals, editing, drone work, and creative direction for businesses that need stronger attention and presentation.",
+      "Custom websites, landing pages, and lightweight web apps built for conversion, speed, and a clean launch. This is the foundation everything else plugs into.",
     deliverables: [
-      "Short-form videos",
-      "Promo videos",
-      "Creative direction",
-      "Drone/location visuals",
-      "Social-first visual packages",
-    ],
-    outcomes: [
-      "Sharper brand presentation",
-      "Consistent social output",
-      "Higher-quality content assets",
-    ],
-  },
-  {
-    slug: "web-launch-assets",
-    title: "Web & Launch Assets",
-    summary:
-      "Landing pages, portfolio websites, business sites, and lightweight web experiences designed to clarify the offer and improve conversion.",
-    deliverables: [
-      "Landing pages",
-      "Portfolio websites",
-      "Small business websites",
-      "Presentation-style websites",
+      "Custom landing pages",
+      "Business and portfolio websites",
+      "Presentation-style sites",
       "Lightweight web apps",
+      "Responsive, SEO-ready builds",
     ],
     outcomes: [
       "Clearer offer messaging",
@@ -82,49 +59,88 @@ export const services = [
     ],
   },
   {
-    slug: "ai-automation-systems",
-    title: "AI & Automation Systems",
+    slug: "video-editing",
+    title: "Video Editing",
+    image: "/posters/services/video-editing.jpg",
+    imageAlt:
+      "Cinematic editing desk with color grading controls and a video timeline.",
     summary:
-      "Workflow automations, AI-assisted content systems, and lightweight internal tools that reduce repetitive work and make execution more efficient.",
+      "Post-production for short-form and long-form video: edit, color, sound design, motion graphics, and platform-ready cutdowns.",
     deliverables: [
-      "Workflow automations",
-      "Content operations systems",
-      "Agent-assisted task flows",
-      "Lightweight internal tools",
-      "AI-enhanced creative workflows",
+      "Short-form social edits",
+      "Promo and brand films",
+      "Tutorials and long-form cuts",
+      "Color grading and sound design",
+      "Motion graphics and titles",
     ],
     outcomes: [
-      "Less manual admin work",
-      "Faster execution",
-      "Cleaner day-to-day operations",
+      "Higher-quality content assets",
+      "Stronger pacing and retention",
+      "Faster turnaround on social cuts",
+    ],
+  },
+  {
+    slug: "video-production",
+    title: "Video Production & Filming",
+    image: "/posters/services/video-filming.jpg",
+    imageAlt:
+      "Professional cinema camera on a dark production set with warm studio lights.",
+    summary:
+      "On-location shoots covering products, projects, properties, and teams — professional camera work, drone coverage, and a shotlist tuned for the edit.",
+    deliverables: [
+      "Half-day and full-day shoots",
+      "On-location and on-site coverage",
+      "Drone and aerial footage",
+      "Multi-scene production",
+      "Creative direction and shotlists",
+    ],
+    outcomes: [
+      "Sharper, more usable raw footage",
+      "Consistent visual quality across projects",
+      "An asset library ready for ongoing content",
+    ],
+  },
+  {
+    slug: "brand-content-growth",
+    title: "Brand Content Growth",
+    image: "/posters/services/brand-content.jpg",
+    imageAlt:
+      "Brand content planning table with a camera, phone previews, and moodboard materials.",
+    summary:
+      "Ongoing content systems that grow a brand over time: planning, batching, recurring shoots, and consistent output across social and web.",
+    deliverables: [
+      "Content planning and calendar",
+      "Batched shoot blocks",
+      "Recurring monthly retainers",
+      "Social-first cutdowns and story assets",
+      "Performance review and iteration",
+    ],
+    outcomes: [
+      "Consistent presence across channels",
+      "Compounding brand recognition",
+      "Less guesswork month over month",
     ],
   },
 ];
 
 export const pricingCategories = [
   {
-    slug: "monthly-retainers",
-    title: "Monthly Retainers",
-    description:
-      "Ongoing content production for businesses that need consistent output.",
-  },
-  {
-    slug: "one-off-projects",
-    title: "One-Off Projects",
-    description:
-      "Production packages for focused campaigns and single deliverables.",
-  },
-  {
     slug: "web-offers",
     title: "Website Services",
     description:
-      "Conversion-focused website packages with practical scope for local businesses.",
+      "Conversion-focused website packages, from landing pages to full business sites and custom builds.",
   },
   {
-    slug: "automation-offers",
-    title: "Automation Services",
+    slug: "monthly-retainers",
+    title: "Brand Content Retainers",
     description:
-      "Workflow and AI-assisted automation offers with custom scope where needed.",
+      "Ongoing video and content systems for businesses that need consistent monthly output.",
+  },
+  {
+    slug: "one-off-projects",
+    title: "Video Projects",
+    description:
+      "Production and post packages for focused campaigns and standalone video deliverables.",
   },
 ];
 
@@ -317,74 +333,6 @@ export const pricingPackages = [
     featured: false,
     customQuoteRequired: true,
   },
-  {
-    slug: "workflow-audit-automation-planning",
-    name: "Workflow Audit / Automation Planning",
-    category: "automation-offers",
-    billingType: "project",
-    startingPrice: 150,
-    currency: "CAD",
-    priceRange: [150, 250],
-    includes: [
-      "Workflow review",
-      "Bottleneck mapping",
-      "Tool recommendations",
-      "Implementation summary",
-    ],
-    featured: false,
-    customQuoteRequired: false,
-  },
-  {
-    slug: "simple-automation-setup",
-    name: "Simple Automation Setup",
-    category: "automation-offers",
-    billingType: "project",
-    startingPrice: 450,
-    currency: "CAD",
-    priceRange: [450, 800],
-    includes: [
-      "1 simple workflow",
-      "Basic testing",
-      "Light documentation",
-      "Post-launch support window",
-    ],
-    featured: false,
-    customQuoteRequired: false,
-  },
-  {
-    slug: "connected-automation-system",
-    name: "Connected Automation System",
-    category: "automation-offers",
-    billingType: "project",
-    startingPrice: 1200,
-    currency: "CAD",
-    priceRange: [1200, 2500],
-    includes: [
-      "2-4 connected workflows",
-      "Workflow mapping",
-      "Implementation + testing",
-      "Handoff walkthrough",
-    ],
-    featured: true,
-    customQuoteRequired: false,
-  },
-  {
-    slug: "ai-advanced-automation-system",
-    name: "AI / Advanced Automation System",
-    category: "automation-offers",
-    billingType: "project",
-    startingPrice: null,
-    currency: "CAD",
-    priceRange: null,
-    includes: [
-      "AI classification or routing",
-      "Agent workflows",
-      "Dashboards / internal tools",
-      "Custom API logic",
-    ],
-    featured: false,
-    customQuoteRequired: true,
-  },
 ];
 
 export const addOns = [
@@ -425,7 +373,7 @@ export const videoCatalogFilters = [
 ];
 
 const generatedVideoMediaByCaseStudy = {
-  "ai-reveal-ad-house-in-markham": {
+  "markham-house-reveal-ad": {
     poster: "/posters/portrait/ai-reveal-ad-for-house-in-markham-poster.jpg",
     previewSrc:
       "/videos/previews/portrait/ai-reveal-ad-for-house-in-markham-preview.mp4",
@@ -555,17 +503,17 @@ function createVideoCaseStudy({
  */
 export const caseStudies = [
   createVideoCaseStudy({
-    slug: "ai-reveal-ad-house-in-markham",
-    title: "AI Reveal Ad for House in Markham",
+    slug: "markham-house-reveal-ad",
+    title: "Markham House Reveal Ad",
     excerpt:
-      "A short-form property ad that used AI animation, drone footage, and tight post-production to turn one build into a stronger promo piece.",
+      "A short-form property ad built around an animated reveal, drone footage, and tight post-production to turn one build into a stronger promo piece.",
     challenge:
       "The property needed more than a standard jobsite recap. The client needed a reel that felt commercial, showed the craft clearly, and could earn attention quickly.",
     solution:
-      "Built the edit around AI animation, professional camera work, drone coverage, layered sound design, and a more structured reveal of the house and the work behind it.",
+      "Built the edit around an animated reveal sequence, professional camera work, drone coverage, layered sound design, and a more structured presentation of the house and the work behind it.",
     deliverables: [
       "Short-form ad reel",
-      "AI animation accents",
+      "Motion graphics accents",
       "Professional camera coverage",
       "Drone footage and sound design",
     ],
@@ -576,7 +524,7 @@ export const caseStudies = [
     ],
     youtubeUrl: "https://youtube.com/shorts/ZHpGl9Aw-m8",
     videoType: "ad",
-    videoTags: ["ad", "real-estate", "reel", "ai-animation", "drone"],
+    videoTags: ["ad", "real-estate", "reel", "motion-graphics", "drone"],
     proofNote: "147k views on Instagram",
   }),
   createVideoCaseStudy({
@@ -587,10 +535,10 @@ export const caseStudies = [
     challenge:
       "The house was still in progress, so the content needed to sell the vision before the final result was physically complete.",
     solution:
-      "Used AI animation to preview the future outcome, then balanced that with dynamic crew footage, drone angles, and on-site detail shots to make the work feel larger and clearer.",
+      "Used motion graphics to preview the future outcome, then balanced that with dynamic crew footage, drone angles, and on-site detail shots to make the work feel larger and clearer.",
     deliverables: [
       "Progress-stage ad reel",
-      "AI-assisted future-state visuals",
+      "Animated future-state visualization",
       "Crew and site coverage",
       "Drone-backed property framing",
     ],
@@ -601,7 +549,7 @@ export const caseStudies = [
     ],
     youtubeUrl: "https://youtube.com/shorts/P9h9_3Q8MLk",
     videoType: "ad",
-    videoTags: ["ad", "real-estate", "reel", "ai-animation", "drone"],
+    videoTags: ["ad", "real-estate", "reel", "motion-graphics", "drone"],
   }),
   createVideoCaseStudy({
     slug: "yma-brand-positioning-reel",
@@ -638,12 +586,12 @@ export const caseStudies = [
     challenge:
       "Chemical brick cleaning is useful but not naturally attention-grabbing on camera. The tutorial needed to stay informative without feeling flat or overly technical.",
     solution:
-      "Built the piece around a planned full-day shoot, the owner as the on-camera guide, voice support, motion-text callouts, AI animation, and a tighter edit rhythm.",
+      "Built the piece around a planned full-day shoot, the owner as the on-camera guide, voice support, motion-text callouts, motion graphics, and a tighter edit rhythm.",
     deliverables: [
       "Tutorial-led YouTube cut",
       "On-location production day",
       "Voice and on-camera guidance support",
-      "Motion cues, text design, and AI animation",
+      "Motion cues, text design, and graphics",
     ],
     outcomes: [
       "Made a technical service easier for viewers to understand",
@@ -851,6 +799,7 @@ export const longTermClients = [
     relationshipLabel: "Ongoing video partner since 2023",
     note:
       "Working together since 2023 across multiple video projects, delivery goals, and content use cases. The collaboration is still active, with continued video support as new projects and marketing needs come up.",
+    instagramUrl: "https://www.instagram.com/yma_masonry/",
   },
 ];
 
@@ -858,7 +807,7 @@ export const faqs = [
   {
     question: "Do you only offer video editing?",
     answer:
-      "No. Content is one part of the system. I also build websites and lightweight automation so presentation and operations improve together.",
+      "No. Video editing is one part of the work. I also build websites, run on-location shoots, and manage ongoing brand content so presentation and growth improve together.",
   },
   {
     question: "What type of clients are the best fit?",
@@ -873,7 +822,7 @@ export const faqs = [
   {
     question: "Can we start with one service and expand later?",
     answer:
-      "Yes. Many projects start with one priority area and expand into a connected content, web, and systems scope as results come in.",
+      "Yes. Many projects start with one priority — usually a website launch or first video set — and expand into ongoing content and production as results come in.",
   },
   {
     question: "Do you work on retainers and one-off projects?",
@@ -890,27 +839,31 @@ export const faqs = [
 export const processSteps = [
   {
     step: "01",
-    title: "Scope the priority",
+    icon: "Compass",
+    title: "Find the clearest business priority",
     description:
-      "We identify the highest-impact bottleneck in your content, website, or workflow.",
+      "We identify what people need to understand first: the offer, the proof, the service path, or the next action.",
   },
   {
     step: "02",
-    title: "Build the core assets",
+    icon: "PenTool",
+    title: "Shape the message and assets",
     description:
-      "I execute the first layer of deliverables with clear milestones and communication.",
+      "The website structure, video direction, and content plan are built around one practical communication goal.",
   },
   {
     step: "03",
-    title: "Connect the system",
+    icon: "Hammer",
+    title: "Build and publish the usable version",
     description:
-      "Content, web, and automation are aligned into one practical execution flow.",
+      "I create the pages, edits, and supporting content with clear milestones and a clean path to launch.",
   },
   {
     step: "04",
+    icon: "Rocket",
     title: "Launch and refine",
     description:
-      "We track what works, tighten weak points, and improve performance over time.",
+      "Once the work is live, we tighten weak points and turn the strongest material into ongoing output.",
   },
 ];
 
@@ -930,28 +883,100 @@ export const socialLinks = [
 export const contactFormOptions = contactFormOptionsConfig;
 
 export const valueStrip = [
-  "Content + Web + Automation under one execution layer",
-  "Conversion-first structure with practical scope",
-  "Built for modern local businesses and lean teams",
+  "Clear offer, polished website, useful content assets",
+  "Video and web working together instead of scattered pieces",
+  "Built for local businesses, founders, and lean teams",
 ];
 
 export const whyWorkWithMe = [
   {
-    title: "One operator, connected execution",
+    icon: "Workflow",
+    title: "One partner for the visible parts of growth",
     description:
-      "You do not need three separate freelancers to move one digital priority forward.",
+      "Your website, videos, and recurring content should explain the same offer instead of feeling like separate projects.",
   },
   {
-    title: "Commercial clarity over creative noise",
+    icon: "Target",
+    title: "Commercial clarity before polish",
     description:
-      "Work is framed around business outcomes, clear offers, and conversion paths.",
+      "The work starts with what the client needs to understand, believe, and do next. The visuals support that path.",
   },
   {
-    title: "Built to be useful day-to-day",
+    icon: "Package",
+    title: "Assets your team can actually use",
     description:
-      "Every deliverable is designed to help your team execute faster, not just look better.",
+      "Every page, edit, and content piece is shaped for practical use: campaigns, sales conversations, launches, and daily brand presence.",
   },
 ];
+
+export const recruiterPortfolio = {
+  hero: {
+    eyebrow: "Recruiter Portfolio",
+    title: "Full-stack depth, kept separate from the client-facing pitch.",
+    description:
+      "This page is for recruiters and technical reviewers who want the broader engineering story behind the portfolio: product thinking, frontend execution, serverless routing, integrations, tests, and production hygiene.",
+  },
+  technicalHighlights: [
+    {
+      title: "Interactive frontend systems",
+      description:
+        "React and Vite interfaces with routed pages, reusable components, responsive layouts, and GSAP-driven interaction where motion helps the story.",
+    },
+    {
+      title: "Production-minded app structure",
+      description:
+        "Data-driven content, case-study templates, media preview cards, pricing flows, contact routing, and deployment-specific rewrites are kept organized instead of hardcoded page by page.",
+    },
+    {
+      title: "Serverless and integration work",
+      description:
+        "Contact submissions run through a Vercel serverless function with validation, normalized payloads, Resend REST email delivery, and local/testable helper modules.",
+    },
+    {
+      title: "Quality and maintainability",
+      description:
+        "Tests cover contact-form behavior, safe external links, and contact payload handling. Lint/build checks stay part of the handoff process.",
+    },
+  ],
+  capabilityGroups: [
+    {
+      title: "Frontend",
+      items: [
+        "React component architecture",
+        "Responsive UI systems",
+        "Tailwind CSS styling",
+        "Motion with GSAP",
+        "Accessible links, forms, and navigation",
+      ],
+    },
+    {
+      title: "Backend / integration",
+      items: [
+        "Vercel serverless routes",
+        "Request validation",
+        "Email delivery through Resend REST",
+        "Environment-based configuration",
+        "Local and deployed route parity",
+      ],
+    },
+    {
+      title: "Product execution",
+      items: [
+        "Offer and pricing structure",
+        "Case-study content systems",
+        "Video/media catalog workflows",
+        "Conversion-focused contact paths",
+        "Recruiter/client audience separation",
+      ],
+    },
+  ],
+  evidence: [
+    "This site is both a client-facing business presence and a live product surface.",
+    "The contact flow is implemented as a real API path, not a static mail link.",
+    "The work catalog uses reusable data and card components for future expansion.",
+    "Production routing is accounted for in Vercel so direct page URLs resolve correctly.",
+  ],
+};
 
 export const contactDetails = contactDetailsConfig;
 

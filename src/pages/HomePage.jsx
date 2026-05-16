@@ -1,8 +1,21 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import {
+  Compass,
+  Hammer,
+  Package,
+  PenTool,
+  Rocket,
+  Target,
+  Workflow,
+} from "lucide-react";
 
 import CTAButton from "../components/CTAButton";
 import PricingPackageCard from "../components/PricingPackageCard";
 import SectionTitle from "../components/SectionTitle";
+import VideoWorkCard from "../components/VideoWorkCard";
 import Testimonials from "../sections/Testimonials";
 import {
   caseStudies,
@@ -12,102 +25,100 @@ import {
   pricingPackages,
   processSteps,
   services,
-  valueStrip,
-  videoTypeMeta,
   whyWorkWithMe,
 } from "../constants";
-import { getSafeExternalLinkAttributes } from "../lib/safeExternalLink";
-import { VIDEO_PLACEHOLDER_SRC } from "../lib/youtube.js";
 
-function FeaturedVideoMedia({ item }) {
+gsap.registerPlugin(useGSAP, ScrollToPlugin);
+
+const homeIcons = {
+  Workflow,
+  Target,
+  Package,
+  Compass,
+  PenTool,
+  Hammer,
+  Rocket,
+};
+
+const homeServiceOrder = [
+  "video-editing",
+  "video-production",
+  "brand-content-growth",
+  "web-development",
+];
+
+function ServiceCard({ item, index }) {
   const cardRef = useRef(null);
-  const videoRef = useRef(null);
-  const [isNearViewport, setIsNearViewport] = useState(false);
-  const [videoFailed, setVideoFailed] = useState(false);
-  const hasPreviewClip = Boolean(item.media.previewSrc) && !videoFailed;
-  const posterSrc = item.media.poster || VIDEO_PLACEHOLDER_SRC;
-  const safeLink = getSafeExternalLinkAttributes(item.media.youtubeUrl);
-  const MediaTag = safeLink ? "a" : "div";
+  const [hasEntered, setHasEntered] = useState(false);
+  const showPricesAction = item.slug === "brand-content-growth";
 
   useEffect(() => {
-    if (!hasPreviewClip || !cardRef.current) return;
+    const card = cardRef.current;
+    if (!card) return undefined;
+
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReducedMotion || !("IntersectionObserver" in window)) {
+      setHasEntered(true);
+      return undefined;
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsNearViewport(entry.isIntersecting);
+        if (!entry.isIntersecting || entry.intersectionRatio < 0.15) return;
+        setHasEntered(true);
+        observer.unobserve(entry.target);
       },
       {
-        rootMargin: "220px 0px",
-        threshold: 0.25,
+        threshold: 0.15,
       },
     );
 
-    observer.observe(cardRef.current);
+    observer.observe(card);
     return () => observer.disconnect();
-  }, [hasPreviewClip]);
+  }, []);
 
-  useEffect(() => {
-    if (!hasPreviewClip) return;
-
-    const video = videoRef.current;
-    if (!video) return;
-
-    if (!isNearViewport) {
-      video.pause();
-      return;
-    }
-
-    const playPromise = video.play();
-    if (playPromise?.catch) playPromise.catch(() => {});
-  }, [hasPreviewClip, isNearViewport]);
+  const handlePricesScroll = () => {
+    gsap.to(window, {
+      duration: 1,
+      scrollTo: { y: "#pricing-preview", offsetY: 70 },
+      ease: "power3.inOut",
+    });
+  };
 
   return (
-    <MediaTag
+    <article
       ref={cardRef}
-      href={safeLink?.href}
-      target={safeLink?.target}
-      rel={safeLink?.rel}
-      aria-label={safeLink ? `Watch on YouTube: ${item.title}` : undefined}
-      aria-disabled={safeLink ? undefined : "true"}
-      className="video-work-media-shell block cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-50/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
+      className={`home-service-card ${hasEntered ? "is-visible" : ""}`}
+      style={{ "--service-card-delay": `${Math.min(index * 70, 210)}ms` }}
     >
-      <div className="video-work-media-frame">
-        {hasPreviewClip ? (
-          <video
-            ref={videoRef}
-            className="video-work-media-asset"
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="none"
-            poster={posterSrc}
-            onError={() => setVideoFailed(true)}
+      <div className="home-service-card-media">
+        <img
+          src={item.image}
+          alt={item.imageAlt}
+          className="home-service-card-image"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+
+      <div className="relative z-10 flex flex-col p-6 sm:p-8">
+        <p className="text-xs font-bold tracking-[0.2em] text-[#E68A45]">0{index + 1}</p>
+        <h3 className="mt-3 text-xl font-semibold leading-tight tracking-tight text-white/95 sm:text-2xl">{item.title}</h3>
+        <p className="mt-4 text-sm font-light leading-[1.8] text-white/60 sm:text-base">{item.summary}</p>
+        {showPricesAction ? (
+          <button
+            type="button"
+            className="mt-8 inline-flex self-start items-center justify-center rounded-full border border-[#E68A45]/40 bg-gradient-to-br from-[#E68A45]/10 to-transparent px-6 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:-translate-y-0.5 hover:border-[#E68A45]/80 hover:bg-[#E68A45]/20 hover:shadow-[0_4px_20px_rgba(230,138,69,0.15)] active:translate-y-0 active:scale-95"
+            onClick={handlePricesScroll}
           >
-            <source src={item.media.previewSrc} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        ) : (
-          <img
-            src={posterSrc}
-            alt={item.title}
-            loading="lazy"
-            decoding="async"
-            className="video-work-media-asset"
-            onError={(event) => {
-              event.currentTarget.onerror = null;
-              event.currentTarget.src = VIDEO_PLACEHOLDER_SRC;
-            }}
-          />
-        )}
-        <div className="video-work-media-overlay" aria-hidden="true" />
-        {hasPreviewClip ? (
-          <div className="video-work-media-copy">
-            <p className="video-work-media-label">Preview Clip</p>
-          </div>
+            See prices
+          </button>
         ) : null}
       </div>
-    </MediaTag>
+    </article>
   );
 }
 
@@ -115,21 +126,87 @@ function HomePage() {
   const [isHeroReady, setIsHeroReady] = useState(false);
   const featuredWork = useMemo(() => {
     const selected = getFeaturedCaseStudies(4).filter(
-      (item) => item.slug !== "ai-reveal-ad-house-in-markham",
+      (item) => item.slug !== "markham-house-reveal-ad",
     );
-    const aiReveal = caseStudies.find(
-      (item) => item.slug === "ai-reveal-ad-house-in-markham",
+    const markhamReveal = caseStudies.find(
+      (item) => item.slug === "markham-house-reveal-ad",
     );
 
-    if (!aiReveal) {
+    if (!markhamReveal) {
       return selected.slice(0, 4);
     }
 
-    return [aiReveal, ...selected].slice(0, 4);
+    // Place markhamReveal as the 4th item (index 3)
+    return [...selected.slice(0, 3), markhamReveal];
   }, []);
   const pricingPreview = pricingPackages
     .filter((item) => item.category === "monthly-retainers")
     .slice(0, 3);
+  const homeServices = useMemo(() => {
+    const servicesBySlug = new Map(services.map((item) => [item.slug, item]));
+    return homeServiceOrder
+      .map((slug) => servicesBySlug.get(slug))
+      .filter(Boolean);
+  }, []);
+
+  useGSAP(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const prefersReducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    const isCoarsePointer = window.matchMedia("(pointer: coarse)").matches;
+
+    if (prefersReducedMotion || isCoarsePointer) {
+      return;
+    }
+
+    const tweens = [
+      gsap.to(".figure-orange", {
+        y: "-=30",
+        rotation: "+=5",
+        duration: 3,
+        ease: "sine.inOut",
+        yoyo: true,
+        repeat: -1,
+      }),
+      gsap.to(".figure-dark", {
+        y: "+=20",
+        rotation: "-=3",
+        duration: 4,
+        ease: "sine.inOut",
+        yoyo: true,
+        repeat: -1,
+        delay: 1,
+      }),
+      gsap.to(".figure-dark-right", {
+        y: "-=15",
+        rotation: "+=4",
+        duration: 3.5,
+        ease: "sine.inOut",
+        yoyo: true,
+        repeat: -1,
+        delay: 0.5,
+      }),
+    ];
+
+    const onVisibilityChange = () => {
+      if (document.hidden) {
+        tweens.forEach((tween) => tween.pause());
+      } else {
+        tweens.forEach((tween) => tween.resume());
+      }
+    };
+
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      tweens.forEach((tween) => tween.kill());
+    };
+  });
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -145,43 +222,13 @@ function HomePage() {
         id="hero"
         className={`home-hero ${isHeroReady ? "home-hero-ready" : ""}`}
       >
-        <picture className="pointer-events-none absolute inset-0 block h-full w-full select-none">
-          <source
-            media="(min-width: 1024px)"
-            type="image/webp"
-            srcSet="/posters/at_cinema/at_cinema_1920webp.webp"
-          />
-          <source
-            media="(min-width: 768px)"
-            type="image/webp"
-            srcSet="/posters/at_cinema/at_cinema_1440webp.webp"
-          />
-          <source
-            type="image/webp"
-            srcSet="/posters/at_cinema/960_alt/960_cinema.webp"
-          />
-          <img
-            src="/posters/at_cinema/960_alt/960_cinema.jpg"
-            alt=""
-            aria-hidden="true"
-            className="home-hero-media"
-            loading="eager"
-            decoding="async"
-            fetchPriority="high"
-          />
-        </picture>
-        <div className="home-hero-shade" aria-hidden="true" />
-        <div className="home-hero-vignette" aria-hidden="true" />
         <div className="home-hero-glow" aria-hidden="true" />
 
         <div className="relative mx-auto w-full max-w-[1280px] px-5 pb-12 pt-28 md:px-10 md:pb-16 md:pt-32 xl:px-20">
-          <div className="flex min-h-[66vh] flex-col justify-center py-6 md:min-h-[72vh]">
-            <div className="home-hero-copy-shell">
-              <p className="hero-badge">
-                {heroContent.eyebrow}
-              </p>
+          <div className="relative flex min-h-[66vh] flex-col justify-center py-6 md:min-h-[72vh]">
+            <div className="home-hero-copy-shell relative z-10 pointer-events-none">
               <h1
-                className="home-hero-title"
+                className="home-hero-title pointer-events-auto"
                 aria-label={`${heroContent.headline.intro} ${heroContent.headline.focus} ${heroContent.headline.outro}`}
               >
                 <span className="home-hero-title-line">
@@ -194,11 +241,11 @@ function HomePage() {
                   {heroContent.headline.outro}
                 </span>
               </h1>
-              <p className="home-hero-body">
+              <p className="home-hero-body pointer-events-auto">
                 {heroContent.subheadline}
               </p>
 
-              <div className="mt-8 flex flex-wrap items-center gap-3 md:gap-4">
+              <div className="mt-8 flex flex-wrap items-center gap-3 md:gap-4 pointer-events-auto">
                 <CTAButton to={heroContent.primaryCta.path}>
                   {heroContent.primaryCta.label}
                 </CTAButton>
@@ -206,6 +253,33 @@ function HomePage() {
                   {heroContent.secondaryCta.label}
                 </CTAButton>
               </div>
+            </div>
+
+            <div
+              className="pointer-events-none absolute inset-x-0 top-1/2 z-0 -translate-y-1/2"
+              aria-hidden="true"
+            >
+              <button
+                type="button"
+                onClick={() =>
+                  gsap.to(window, {
+                    duration: 1.5,
+                    scrollTo: { y: "#services-overview", offsetY: 50 },
+                    ease: "power3.inOut",
+                  })
+                }
+                aria-label="Scroll to featured work"
+                className="figure-orange group pointer-events-auto absolute right-0 top-0 z-20 flex h-[300px] w-[140px] -translate-y-[100px] rotate-[15deg] items-center justify-center rounded-[40px] border border-white/20 bg-gradient-to-br from-[#E68A45] to-[#99531E] shadow-[inset_-10px_-10px_20px_rgba(0,0,0,0.5),inset_10px_10px_20px_rgba(255,255,255,0.4),0_20px_40px_rgba(0,0,0,0.5)] transition-[filter] duration-300 will-change-transform hover:brightness-110 md:h-[460px] md:w-[220px] md:-translate-y-[150px] md:rounded-[60px]"
+              >
+                <div className="absolute inset-0 rounded-[40px] bg-white/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:rounded-[60px]" />
+                <div className="flex h-12 w-12 items-center justify-center rounded-full border-[2px] border-[#FFEA00] bg-white/10 shadow-[0_0_15px_rgba(255,234,0,0.5),inset_0_0_10px_rgba(255,234,0,0.5)] backdrop-blur-md transition-transform duration-300 group-hover:scale-110 md:h-20 md:w-20">
+                  <div className="ml-1 h-0 w-0 border-y-[8px] border-l-[12px] border-y-transparent border-l-[#FFEA00] md:border-y-[10px] md:border-l-[16px]" />
+                </div>
+              </button>
+
+              <div className="figure-dark absolute bottom-0 left-0 h-[240px] w-[120px] translate-y-[100px] -rotate-[10deg] rounded-[30px] border border-white/10 bg-gradient-to-br from-[#2a2a2a] to-[#111] shadow-[inset_-5px_-5px_15px_rgba(0,0,0,0.8),inset_5px_5px_15px_rgba(255,255,255,0.1),0_15px_30px_rgba(0,0,0,0.6)] md:h-[360px] md:w-[180px] md:translate-y-[150px] md:rounded-[50px]" />
+              
+              <div className="figure-dark-right absolute right-0 top-[65%] z-10 h-[120px] w-[120px] translate-x-[20px] -translate-y-1/2 rotate-[12deg] rounded-[24px] border border-white/10 bg-gradient-to-br from-[#2a2a2a] to-[#111] shadow-[inset_-5px_-5px_15px_rgba(0,0,0,0.8),inset_5px_5px_15px_rgba(255,255,255,0.1),0_15px_30px_rgba(0,0,0,0.6)] md:h-[180px] md:w-[180px] md:translate-x-[40px] md:rounded-[40px] xl:translate-x-[80px]" />
             </div>
           </div>
         </div>
@@ -216,13 +290,19 @@ function HomePage() {
         <div aria-hidden="true" className="homepage-atmosphere-glow homepage-atmosphere-glow-middle" />
         <div aria-hidden="true" className="homepage-atmosphere-glow homepage-atmosphere-glow-bottom" />
 
-        <section id="value-strip" className="home-value-strip border-b border-black-50">
-          <div className="mx-auto grid w-full max-w-[1280px] grid-cols-1 gap-4 px-5 py-8 md:grid-cols-3 md:px-10 xl:px-20">
-            {valueStrip.map((item) => (
-              <article key={item} className="home-value-chip">
-                <p className="home-value-chip-text">{item}</p>
-              </article>
-            ))}
+        <section id="services-overview" className="home-section-band border-b border-black-50 py-14 md:py-20">
+          <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 xl:px-20">
+            <SectionTitle
+              eyebrow="Services"
+              title="Video, brand content, and web/app builds working together"
+              description="I help businesses capture attention, turn footage into useful assets, keep the brand active, and build the place where clients take action."
+            />
+
+            <div className="home-service-grid">
+              {homeServices.map((item, index) => (
+                <ServiceCard key={item.slug} item={item} index={index} />
+              ))}
+            </div>
           </div>
         </section>
 
@@ -242,74 +322,7 @@ function HomePage() {
 
             <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-2">
               {featuredWork.map((item) => (
-                <article key={item.slug} className="video-work-card home-featured-card card-border">
-                  <FeaturedVideoMedia item={item} />
-                  <div className="video-work-card-body">
-                    <div className="video-work-card-copy">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="rounded-full border border-white/10 bg-black px-3 py-1 text-[11px] font-medium uppercase tracking-[0.16em] text-blue-50">
-                          {videoTypeMeta[item.videoType].singularLabel}
-                        </span>
-                        {item.series ? (
-                          <span className="rounded-full border border-white/10 bg-black px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-white-50">
-                            {`${item.series.name} - Part ${item.series.part}`}
-                          </span>
-                        ) : null}
-                      </div>
-
-                      <div className="video-work-card-text">
-                        <h3 className="video-work-card-title">
-                          {item.title}
-                        </h3>
-                        <p className="video-work-card-excerpt">
-                          {item.excerpt}
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="video-work-card-actions">
-                      <CTAButton
-                        to={`/work/${item.slug}`}
-                        size="sm"
-                        className="min-w-0 justify-center px-5 py-3 md:text-base"
-                      >
-                        Open Case Study
-                      </CTAButton>
-                      <CTAButton
-                        href={item.media.youtubeUrl}
-                        variant="secondary"
-                        size="sm"
-                        className="min-w-0 justify-center px-5 py-3 md:text-base"
-                      >
-                        Watch on YouTube
-                      </CTAButton>
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="services-overview" className="home-section-band border-y border-black-50 py-14 md:py-20">
-          <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 xl:px-20">
-            <SectionTitle
-              eyebrow="Services"
-              title="Three connected layers of one digital system"
-              description="Content, web, and automation are delivered as one execution model, not separate career tracks."
-            />
-
-            <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
-              {services.map((item) => (
-                <article key={item.slug} className="card-border rounded-xl p-5">
-                  <h3 className="text-2xl font-semibold">{item.title}</h3>
-                  <p className="mt-3 text-sm text-white-50">{item.summary}</p>
-                  <ul className="mt-5 space-y-2 text-sm text-white-50">
-                    {item.deliverables.slice(0, 3).map((point) => (
-                      <li key={point}>- {point}</li>
-                    ))}
-                  </ul>
-                </article>
+                <VideoWorkCard key={item.slug} item={item} variant="home" />
               ))}
             </div>
           </div>
@@ -322,12 +335,20 @@ function HomePage() {
               title="Creative execution meets digital systems thinking"
             />
             <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-3">
-              {whyWorkWithMe.map((item) => (
-                <article key={item.title} className="card-border rounded-xl p-5">
-                  <h3 className="text-xl font-semibold">{item.title}</h3>
-                  <p className="mt-3 text-sm text-white-50">{item.description}</p>
-                </article>
-              ))}
+              {whyWorkWithMe.map((item) => {
+                const Icon = homeIcons[item.icon];
+                return (
+                  <article key={item.title} className="card-border rounded-xl p-5">
+                    {Icon && (
+                      <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-copper-50/30 bg-copper-50/5 text-copper-50">
+                        <Icon size={20} strokeWidth={1.75} />
+                      </span>
+                    )}
+                    <h3 className="mt-4 text-xl font-semibold">{item.title}</h3>
+                    <p className="mt-3 text-sm text-white-50">{item.description}</p>
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>
@@ -339,13 +360,23 @@ function HomePage() {
               title="A focused build flow from scope to launch"
             />
             <div className="mt-10 grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
-              {processSteps.map((item) => (
-                <article key={item.step} className="card-border rounded-xl p-5">
-                  <p className="text-sm font-semibold text-blue-50">Step {item.step}</p>
-                  <h3 className="mt-2 text-xl font-semibold">{item.title}</h3>
-                  <p className="mt-3 text-sm text-white-50">{item.description}</p>
-                </article>
-              ))}
+              {processSteps.map((item) => {
+                const Icon = homeIcons[item.icon];
+                return (
+                  <article key={item.step} className="card-border rounded-xl p-5">
+                    <div className="flex items-center gap-3">
+                      {Icon && (
+                        <span className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-copper-50/30 bg-copper-50/5 text-copper-50">
+                          <Icon size={18} strokeWidth={1.75} />
+                        </span>
+                      )}
+                      <p className="text-sm font-semibold text-blue-50">Step {item.step}</p>
+                    </div>
+                    <h3 className="mt-3 text-xl font-semibold">{item.title}</h3>
+                    <p className="mt-3 text-sm text-white-50">{item.description}</p>
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>
