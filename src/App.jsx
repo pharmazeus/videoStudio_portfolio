@@ -4,8 +4,8 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Analytics } from "@vercel/analytics/react";
 
 import SiteLayout from "./components/SiteLayout";
-import HomePage from "./pages/HomePage";
 
+const HomePage = lazy(() => import("./pages/HomePage"));
 const AboutPage = lazy(() => import("./pages/AboutPage"));
 const CaseStudyPage = lazy(() => import("./pages/CaseStudyPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
@@ -30,7 +30,14 @@ function App() {
     <>
       <Routes>
         <Route element={<SiteLayout />}>
-          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/"
+            element={
+              <Suspense fallback={<RouteFallback />}>
+                <HomePage />
+              </Suspense>
+            }
+          />
           <Route
             path="/work"
             element={
