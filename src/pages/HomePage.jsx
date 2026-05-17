@@ -180,15 +180,6 @@ function HomePage() {
         repeat: -1,
         delay: 1,
       }),
-      gsap.to(".figure-dark-right", {
-        y: "-=15",
-        rotation: "+=4",
-        duration: 3.5,
-        ease: "sine.inOut",
-        yoyo: true,
-        repeat: -1,
-        delay: 0.5,
-      }),
     ];
 
     const onVisibilityChange = () => {
@@ -287,11 +278,6 @@ function HomePage() {
               <div
                 aria-hidden="true"
                 className="figure-dark pointer-events-none absolute bottom-0 left-0 h-[240px] w-[120px] translate-y-[100px] -rotate-[10deg] rounded-[30px] border border-white/10 bg-gradient-to-br from-[#2a2a2a] to-[#111] shadow-[inset_-5px_-5px_15px_rgba(0,0,0,0.8),inset_5px_5px_15px_rgba(255,255,255,0.1),0_15px_30px_rgba(0,0,0,0.6)] md:h-[360px] md:w-[180px] md:translate-y-[150px] md:rounded-[50px]"
-              />
-
-              <div
-                aria-hidden="true"
-                className="figure-dark-right pointer-events-none absolute right-0 top-[65%] z-10 h-[120px] w-[120px] translate-x-[20px] -translate-y-1/2 rotate-[12deg] rounded-[24px] border border-white/10 bg-gradient-to-br from-[#2a2a2a] to-[#111] shadow-[inset_-5px_-5px_15px_rgba(0,0,0,0.8),inset_5px_5px_15px_rgba(255,255,255,0.1),0_15px_30px_rgba(0,0,0,0.6)] md:h-[180px] md:w-[180px] md:translate-x-[40px] md:rounded-[40px] xl:translate-x-[80px]"
               />
             </div>
           </div>

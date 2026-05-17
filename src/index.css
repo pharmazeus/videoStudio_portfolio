@@ -407,10 +407,6 @@ section {
       opacity: 0.72;
     }
 
-    .figure-dark-right {
-      right: -2.6rem;
-      opacity: 0.5;
-    }
   }
 
   .figure-orange::after {
