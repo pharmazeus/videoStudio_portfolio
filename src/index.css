@@ -388,13 +388,12 @@ section {
     }
 
     .home-hero-lower-copy {
-      margin-top: 4rem;
+      margin-top: 2rem;
       padding-bottom: 1rem;
     }
 
     .home-hero-body {
-      margin-top: 0;
-      max-width: 19rem;
+      display: none;
     }
 
     .home-hero-actions {
@@ -443,12 +442,12 @@ section {
 
   @media (max-width: 767px) {
     .figure-orange {
-      top: clamp(-10.5rem, -22svh, -7.5rem);
-      right: -1.25rem;
-      width: 6.1rem;
-      height: 12.6rem;
+      top: clamp(-6rem, -14svh, -4.5rem);
+      right: -0.75rem;
+      width: 4.6rem;
+      height: 9.6rem;
       transform: rotate(15deg);
-      border-radius: 2rem;
+      border-radius: 1.75rem;
       opacity: 0.92;
       filter: brightness(1.02) saturate(1.08);
     }
