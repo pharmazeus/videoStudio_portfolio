@@ -269,12 +269,16 @@ function HomePage() {
               </div>
             </div>
 
-            <div className="pointer-events-none absolute inset-x-0 top-1/2 z-20 -translate-y-1/2">
+            <div className="absolute inset-x-0 top-1/2 z-0 -translate-y-1/2">
               <button
                 type="button"
-                onClick={handleHeroPlayClick}
-                aria-label="Scroll to services overview"
-                className="figure-orange group pointer-events-auto absolute z-10 flex touch-manipulation items-center justify-center border border-white/20 bg-gradient-to-br from-[#E68A45] to-[#99531E] shadow-[inset_-10px_-10px_20px_rgba(0,0,0,0.5),inset_10px_10px_20px_rgba(255,255,255,0.4),0_20px_40px_rgba(0,0,0,0.5)] transition-[filter] duration-300 will-change-transform"
+                onClick={() => {
+                  document
+                    .getElementById("services-overview")
+                    ?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
+                aria-label="Scroll to featured work"
+                className="figure-orange group absolute right-0 top-0 z-20 flex h-[300px] w-[140px] -translate-y-[100px] rotate-[15deg] items-center justify-center rounded-[40px] border border-white/20 bg-gradient-to-br from-[#E68A45] to-[#99531E] shadow-[inset_-10px_-10px_20px_rgba(0,0,0,0.5),inset_10px_10px_20px_rgba(255,255,255,0.4),0_20px_40px_rgba(0,0,0,0.5)] transition-[filter] duration-300 will-change-transform hover:brightness-110 md:h-[460px] md:w-[220px] md:-translate-y-[150px] md:rounded-[60px]"
               >
                 <div className="pointer-events-none absolute inset-0 rounded-[40px] bg-white/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100 md:rounded-[60px]" />
                 <div className="pointer-events-none flex h-12 w-12 items-center justify-center rounded-full border-[2px] border-[#FFEA00] bg-white/10 shadow-[0_0_15px_rgba(255,234,0,0.5),inset_0_0_10px_rgba(255,234,0,0.5)] backdrop-blur-md transition-transform duration-300 group-hover:scale-110 md:h-20 md:w-20">
@@ -291,7 +295,12 @@ function HomePage() {
 
               <div
                 aria-hidden="true"
-                className="figure-dark-right pointer-events-none absolute right-0 top-[65%] z-0 h-[120px] w-[120px] translate-x-[20px] -translate-y-1/2 rotate-[12deg] rounded-[24px] border border-white/10 bg-gradient-to-br from-[#2a2a2a] to-[#111] shadow-[inset_-5px_-5px_15px_rgba(0,0,0,0.8),inset_5px_5px_15px_rgba(255,255,255,0.1),0_15px_30px_rgba(0,0,0,0.6)] md:h-[180px] md:w-[180px] md:translate-x-[40px] md:rounded-[40px] xl:translate-x-[80px]"
+                className="figure-dark pointer-events-none absolute bottom-0 left-0 h-[240px] w-[120px] translate-y-[100px] -rotate-[10deg] rounded-[30px] border border-white/10 bg-gradient-to-br from-[#2a2a2a] to-[#111] shadow-[inset_-5px_-5px_15px_rgba(0,0,0,0.8),inset_5px_5px_15px_rgba(255,255,255,0.1),0_15px_30px_rgba(0,0,0,0.6)] md:h-[360px] md:w-[180px] md:translate-y-[150px] md:rounded-[50px]"
+              />
+
+              <div
+                aria-hidden="true"
+                className="figure-dark-right pointer-events-none absolute right-0 top-[65%] z-10 h-[120px] w-[120px] translate-x-[20px] -translate-y-1/2 rotate-[12deg] rounded-[24px] border border-white/10 bg-gradient-to-br from-[#2a2a2a] to-[#111] shadow-[inset_-5px_-5px_15px_rgba(0,0,0,0.8),inset_5px_5px_15px_rgba(255,255,255,0.1),0_15px_30px_rgba(0,0,0,0.6)] md:h-[180px] md:w-[180px] md:translate-x-[40px] md:rounded-[40px] xl:translate-x-[80px]"
               />
             </div>
           </div>
