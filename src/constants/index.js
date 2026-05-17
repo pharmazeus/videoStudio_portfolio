@@ -44,7 +44,7 @@ export const services = [
     imageAlt:
       "Dark studio desk with laptop and phone showing abstract website and app interfaces.",
     summary:
-      "Custom websites, landing pages, and lightweight web apps built for conversion, speed, and a clean launch. This is the foundation everything else plugs into.",
+      "Custom websites, landing pages, and lightweight web apps built for conversion, speed, and a clean launch.",
     deliverables: [
       "Custom landing pages",
       "Business and portfolio websites",
