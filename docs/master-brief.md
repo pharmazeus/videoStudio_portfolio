@@ -142,7 +142,7 @@ From content and websites to AI-assisted workflows, I help businesses present be
 - The mobile hero play figure should stay warm copper, fully clickable, and visually behind the text — sized as an accent in the right-side gap rather than a dominant shape.
 - On mobile, the hero headline splits into two visible clusters with a clear vertical gap between them: the top cluster reads "I help businesses / look clear online" and the bottom cluster reads "and turn attention into action."
 - On mobile, the play figure sits as a smaller accent in the right-side gap between the two headline clusters and never overlaps the bottom cluster.
-- On mobile, the hero subheadline copy is hidden so the headline and CTAs carry the message; desktop still shows the subheadline.
+- On mobile, the hero subheadline copy is hidden so the headline and CTAs carry the message; desktop continues to show the subheadline.
 - The mobile navigation active card should stay compact and centered behind only the focused item.
 
 ### Homepage section order
