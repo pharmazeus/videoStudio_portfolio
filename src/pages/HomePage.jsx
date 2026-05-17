@@ -237,14 +237,18 @@ function HomePage() {
                   className="home-hero-title"
                   aria-label={`${heroContent.headline.intro} ${heroContent.headline.focus} ${heroContent.headline.outro}`}
                 >
-                  <span className="home-hero-title-line">
-                    {heroContent.headline.intro}
+                  <span className="home-hero-title-cluster home-hero-title-cluster-top">
+                    <span className="home-hero-title-line">
+                      {heroContent.headline.intro}
+                    </span>
+                    <span className="home-hero-title-line home-hero-title-line-accent">
+                      {heroContent.headline.focus}
+                    </span>
                   </span>
-                  <span className="home-hero-title-line home-hero-title-line-accent">
-                    {heroContent.headline.focus}
-                  </span>
-                  <span className="home-hero-title-line">
-                    {heroContent.headline.outro}
+                  <span className="home-hero-title-cluster home-hero-title-cluster-bottom">
+                    <span className="home-hero-title-line">
+                      {heroContent.headline.outro}
+                    </span>
                   </span>
                 </h1>
               </div>

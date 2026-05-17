@@ -299,6 +299,10 @@ section {
     text-wrap: balance;
   }
 
+  .home-hero-title-cluster {
+    display: contents;
+  }
+
   .home-hero-title-line {
     display: block;
     color: transparent;
@@ -367,10 +371,20 @@ section {
     }
 
     .home-hero-title {
-      gap: 0.16em;
+      gap: 0;
       font-size: 2.75rem;
       line-height: 0.98;
       letter-spacing: -0.05em;
+    }
+
+    .home-hero-title-cluster {
+      display: flex;
+      flex-direction: column;
+      gap: 0.16em;
+    }
+
+    .home-hero-title-cluster-bottom {
+      margin-top: clamp(2.5rem, 7svh, 4rem);
     }
 
     .home-hero-lower-copy {
@@ -429,7 +443,7 @@ section {
 
   @media (max-width: 767px) {
     .figure-orange {
-      top: -1rem;
+      top: clamp(-10.5rem, -22svh, -7.5rem);
       right: -1.25rem;
       width: 6.1rem;
       height: 12.6rem;

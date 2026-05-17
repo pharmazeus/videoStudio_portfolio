@@ -140,7 +140,8 @@ From content and websites to AI-assisted workflows, I help businesses present be
 - The homepage hero should fill the first mobile viewport so the next section seam is not visible on entry.
 - Mobile hero copy should breathe vertically, with the headline tucked close to the floating header and CTA area lower.
 - The mobile hero play figure should stay prominent, warm copper, fully clickable, and visually behind the text.
-- On mobile, the hero play figure should float near the viewport middle between the headline and lower copy without changing its tuned size.
+- On mobile, the hero headline splits into two visible clusters with a clear vertical gap between them: the top cluster reads "I help businesses / look clear online" and the bottom cluster reads "and turn attention into action."
+- On mobile, the hero play figure sits in the right-side gap between the two headline clusters without changing its tuned size.
 - The mobile navigation active card should stay compact and centered behind only the focused item.
 
 ### Homepage section order
