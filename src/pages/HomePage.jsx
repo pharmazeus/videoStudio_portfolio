@@ -110,18 +110,24 @@ function ServiceCard({ item, index }) {
         />
       </div>
 
-      <div className="relative z-10 flex flex-col p-6 sm:p-8">
-        <p className="text-xs font-bold tracking-[0.2em] text-[#E68A45]">0{index + 1}</p>
-        <h3 className="mt-3 text-xl font-semibold leading-tight tracking-tight text-white/95 sm:text-2xl">{item.title}</h3>
-        <p className="mt-4 text-sm font-light leading-[1.8] text-white/60 sm:text-base">{item.summary}</p>
+      <div className="home-service-card-body">
+        <div className="home-service-card-header">
+          <p className="home-service-card-index">0{index + 1}</p>
+          <h3 className="home-service-card-title">{item.title}</h3>
+        </div>
+
+        <p className="home-service-card-summary">{item.summary}</p>
+
         {pricingCategory ? (
-          <button
-            type="button"
-            className="mt-8 inline-flex self-start items-center justify-center rounded-full border border-[#E68A45]/40 bg-gradient-to-br from-[#E68A45]/10 to-transparent px-6 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:-translate-y-0.5 hover:border-[#E68A45]/80 hover:bg-[#E68A45]/20 hover:shadow-[0_4px_20px_rgba(230,138,69,0.15)] active:translate-y-0 active:scale-95"
-            onClick={handlePricesScroll}
-          >
-            See prices
-          </button>
+          <div className="home-service-card-footer">
+            <button
+              type="button"
+              className="home-service-card-prices-cta"
+              onClick={handlePricesScroll}
+            >
+              See prices
+            </button>
+          </div>
         ) : null}
       </div>
     </article>

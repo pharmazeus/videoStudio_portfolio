@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git pull *)",
+      "Bash(git commit -m ' *)",
+      "Bash(python3 -c \"import json,sys; data=json.load\\(sys.stdin\\); [print\\(f\\\\\"{r['workflowName']:8} {r['event']:14} {r['headBranch']:25} {r['headSha'][:8]} {r['status']:11} {r['conclusion'] or '-':10} {r['createdAt']}\\\\\"\\) for r in data]\")"
+    ]
+  }
+}

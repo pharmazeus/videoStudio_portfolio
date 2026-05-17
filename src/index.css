@@ -546,6 +546,9 @@ section {
   .home-service-card {
     --service-ease: cubic-bezier(0.22, 1, 0.36, 1);
     position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     min-height: 100%;
     overflow: hidden;
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -620,11 +623,52 @@ section {
   .home-service-card-media {
     position: relative;
     z-index: 1;
+    flex: 0 0 auto;
     aspect-ratio: 16 / 10;
     overflow: hidden;
     border-radius: 0.75rem;
     border: 1px solid rgba(255, 255, 255, 0.12);
     background: rgba(255, 255, 255, 0.045);
+  }
+
+  .home-service-card-body {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex: 1 1 auto;
+    min-height: 0;
+    flex-direction: column;
+    gap: 1.35rem;
+    padding: 1.5rem;
+  }
+
+  .home-service-card-header {
+    display: flex;
+    min-height: 5.15rem;
+    flex: 0 0 auto;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  .home-service-card-prices-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.5rem;
+    border: 1px solid rgba(230, 138, 69, 0.4);
+    border-radius: 999px;
+    background: linear-gradient(135deg, rgba(230, 138, 69, 0.1), transparent);
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1;
+    padding: 0.65rem 1.5rem;
+    transition:
+      transform 300ms ease,
+      border-color 300ms ease,
+      background-color 300ms ease,
+      box-shadow 300ms ease;
   }
 
   .home-service-card-media::after {
@@ -661,23 +705,54 @@ section {
   .home-service-card-index {
     font-size: 0.7rem;
     font-weight: 700;
-    letter-spacing: 0.24em;
+    letter-spacing: 0.2em;
     color: #e68a45;
   }
 
   .home-service-card-title {
-    margin-top: 0.85rem;
-    color: #f8f5f1;
-    font-size: clamp(1.2rem, 1.6vw, 1.55rem);
-    font-weight: 700;
-    line-height: 1.12;
+    margin-top: 0.75rem;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 1.15;
   }
 
   .home-service-card-summary {
-    margin-top: 0.8rem;
-    color: rgba(255, 255, 255, 0.68);
-    font-size: 0.9rem;
-    line-height: 1.65;
+    display: -webkit-box;
+    flex: 1 1 auto;
+    margin: 0;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.875rem;
+    font-weight: 300;
+    line-height: 1.8;
+  }
+
+  .home-service-card-footer {
+    display: flex;
+    flex: 0 0 auto;
+    margin-top: auto;
+    min-height: 2.5rem;
+    align-items: flex-end;
+  }
+
+  .home-service-card-prices-cta:hover {
+    border-color: rgba(230, 138, 69, 0.8);
+    background-color: rgba(230, 138, 69, 0.2);
+    box-shadow: 0 0.25rem 1.25rem rgba(230, 138, 69, 0.15);
+    transform: translate3d(0, -0.125rem, 0);
+  }
+
+  .home-service-card-prices-cta:active {
+    transform: translate3d(0, 0, 0) scale(0.95);
+  }
+
+  .home-service-card-prices-cta:focus-visible {
+    outline: 2px solid rgba(230, 138, 69, 0.72);
+    outline-offset: 3px;
   }
 
   .home-service-card-outcomes {
@@ -741,6 +816,14 @@ section {
     .home-service-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 1.1rem;
+    }
+
+    .home-service-card-body {
+      padding: 2rem;
+    }
+
+    .home-service-card-title {
+      font-size: 1.5rem;
     }
   }
 
@@ -1799,6 +1882,7 @@ section {
     .home-service-card,
     .home-service-card::after,
     .home-service-card-image,
+    .home-service-card-prices-cta,
     .home-service-card-action {
       transition: none;
     }
@@ -1811,6 +1895,8 @@ section {
     .home-service-card.is-visible:hover,
     .home-service-card.is-visible:active,
     .home-service-card.is-visible:hover .home-service-card-image,
+    .home-service-card-prices-cta:hover,
+    .home-service-card-prices-cta:active,
     .home-service-card-action:hover,
     .home-service-card-action:active {
       transform: none;
