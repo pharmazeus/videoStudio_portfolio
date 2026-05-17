@@ -135,6 +135,14 @@ From content and websites to AI-assisted workflows, I help businesses present be
 - Start a Project
 - See My Work
 
+### Mobile hero and menu behavior
+
+- The homepage hero should fill the first mobile viewport so the next section seam is not visible on entry.
+- Mobile hero copy should breathe vertically, with the headline tucked close to the floating header and CTA area lower.
+- The mobile hero play figure should stay prominent, warm copper, fully clickable, and visually behind the text.
+- On mobile, the hero play figure should float near the viewport middle between the headline and lower copy without changing its tuned size.
+- The mobile navigation active card should stay compact and centered behind only the focused item.
+
 ### Homepage section order
 
 1. Hero
