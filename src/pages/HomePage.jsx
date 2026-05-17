@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import { useNavigate } from "react-router-dom";
 import {
   Compass,
   Hammer,
@@ -47,10 +48,18 @@ const homeServiceOrder = [
   "web-development",
 ];
 
+const servicePricingCategory = {
+  "video-editing": "one-off-projects",
+  "video-production": "one-off-projects",
+  "brand-content-growth": "monthly-retainers",
+  "web-development": "web-offers",
+};
+
 function ServiceCard({ item, index }) {
   const cardRef = useRef(null);
   const [hasEntered, setHasEntered] = useState(false);
-  const showPricesAction = item.slug === "brand-content-growth";
+  const navigate = useNavigate();
+  const pricingCategory = servicePricingCategory[item.slug];
 
   useEffect(() => {
     const card = cardRef.current;
@@ -81,11 +90,8 @@ function ServiceCard({ item, index }) {
   }, []);
 
   const handlePricesScroll = () => {
-    gsap.to(window, {
-      duration: 1,
-      scrollTo: { y: "#pricing-preview", offsetY: 70 },
-      ease: "power3.inOut",
-    });
+    if (!pricingCategory) return;
+    navigate(`/pricing#${pricingCategory}`);
   };
 
   return (
@@ -108,7 +114,7 @@ function ServiceCard({ item, index }) {
         <p className="text-xs font-bold tracking-[0.2em] text-[#E68A45]">0{index + 1}</p>
         <h3 className="mt-3 text-xl font-semibold leading-tight tracking-tight text-white/95 sm:text-2xl">{item.title}</h3>
         <p className="mt-4 text-sm font-light leading-[1.8] text-white/60 sm:text-base">{item.summary}</p>
-        {showPricesAction ? (
+        {pricingCategory ? (
           <button
             type="button"
             className="mt-8 inline-flex self-start items-center justify-center rounded-full border border-[#E68A45]/40 bg-gradient-to-br from-[#E68A45]/10 to-transparent px-6 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:-translate-y-0.5 hover:border-[#E68A45]/80 hover:bg-[#E68A45]/20 hover:shadow-[0_4px_20px_rgba(230,138,69,0.15)] active:translate-y-0 active:scale-95"

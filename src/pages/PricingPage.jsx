@@ -1,3 +1,6 @@
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+
 import CTAButton from "../components/CTAButton";
 import PricingPackageCard from "../components/PricingPackageCard";
 import SectionTitle from "../components/SectionTitle";
@@ -21,6 +24,19 @@ function createServiceSelectionPath(item) {
 }
 
 function PricingPage() {
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (!hash) return;
+    const id = hash.replace(/^#/, "");
+    const target = document.getElementById(id);
+    if (!target) return;
+    const frame = window.requestAnimationFrame(() => {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [hash]);
+
   return (
     <section className="pricing-page relative isolate overflow-hidden py-12 md:py-16">
       <div aria-hidden="true" className="pricing-page-glow pricing-page-glow-top" />
@@ -43,7 +59,11 @@ function PricingPage() {
             if (items.length === 0) return null;
 
             return (
-              <div key={category.slug} className="pricing-category-section">
+              <div
+                key={category.slug}
+                id={category.slug}
+                className="pricing-category-section scroll-mt-28"
+              >
                 <h2 className="text-2xl font-semibold md:text-3xl">{category.title}</h2>
                 <p className="mt-2 max-w-3xl text-white-50">{category.description}</p>
 
