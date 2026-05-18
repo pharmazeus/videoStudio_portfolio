@@ -12,7 +12,7 @@ export function getYouTubeVideoId(url = "") {
       return segments[0] ?? "";
     }
 
-    if (host.endsWith("youtube.com")) {
+    if (host === "youtube.com" || host.endsWith(".youtube.com")) {
       if (segments[0] === "shorts" || segments[0] === "embed") {
         return segments[1] ?? "";
       }
@@ -46,7 +46,7 @@ export function inferYouTubeOrientationFromUrl(url = "") {
     const host = parsedUrl.hostname.replace(/^www\./, "");
     const segments = parsedUrl.pathname.split("/").filter(Boolean);
 
-    if (host.endsWith("youtube.com") && segments[0] === "shorts") {
+    if ((host === "youtube.com" || host.endsWith(".youtube.com")) && segments[0] === "shorts") {
       return "portrait";
     }
 
