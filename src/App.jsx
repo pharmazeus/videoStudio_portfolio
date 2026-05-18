@@ -1,18 +1,29 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import { Analytics } from "@vercel/analytics/react";
 
 import SiteLayout from "./components/SiteLayout";
 
-const HomePage = lazy(() => import("./pages/HomePage"));
-const AboutPage = lazy(() => import("./pages/AboutPage"));
-const CaseStudyPage = lazy(() => import("./pages/CaseStudyPage"));
-const ContactPage = lazy(() => import("./pages/ContactPage"));
-const PricingPage = lazy(() => import("./pages/PricingPage"));
-const RecruiterPortfolioPage = lazy(() => import("./pages/RecruiterPortfolioPage"));
-const ServicesPage = lazy(() => import("./pages/ServicesPage"));
-const WorkPage = lazy(() => import("./pages/WorkPage"));
+const pageModules = {
+  HomePage: () => import("./pages/HomePage"),
+  AboutPage: () => import("./pages/AboutPage"),
+  CaseStudyPage: () => import("./pages/CaseStudyPage"),
+  ContactPage: () => import("./pages/ContactPage"),
+  PricingPage: () => import("./pages/PricingPage"),
+  RecruiterPortfolioPage: () => import("./pages/RecruiterPortfolioPage"),
+  ServicesPage: () => import("./pages/ServicesPage"),
+  WorkPage: () => import("./pages/WorkPage"),
+};
+
+const HomePage = lazy(pageModules.HomePage);
+const AboutPage = lazy(pageModules.AboutPage);
+const CaseStudyPage = lazy(pageModules.CaseStudyPage);
+const ContactPage = lazy(pageModules.ContactPage);
+const PricingPage = lazy(pageModules.PricingPage);
+const RecruiterPortfolioPage = lazy(pageModules.RecruiterPortfolioPage);
+const ServicesPage = lazy(pageModules.ServicesPage);
+const WorkPage = lazy(pageModules.WorkPage);
 
 function RouteFallback() {
   return (
@@ -20,14 +31,24 @@ function RouteFallback() {
       aria-hidden="true"
       className="flex min-h-[60dvh] w-full items-center justify-center"
     >
-      <div className="size-10 animate-pulse rounded-full bg-copper-50/40" />
+      <div className="size-10 animate-pulse rounded-full bg-copper-50/20" />
     </div>
   );
 }
 
 function App() {
+  useEffect(() => {
+    // Pre-fetch all routes in background after initial load
+    const prefetchTimer = setTimeout(() => {
+      Object.values(pageModules).forEach((importFn) => {
+        importFn().catch(() => {});
+      });
+    }, 500);
+    return () => clearTimeout(prefetchTimer);
+  }, []);
+
   return (
-    <>
+    <div className="site-fade-in">
       <Routes>
         <Route element={<SiteLayout />}>
           <Route
@@ -101,7 +122,7 @@ function App() {
       </Routes>
       <SpeedInsights />
       <Analytics />
-    </>
+    </div>
   );
 }
 

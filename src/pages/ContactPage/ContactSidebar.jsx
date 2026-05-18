@@ -13,7 +13,7 @@ function ContactSidebar() {
 
   return (
     <aside className="space-y-5">
-      <article className="card-border rounded-xl p-5 md:p-6">
+      <article className="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#121214]/60 p-6 backdrop-blur-xl shadow-[0_24px_56px_rgba(0,0,0,0.24),inset_0_1px_0_rgba(255,255,255,0.08)] md:p-8">
         <h2 className="text-xl font-semibold">Quick actions</h2>
         <p className="mt-3 text-sm text-white-50">
           Choose the fastest path if you want to reach out directly while the
@@ -35,7 +35,7 @@ function ContactSidebar() {
         </div>
       </article>
 
-      <article className="card-border rounded-xl p-5 md:p-6">
+      <article className="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#121214]/60 p-6 backdrop-blur-xl shadow-[0_24px_56px_rgba(0,0,0,0.24),inset_0_1px_0_rgba(255,255,255,0.08)] md:p-8">
         <h2 className="text-xl font-semibold">Project scope types</h2>
         <ul className="mt-4 space-y-2 text-sm text-white-50">
           {contactFormOptions.map((option) => (
@@ -44,7 +44,7 @@ function ContactSidebar() {
         </ul>
       </article>
 
-      <article className="card-border rounded-xl p-5 md:p-6">
+      <article className="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#121214]/60 p-6 backdrop-blur-xl shadow-[0_24px_56px_rgba(0,0,0,0.24),inset_0_1px_0_rgba(255,255,255,0.08)] md:p-8">
         <h2 className="text-xl font-semibold">Direct channels</h2>
         <div className="mt-4 flex flex-wrap gap-3">
           {contactDirectChannels.map((item) => {

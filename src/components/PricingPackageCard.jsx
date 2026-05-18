@@ -20,6 +20,33 @@ function getPriceRangeLabel(item) {
   )}`;
 }
 
+function PricingPackagePoster({ poster, eager }) {
+  return (
+    <div className="pricing-package-card-poster">
+      <picture>
+        <source
+          media="(min-width: 768px)"
+          type="image/webp"
+          srcSet={poster.webp1440}
+        />
+        <source type="image/webp" srcSet={poster.webp960} />
+        <img
+          src={poster.jpg960}
+          srcSet={`${poster.jpg960} 960w, ${poster.jpg1440} 1440w`}
+          sizes="(min-width: 1024px) 28rem, (min-width: 640px) 50vw, 100vw"
+          alt={poster.alt}
+          width="1440"
+          height="810"
+          decoding="async"
+          loading={eager ? "eager" : "lazy"}
+          fetchPriority={eager ? "high" : "auto"}
+          className="pricing-package-card-poster-img"
+        />
+      </picture>
+    </div>
+  );
+}
+
 function PricingPackageCard({
   item,
   ctaTo,
@@ -27,12 +54,24 @@ function PricingPackageCard({
   ctaSize = "md",
   ctaClassName = "",
   showCta = true,
+  eager = false,
 }) {
+  const hasPoster = Boolean(item.poster);
+  const articleClassName = [
+    "pricing-package-card",
+    item.featured ? "is-featured" : "",
+    hasPoster ? "has-poster" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
-    <article
-      className={`pricing-package-card ${item.featured ? "is-featured" : ""}`}
-    >
+    <article className={articleClassName}>
       <div className="pricing-package-card-inner">
+        {hasPoster ? (
+          <PricingPackagePoster poster={item.poster} eager={eager} />
+        ) : null}
+
         <header className="pricing-package-card-header">
           <div className="pricing-package-card-topline">
             <p className="pricing-package-card-kicker">

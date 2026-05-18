@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 
 import CTAButton from "../components/CTAButton";
+import HeroActionButtons from "../components/HeroActionButtons";
 import PricingPackageCard from "../components/PricingPackageCard";
 import SectionTitle from "../components/SectionTitle";
 import VideoWorkCard from "../components/VideoWorkCard";
@@ -261,14 +262,7 @@ function HomePage() {
                   {heroContent.subheadline}
                 </p>
 
-                <div className="home-hero-actions mt-8 flex flex-wrap items-center gap-3 md:gap-4">
-                  <CTAButton to={heroContent.primaryCta.path}>
-                    {heroContent.primaryCta.label}
-                  </CTAButton>
-                  <CTAButton to={heroContent.secondaryCta.path} variant="secondary">
-                    {heroContent.secondaryCta.label}
-                  </CTAButton>
-                </div>
+                <HeroActionButtons />
               </div>
             </div>
 

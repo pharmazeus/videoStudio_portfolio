@@ -44,21 +44,32 @@ function Field({
 
   return (
     <div className={className}>
-      <label htmlFor={fieldId}>{label}</label>
+      <label htmlFor={fieldId} className="mb-2 block text-sm font-medium text-white-50 uppercase tracking-[0.08em]">
+        {label}
+      </label>
       {as === "select" ? (
         <select
           {...sharedProps}
-          className="w-full rounded-md bg-blue-100 px-4 py-4 text-sm text-white placeholder:text-blue-50 md:text-base"
+          className="w-full appearance-none rounded-xl border border-white/10 bg-[#121214]/80 backdrop-blur-md px-4 py-3 text-sm text-white placeholder-white/30 outline-none transition-all focus:border-[#d4865d]/50 focus:bg-white/[0.03] focus:shadow-[0_0_15px_rgba(212,134,93,0.15)] md:text-base"
         >
           {children}
         </select>
       ) : as === "textarea" ? (
-        <textarea {...sharedProps} rows={rows} />
+        <textarea
+          {...sharedProps}
+          rows={rows}
+          className="w-full rounded-xl border border-white/10 bg-[#121214]/80 backdrop-blur-md px-4 py-3 text-sm text-white placeholder-white/30 outline-none transition-all focus:border-[#d4865d]/50 focus:bg-white/[0.03] focus:shadow-[0_0_15px_rgba(212,134,93,0.15)] md:text-base resize-y"
+        />
       ) : (
-        <input {...sharedProps} type={type} autoComplete={autoComplete} />
+        <input
+          {...sharedProps}
+          type={type}
+          autoComplete={autoComplete}
+          className="w-full rounded-xl border border-white/10 bg-[#121214]/80 backdrop-blur-md px-4 py-3 text-sm text-white placeholder-white/30 outline-none transition-all focus:border-[#d4865d]/50 focus:bg-white/[0.03] focus:shadow-[0_0_15px_rgba(212,134,93,0.15)] md:text-base"
+        />
       )}
       {error ? (
-        <p id={errorId} className="form-field-error">
+        <p id={errorId} className="mt-2 text-sm text-red-400">
           {error}
         </p>
       ) : null}
