@@ -43,12 +43,24 @@ This file contains a growing ruleset that improves over time. **At session start
 ## Workflow Structure
 
 - `.agents/skills/` — local skills and operating docs.
+- `.agents/orchestration/` — shared multi-agent orchestration protocol.
+- `.agents/roles/` — shared role definitions for orchestrated work.
+- `.claude/agents/` — Claude Code project subagents that adapt the shared roles.
+- `.claude/skills/` — Claude Code project skills, including the orchestration wrapper.
 - `plans/current.md` — active objective, constraints, blockers, next concrete step.
 - `plans/backlog.md` — queued or deferred work.
 - `specs/` — feature specs and acceptance criteria.
 - `logs/sessions/` — concise session logs.
 - `decisions/` — durable decisions that should not be casually reopened.
 - `PLAN.md` — high-level roadmap.
+
+## Multi-Agent Orchestration
+
+- Use `.agents/orchestration/ORCHESTRATOR.md` when the user asks to orchestrate, launch agents, split work, run parallel reviewers, or says `оркеструй`, `запусти агентів`, or `розбий на агентів`.
+- Use `.agents/orchestration/ROLE_REGISTRY.md` and `.agents/roles/` as the shared source of truth for roles.
+- Use `.agents/orchestration/TASK_HANDOFF.md` for delegation and `.agents/orchestration/QUALITY_GATE.md` before declaring completion.
+- Use `claude --agent project-orchestrator` when starting Claude Code directly in coordinator mode, or delegate to `.claude/agents/*.md` from a normal session when appropriate.
+- Do not force a default Claude agent in settings; choose the orchestrator intentionally per task.
 
 ## Mandatory Design Reference
 
@@ -154,30 +166,6 @@ Avoid:
 Use this format in `logs/sessions/YYYY-MM-DD.md`:
 
 ```markdown
-# Session Summary
-
-## Objective
-
-[What this session aimed to accomplish]
-
-## What changed
-
-- ...
-- ...
-
-## Decisions made
-
-- ...
-- ...
-
-## Status
-
-[Done / Partial / Blocked]
-
-## Next step
-
-[One concrete next action]
-```
 
 ### Decision File Rules
 
@@ -211,24 +199,8 @@ Use this format:
 If normal closeout was missed, create a recovery note with:
 
 ```markdown
-# Emergency Session Recovery
 
-## Last thing I was doing
-
-...
-
-## What changed
-
-...
-
-## Current blocker or risk
-
-...
-
-## Next exact step
-
-...
-```
+### 
 
 ### Closeout Trigger
 
@@ -236,15 +208,7 @@ When the user indicates wrap-up or stable stopping point, perform session closeo
 
 Suggested command phrase: `close this session properly`.
 
-### Operational Principle
-
-Optimize continuity for:
-
-- clarity
-- resumability
-- low token cost
-- minimal reversible updates
-- explicit next-step handoff
+### 
 
 ## Safety and Git Discipline
 
