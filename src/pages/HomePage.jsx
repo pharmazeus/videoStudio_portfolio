@@ -18,6 +18,7 @@ import HeroActionButtons from "../components/HeroActionButtons";
 import PricingPackageCard from "../components/PricingPackageCard";
 import SectionTitle from "../components/SectionTitle";
 import VideoWorkCard from "../components/VideoWorkCard";
+import FaqSection from "../sections/FaqSection";
 import Testimonials from "../sections/Testimonials";
 import {
   caseStudies,
@@ -431,21 +432,7 @@ function HomePage() {
           <Testimonials />
         </div>
 
-        <section id="faq" className="home-section py-14 md:py-20">
-          <div className="mx-auto w-full max-w-[960px] px-5 md:px-10">
-            <SectionTitle eyebrow="FAQ" title="Common questions before we scope" />
-            <div className="mt-8 space-y-4">
-              {faqs.map((item) => (
-                <details key={item.question} className="card-border rounded-xl p-4">
-                  <summary className="cursor-pointer text-base font-semibold text-white">
-                    {item.question}
-                  </summary>
-                  <p className="mt-3 text-sm text-white-50">{item.answer}</p>
-                </details>
-              ))}
-            </div>
-          </div>
-        </section>
+        <FaqSection items={faqs} />
 
         <section id="final-cta" className="home-section-band border-t border-black-50 py-14 md:py-20">
           <div className="mx-auto w-full max-w-[960px] px-5 text-center md:px-10">
