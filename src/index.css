@@ -2310,7 +2310,7 @@ section {
   }
 
   .services-page {
-    @apply relative overflow-hidden py-14 md:py-20;
+    @apply relative overflow-x-hidden py-14 pb-20 md:py-20 md:pb-24;
     --services-ease: cubic-bezier(0.22, 1, 0.36, 1);
     background:
       radial-gradient(circle at 78% 8%, rgba(212, 134, 93, 0.18), transparent 30rem),
@@ -2333,7 +2333,6 @@ section {
   .services-hero,
   .services-system-band,
   .services-story-list,
-  .services-flow,
   .services-final-cta {
     @apply relative z-10 mx-auto w-full max-w-[1280px] px-5 md:px-10 xl:px-20;
   }
@@ -2349,7 +2348,6 @@ section {
   .services-hero-panel,
   .services-system-card,
   .services-story-card,
-  .services-flow-card,
   .services-final-cta {
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 8px;
@@ -2367,7 +2365,6 @@ section {
   .services-hero-panel,
   .services-system-card,
   .services-story-card,
-  .services-flow-card,
   .services-final-cta {
     opacity: 1;
     transform: translate3d(0, 0, 0);
@@ -2382,7 +2379,6 @@ section {
       .services-hero-panel,
       .services-system-card,
       .services-story-card,
-      .services-flow-card,
       .services-final-cta
     ) {
     opacity: 0;
@@ -2409,26 +2405,21 @@ section {
   }
 
   .services-system-band,
-  .services-flow,
   .services-final-cta {
     @apply mt-14 md:mt-20;
   }
 
-  .services-system-grid,
-  .services-flow-grid {
+  .services-system-grid {
     @apply grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3;
   }
 
-  .services-system-card,
-  .services-flow-card {
+  .services-system-card {
     @apply relative overflow-hidden p-5 md:p-6;
   }
 
   .services-system-card:hover,
-  .services-flow-card:hover,
   .services-story-card:hover {
     border-color: rgba(212, 134, 93, 0.4);
-    transform: translate3d(0, -4px, 0);
   }
 
   .services-story-list {
@@ -2436,19 +2427,37 @@ section {
   }
 
   .services-story-card {
-    @apply grid grid-cols-1 gap-0 overflow-hidden lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1fr)];
+    display: grid;
+    grid-template-areas:
+      "intro"
+      "media"
+      "details";
+    grid-template-columns: 1fr;
+    gap: 0;
+    overflow: hidden;
   }
 
   .services-story-card.is-reversed {
-    @apply lg:grid-cols-[minmax(0,1fr)_minmax(0,0.92fr)];
+    grid-template-areas:
+      "intro"
+      "media"
+      "details";
   }
 
-  .services-story-card.is-reversed .services-story-media {
-    @apply lg:order-2;
+  .services-story-intro {
+    grid-area: intro;
+    @apply relative z-10 p-6 pb-4 md:p-8 md:pb-5 xl:p-10 xl:pb-5;
+  }
+
+  .services-story-details {
+    grid-area: details;
+    @apply relative z-10 flex min-w-0 flex-col p-6 pt-0 md:p-8 md:pt-0 xl:p-10 xl:pt-0;
   }
 
   .services-story-media {
-    @apply relative min-h-[16rem] overflow-hidden bg-black md:min-h-[22rem] lg:min-h-full;
+    grid-area: media;
+    aspect-ratio: 4 / 3;
+    @apply relative overflow-hidden bg-black sm:aspect-[16/10] lg:mx-8 lg:my-8 lg:self-center;
   }
 
   .services-story-media::after {
@@ -2467,18 +2476,10 @@ section {
   }
 
   .services-story-image {
-    @apply h-full w-full object-cover;
+    @apply absolute inset-0 h-full w-full object-cover;
     filter: saturate(0.96) contrast(1.06) brightness(0.84);
     transform: scale(1.035);
     transition: transform 520ms var(--services-ease);
-  }
-
-  .services-story-card:hover .services-story-image {
-    transform: scale(1.07);
-  }
-
-  .services-story-copy {
-    @apply relative z-10 flex min-w-0 flex-col justify-center p-6 md:p-8 xl:p-10;
   }
 
   .services-story-kicker {
@@ -2494,6 +2495,11 @@ section {
   .services-story-body {
     @apply mt-4 text-sm leading-7 text-white-50 md:text-base;
     text-wrap: pretty;
+  }
+
+  .services-story-lede {
+    @apply mt-4 max-w-2xl text-base font-semibold leading-7 text-white md:text-xl;
+    text-wrap: balance;
   }
 
   .services-story-meta,
@@ -2515,19 +2521,56 @@ section {
     content: "";
   }
 
-  .services-flow-grid {
-    @apply mt-8;
+  .services-proof-chips {
+    @apply mt-6 flex flex-wrap gap-2;
   }
 
-  .services-flow-card {
-    @apply min-h-[14rem];
+  .services-proof-chips span {
+    @apply inline-flex min-h-9 items-center rounded-full border px-3 py-1.5 text-xs font-semibold text-white/80;
+    border-color: rgba(212, 134, 93, 0.28);
+    background: rgba(212, 134, 93, 0.08);
   }
 
   .services-final-cta {
-    @apply flex flex-col justify-between gap-6 overflow-hidden p-6 md:flex-row md:items-end md:p-8;
+    @apply mb-8 flex flex-col justify-between gap-6 overflow-hidden p-6 md:mb-0 md:flex-row md:items-end md:p-8;
     background:
       linear-gradient(125deg, rgba(212, 134, 93, 0.18), rgba(255, 255, 255, 0.05) 44%, rgba(14, 14, 16, 0.88)),
       rgba(14, 14, 16, 0.9);
+  }
+
+  @media (min-width: 1024px) {
+    .services-story-card {
+      grid-template-areas:
+        "media intro"
+        "media details";
+      grid-template-columns: minmax(0, 0.92fr) minmax(0, 1fr);
+    }
+
+    .services-story-card.is-reversed {
+      grid-template-areas:
+        "intro media"
+        "details media";
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.92fr);
+    }
+
+    .services-story-intro {
+      @apply self-end;
+    }
+
+    .services-story-details {
+      @apply self-start;
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .services-system-card:hover,
+    .services-story-card:hover {
+      transform: translate3d(0, -4px, 0);
+    }
+
+    .services-story-card:hover .services-story-image {
+      transform: scale(1.07);
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -2535,9 +2578,10 @@ section {
     .services-hero-panel,
     .services-system-card,
     .services-story-card,
+    .services-story-intro,
+    .services-story-details,
     .services-story-media::after,
     .services-story-image,
-    .services-flow-card,
     .services-final-cta {
       transition: none;
     }
@@ -2548,11 +2592,9 @@ section {
         .services-hero-panel,
         .services-system-card,
         .services-story-card,
-        .services-flow-card,
         .services-final-cta
       ),
     .services-system-card:hover,
-    .services-flow-card:hover,
     .services-story-card:hover,
     .services-story-card:hover .services-story-image {
       opacity: 1;
@@ -2812,7 +2854,7 @@ section {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center 35%;
+    object-position: center;
     transition: transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
@@ -2833,15 +2875,16 @@ section {
   .pricing-package-card.is-featured::after {
     content: "";
     position: absolute;
-    inset: -8% -12% auto auto;
-    width: 60%;
-    height: 60%;
+    /* Keep inside the card (parent has overflow-hidden) — top-right glow zone. */
+    inset: 0 0 auto auto;
+    width: 55%;
+    height: 55%;
     background: radial-gradient(
-      circle,
-      rgba(212, 134, 93, 0.22),
+      circle at 80% 20%,
+      rgba(212, 134, 93, 0.28),
       transparent 70%
     );
-    filter: blur(2rem);
+    filter: blur(1.5rem);
     pointer-events: none;
     animation: pricing-featured-pulse 6s ease-in-out infinite;
     z-index: 0;
