@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import CTAButton from "../components/CTAButton";
+import ResponsiveImage from "../components/ResponsiveImage";
 import { services } from "../constants";
 
 const servicePricingCategory = {
@@ -134,12 +135,16 @@ function ServicesPage() {
               </div>
 
               <div className="services-story-media">
-                <img
+                <ResponsiveImage
                   src={service.storyImage}
                   alt={service.storyImageAlt}
                   className="services-story-image"
+                  width="1586"
+                  height="992"
                   loading={index === 0 ? "eager" : "lazy"}
                   decoding="async"
+                  fetchPriority={index === 0 ? "high" : "auto"}
+                  sizes="(min-width: 1024px) 38vw, 100vw"
                 />
               </div>
 

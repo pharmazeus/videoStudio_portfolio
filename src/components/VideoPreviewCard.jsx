@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { getSafeExternalLinkAttributes } from "../lib/safeExternalLink";
 import { VIDEO_PLACEHOLDER_SRC } from "../lib/youtube.js";
+import ResponsiveImage from "./ResponsiveImage";
 
 function VideoPreviewCard({ item, mode = "home" }) {
   const cardRef = useRef(null);
@@ -12,6 +13,7 @@ function VideoPreviewCard({ item, mode = "home" }) {
   const hasPreviewClip = Boolean(media.previewSrc) && !videoFailed;
   const posterSrc = media.poster || VIDEO_PLACEHOLDER_SRC;
   const isPortrait = media.orientation === "portrait";
+  const shouldRenderVideo = hasPreviewClip && isNearViewport;
   const safeLink = getSafeExternalLinkAttributes(media.youtubeUrl);
   const LinkTag = safeLink ? "a" : "div";
   const frameClassName =
@@ -58,7 +60,7 @@ function VideoPreviewCard({ item, mode = "home" }) {
       className={`video-preview-card ${mode === "catalog" ? "video-preview-card-catalog" : ""}`}
     >
       <div className="video-preview-frame">
-        {hasPreviewClip ? (
+        {shouldRenderVideo ? (
           <video
             ref={videoRef}
             className={`w-full object-cover ${frameClassName}`}
@@ -74,12 +76,15 @@ function VideoPreviewCard({ item, mode = "home" }) {
             Your browser does not support the video tag.
           </video>
         ) : (
-          <img
+          <ResponsiveImage
             src={posterSrc}
             alt={media.description ?? item.title}
             className={`w-full object-cover ${frameClassName}`}
+            width={isPortrait ? "1080" : "1920"}
+            height={isPortrait ? "1920" : "1080"}
             loading="lazy"
             decoding="async"
+            sizes={mode === "catalog" ? "(min-width: 1280px) 25vw, (min-width: 768px) 50vw, 100vw" : "(min-width: 768px) 33vw, 100vw"}
             onError={(event) => {
               event.currentTarget.onerror = null;
               event.currentTarget.src = VIDEO_PLACEHOLDER_SRC;

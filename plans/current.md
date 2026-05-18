@@ -1,38 +1,30 @@
 # Current Execution State
 
 ## Current objective
-Pre-launch hardening for the `refactoring-ui` branch is complete locally; next step is to merge the PR into `main` and verify the production deploy on Vercel.
+Branch `prices-per-service-card`: `src/` restructure complete (HomePage, CaseStudyPage, NavBar split into folders; constants split into 8 domain files + barrel). Next step is user-side runtime QA in the browser before deciding whether to commit and merge.
 
 ## Success criteria
-- PR opened from `refactoring-ui` into `main` with the full pre-launch hardening changeset.
-- Vercel preview deploy of the PR loads cleanly: `/`, `/work`, `/about`, `/contact` render without console errors.
-- `/api/contact` POST returns `200 ok` on a real submission; 4th submission within 60s from the same IP returns `429 rate_limited`.
-- Production headers include `Strict-Transport-Security: max-age=31536000; includeSubDomains; preload` and `Content-Security-Policy` no longer contains `mailto:` in `form-action`.
-- Initial JS payload on `/` is materially smaller than before (lazy routes confirmed via Network tab — non-Home routes load their own chunk only on navigation).
-- Lighthouse mobile Performance score > 80 on the deployed preview.
-- No horizontal scroll on iPhone 12 viewport; hero image visible; header nav fully functional on mobile.
+- HomePage `/` renders with all 7 sections; GSAP figures animate (orange floats up/rotates, dark floats down/rotates); pause/resume on tab visibility change; service cards fade in via IntersectionObserver; "See prices" navigates to `/pricing#<category>`; orange play button smooth-scrolls to Services Overview.
+- CaseStudyPage `/work/<slug>` renders; hero video plays; video error falls back to poster.
+- NavBar mobile menu (375px viewport): toggle opens menu; body scroll lock holds; pointer swipe works with velocity + snap; wheel-scroll snap works; tap on a dot switches slide; route change closes menu and resets `activeSlide`.
+- All other routes (`/work`, `/services`, `/pricing`, `/about`, `/recruiters`, `/contact`) render unchanged.
+- Visual diff before/after this branch: pixel-identical.
 
 ## Constraints
-- Do not touch unrelated branches.
-- Public contact API contract is now: `200 ok` / `400 validation` / `405 method_not_allowed` / `429 rate_limited` / `500 send_failed`.
-- Keep the existing routing, layout, and design tokens intact — this PR is hardening, not redesign.
+- Pure file reorganization — no behavior, no CSS class, no route change.
+- Do not rename CSS classes (`home-hero*`, `home-service-card*`, `home-section*`, `homepage-atmosphere*`, `figure-orange`, `figure-dark`, `home-pricing-preview-*`, `navbar-*`, `long-term-client-*`).
+- `App.jsx` and `SiteLayout.jsx` unchanged — folder pattern resolves via Vite (verified by build).
 
 ## Known blockers
-- Local `npm run test` cannot start: jsdom `CustomElementRegistry.js` MODULE_NOT_FOUND. Environmental (corrupt or version-mismatched `node_modules`), not a code regression. Lint and build pass. Fix candidates for the next session: `rm -rf node_modules package-lock.json && npm install`, or pin `jsdom` to a known-good major in `package.json`, or switch the test environment to `happy-dom`.
-- The current Resend API key may have appeared in screenshots/dev logs before this hardening pass. Rotation in [resend.com/api-keys](https://resend.com/api-keys) and updating Vercel project env (`RESEND_API_KEY`, both Production and Preview) is a recommended pre-launch step. User action, not automatable here.
+- `src/pages/ContactPage/ContactPage.test.jsx` fails with `@testing-library/user-event` module resolution error. **Pre-existing** (identical failure on base commit), unrelated to this refactor. Fix candidates: `rm -rf node_modules package-lock.json && npm install`, or pin `@testing-library/user-event` to a known-good version.
 
 ## Next concrete step
-Open the created PR and confirm the Vercel preview deploy URL renders. Then run the `/contact` rate-limit smoke test on the preview (4 rapid POSTs from the same IP — 4th should return 429), check response headers for HSTS, and run a mobile Lighthouse audit on the preview URL.
+User runtime QA in browser at all 8 routes + mobile NavBar (375px). The plan's Verification section (`/Users/vladislavmaydanskiy/.claude/plans/src-deep-spark.md`) lists exactly what to check. If all clean, commit the changeset.
 
 ## Relevant files
-- `api/contact.js`
-- `src/lib/contactForm.js`
-- `src/pages/ContactPage.jsx`
-- `src/App.jsx`
-- `src/pages/HomePage.jsx`
-- `src/index.css`
-- `index.html`
-- `vite.config.js`
-- `vercel.json`
-- `.gitignore`
-- `.env.example`
+- `src/pages/HomePage/` (new — `index.jsx` + 7 sections + `components/ServiceCard.jsx` + `constants.js`)
+- `src/pages/CaseStudyPage/` (new — `index.jsx` + `components/CaseStudyHeroMedia.jsx`)
+- `src/components/NavBar/` (new — `index.jsx` + `NavBarHeader.jsx` + `NavBarMobileMenu.jsx` + `useNavBarGestures.js`)
+- `src/constants/` (new domain files: `hero.js`, `services.js`, `pricing.js`, `video.js`, `caseStudies.js`, `home.js`, `about.js`, `recruiter.js`; `index.js` is now a barrel)
+- Deleted: `src/pages/HomePage.jsx`, `src/pages/CaseStudyPage.jsx`, `src/components/NavBar.jsx`
+- Unchanged: `src/App.jsx`, `src/components/SiteLayout.jsx`, `src/sections/*`, all other pages, all CSS

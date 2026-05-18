@@ -6,6 +6,7 @@ import { videoTypeMeta } from "../constants";
 import { getSafeExternalLinkAttributes } from "../lib/safeExternalLink";
 import { VIDEO_PLACEHOLDER_SRC } from "../lib/youtube.js";
 import CTAButton from "./CTAButton";
+import ResponsiveImage from "./ResponsiveImage";
 
 function VideoWorkCardMedia({
   item,
@@ -19,6 +20,8 @@ function VideoWorkCardMedia({
   const [videoFailed, setVideoFailed] = useState(false);
   const hasPreviewClip = Boolean(item.media.previewSrc) && !videoFailed;
   const posterSrc = item.media.poster || VIDEO_PLACEHOLDER_SRC;
+  const isPortrait = item.media.orientation === "portrait";
+  const shouldRenderVideo = hasPreviewClip && isNearViewport;
   const safeLink = isLinked
     ? getSafeExternalLinkAttributes(item.media.youtubeUrl)
     : null;
@@ -67,7 +70,7 @@ function VideoWorkCardMedia({
       className="video-work-media-shell focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-50/80 focus-visible:ring-offset-2 focus-visible:ring-offset-black"
     >
       <div className="video-work-media-frame">
-        {hasPreviewClip ? (
+        {shouldRenderVideo ? (
           <video
             ref={videoRef}
             className="video-work-media-asset"
@@ -83,12 +86,15 @@ function VideoWorkCardMedia({
             Your browser does not support the video tag.
           </video>
         ) : (
-          <img
+          <ResponsiveImage
             src={posterSrc}
             alt={item.title}
             className="video-work-media-asset"
+            width={isPortrait ? "1080" : "1920"}
+            height={isPortrait ? "1920" : "1080"}
             loading="lazy"
             decoding="async"
+            sizes="(min-width: 1280px) 40rem, (min-width: 768px) 50vw, 100vw"
             onError={(event) => {
               event.currentTarget.onerror = null;
               event.currentTarget.src = VIDEO_PLACEHOLDER_SRC;
