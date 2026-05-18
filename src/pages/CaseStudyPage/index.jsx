@@ -1,10 +1,10 @@
-import { useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 
-import CTAButton from "../components/CTAButton";
-import SectionTitle from "../components/SectionTitle";
-import { caseStudies, getCaseStudyBySlug, videoTypeMeta } from "../constants";
-import { VIDEO_PLACEHOLDER_SRC } from "../lib/youtube.js";
+import CTAButton from "../../components/CTAButton";
+import SectionTitle from "../../components/SectionTitle";
+import { caseStudies, getCaseStudyBySlug, videoTypeMeta } from "../../constants";
+
+import CaseStudyHeroMedia from "./components/CaseStudyHeroMedia";
 
 function getRelatedCaseStudies(caseStudy) {
   const videoStudies = caseStudies.filter(
@@ -39,56 +39,6 @@ function getRelatedCaseStudies(caseStudy) {
         index,
     )
     .slice(0, 3);
-}
-
-function CaseStudyHeroMedia({ caseStudy }) {
-  const [videoFailed, setVideoFailed] = useState(false);
-  const isPortrait = caseStudy.media.orientation === "portrait";
-  const hasPreviewClip = Boolean(caseStudy.media.previewSrc) && !videoFailed;
-  const posterSrc = caseStudy.media.poster || VIDEO_PLACEHOLDER_SRC;
-  const assetClassName = isPortrait
-    ? "h-[560px] w-full object-contain md:h-[680px]"
-    : "h-[380px] w-full object-cover md:h-[480px]";
-
-  return (
-    <div className="relative bg-black">
-      <div className={isPortrait ? "mx-auto w-full max-w-[420px]" : "w-full"}>
-        {hasPreviewClip ? (
-          <video
-            className={assetClassName}
-            controls
-            preload="none"
-            poster={posterSrc}
-            playsInline
-            onError={() => setVideoFailed(true)}
-          >
-            <source src={caseStudy.media.previewSrc} type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        ) : (
-          <img
-            src={posterSrc}
-            alt={caseStudy.media.description}
-            className={assetClassName}
-            loading="lazy"
-            decoding="async"
-            onError={(event) => {
-              event.currentTarget.onerror = null;
-              event.currentTarget.src = VIDEO_PLACEHOLDER_SRC;
-            }}
-          />
-        )}
-      </div>
-
-      <div className="pointer-events-none absolute left-4 top-4 rounded-full border border-white/10 bg-black/70 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.14em] text-white-50 backdrop-blur-sm md:left-6 md:top-6">
-        {hasPreviewClip
-          ? "Preview Clip"
-          : caseStudy.media.previewSrc
-            ? "Poster Fallback"
-            : "Poster"}
-      </div>
-    </div>
-  );
 }
 
 function CaseStudyPage() {
