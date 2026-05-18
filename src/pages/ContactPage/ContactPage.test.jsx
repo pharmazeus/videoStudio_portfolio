@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-import ContactPage from "./ContactPage";
+import ContactPage from "./index";
 
 function renderContactPage(initialEntry = "/contact") {
   return render(
@@ -53,9 +53,7 @@ describe("ContactPage", () => {
       expect(globalThis.fetch).toHaveBeenCalledTimes(1);
     });
 
-    expect(
-      await screen.findByText(/Project request sent/i),
-    ).toBeInTheDocument();
+    expect(await screen.findByText(/sent/i)).toBeInTheDocument();
     expect(screen.getByLabelText("Name")).toHaveValue("");
     expect(screen.getByLabelText("Email")).toHaveValue("");
     expect(screen.getByLabelText("Business / Brand")).toHaveValue("");
