@@ -254,7 +254,7 @@ export const pricingPackages = [
       webp960: "/posters/pricing/starter-content-pack-960.webp",
       jpg1440: "/posters/pricing/starter-content-pack-1440.jpg",
       jpg960: "/posters/pricing/starter-content-pack-960.jpg",
-      alt: "Behind a camera on set, capturing a content shoot with a client in soft focus.",
+      alt: "Cinematic camera silhouetted on a tripod under a single copper light beam, against dark teal void.",
     },
   },
   {
@@ -279,7 +279,7 @@ export const pricingPackages = [
       webp960: "/posters/pricing/growth-content-pack-960.webp",
       jpg1440: "/posters/pricing/growth-content-pack-1440.jpg",
       jpg960: "/posters/pricing/growth-content-pack-960.jpg",
-      alt: "Editing multiple project timelines on calibrated monitors with copper desk lighting.",
+      alt: "Layered editing timeline tracks glowing in copper and teal against dark studio space.",
     },
   },
   {
@@ -304,7 +304,7 @@ export const pricingPackages = [
       webp960: "/posters/pricing/brand-engine-pack-960.webp",
       jpg1440: "/posters/pricing/brand-engine-pack-1440.jpg",
       jpg960: "/posters/pricing/brand-engine-pack-960.jpg",
-      alt: "Leading a small content team huddled around a planning board.",
+      alt: "Network of glowing copper nodes connected by teal filament lines, suggesting a content engine.",
     },
   },
   {
@@ -463,7 +463,7 @@ export const pricingPackages = [
       webp960: "/posters/pricing/landing-page-sprint-960.webp",
       jpg1440: "/posters/pricing/landing-page-sprint-1440.jpg",
       jpg960: "/posters/pricing/landing-page-sprint-960.jpg",
-      alt: "Sprinting on a single laptop, wireframe sketched on a notepad alongside.",
+      alt: "Single glowing rectangular page panel floating in dark teal void with copper rim light.",
     },
   },
   {
@@ -488,7 +488,7 @@ export const pricingPackages = [
       webp960: "/posters/pricing/starter-website-960.webp",
       jpg1440: "/posters/pricing/starter-website-1440.jpg",
       jpg960: "/posters/pricing/starter-website-960.jpg",
-      alt: "Building a focused three-page site structure on a single ultrawide monitor.",
+      alt: "Three glowing page panels stacked in 3D depth, lit by copper and teal.",
     },
   },
   {
@@ -513,7 +513,7 @@ export const pricingPackages = [
       webp960: "/posters/pricing/business-website-960.webp",
       jpg1440: "/posters/pricing/business-website-1440.jpg",
       jpg960: "/posters/pricing/business-website-960.jpg",
-      alt: "Moving through a multi-screen workspace with analytics, CMS, and design tools running.",
+      alt: "Abstract analytics dashboard with rising bar columns and an ascending line graph in copper and teal.",
     },
   },
   {
@@ -537,7 +537,7 @@ export const pricingPackages = [
       webp960: "/posters/pricing/custom-website-advanced-build-960.webp",
       jpg1440: "/posters/pricing/custom-website-advanced-build-1440.jpg",
       jpg960: "/posters/pricing/custom-website-advanced-build-960.jpg",
-      alt: "Architectural view of layered translucent panels representing custom system modules.",
+      alt: "Architectural wall of layered translucent panels lit in copper and teal, suggesting custom system modules.",
     },
   },
 ];

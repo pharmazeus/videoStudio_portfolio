@@ -9,8 +9,6 @@ import SectionTitle from "../components/SectionTitle";
 import { addOns, pricingCategories, pricingPackages } from "../constants";
 import { formatFromPrice } from "../lib/formatPrice";
 
-gsap.registerPlugin(ScrollTrigger);
-
 const pricingCategoryToProjectType = {
   "web-offers": "website",
   "monthly-retainers": "content",
@@ -28,7 +26,10 @@ function createServiceSelectionPath(item) {
 }
 
 function getMobileTabLabel(title) {
-  return title.replace(" Services", "").replace(" Retainers", "");
+  return title
+    .replace(" Services", "")
+    .replace(" Retainers", "")
+    .replace(" Projects", "");
 }
 
 function PricingPage() {
@@ -77,7 +78,7 @@ function PricingPage() {
           scrollTrigger: {
             trigger: sectionEl,
             start: "top 80%",
-            toggleActions: "play none none reverse",
+            once: true,
           },
         });
       });
@@ -112,7 +113,8 @@ function PricingPage() {
         }
       },
       {
-        rootMargin: "-30% 0px -55% 0px",
+        // Top offset accounts for the global header (~64px) + sticky pricing tabs (~60px).
+        rootMargin: "-160px 0px -55% 0px",
         threshold: [0, 0.25, 0.5, 0.75, 1],
       },
     );

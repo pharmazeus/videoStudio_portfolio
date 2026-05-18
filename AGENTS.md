@@ -24,6 +24,14 @@ Project operating guide for AI agents working in this repo.
 - Keep `public/` asset paths stable unless a migration is explicitly requested.
 - `docs/` is for app-facing documentation; continuity/process specs belong under `specs/`.
 
+## Multi-Agent Orchestration
+
+- Use `.agents/orchestration/ORCHESTRATOR.md` for complex tasks that should be split across agents or role passes.
+- Use `.agents/orchestration/ROLE_REGISTRY.md` and `.agents/roles/` as the source of truth for project roles.
+- Use `.agents/orchestration/TASK_HANDOFF.md` when delegating work and `.agents/orchestration/QUALITY_GATE.md` before declaring completion.
+- Trigger orchestration when the user asks to orchestrate, launch agents, split work, run parallel reviewers, or says `оркеструй`, `запусти агентів`, or `розбий на агентів`.
+- Shared `.agents` docs are authoritative; `.codex`, `.claude`, and `GEMINI.md` are runtime adapters.
+
 ## UI And Design
 
 - For UI/layout/styling work, inspect existing responsive behavior before changing shared components.

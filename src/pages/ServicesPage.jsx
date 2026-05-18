@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import CTAButton from "../components/CTAButton";
 import { services } from "../constants";
@@ -35,25 +35,6 @@ const systemCards = [
   },
 ];
 
-const flowCards = [
-  {
-    title: "Website",
-    body: "The destination where the offer, proof, and inquiry path become clear.",
-  },
-  {
-    title: "Editing",
-    body: "The layer that makes existing footage sharper, faster, and easier to finish.",
-  },
-  {
-    title: "Filming",
-    body: "The source of fresh proof, scenes, and visuals built around the final story.",
-  },
-  {
-    title: "Content rhythm",
-    body: "The recurring system that keeps the brand visible between bigger launches.",
-  },
-];
-
 function createContactPath(service) {
   const params = new URLSearchParams({
     projectType: projectTypeByService[service.slug] ?? "mixed-scope",
@@ -65,8 +46,7 @@ function createContactPath(service) {
 
 function ServicesPage() {
   const [isReady, setIsReady] = useState(false);
-  const featuredService = services[0];
-  const serviceCount = useMemo(() => services.length.toString().padStart(2, "0"), []);
+  const serviceCount = services.length.toString().padStart(2, "0");
 
   useEffect(() => {
     const frame = window.requestAnimationFrame(() => {
@@ -77,7 +57,7 @@ function ServicesPage() {
   }, []);
 
   return (
-    <main className={`services-page ${isReady ? "" : "is-loading"}`}>
+    <div className={`services-page ${isReady ? "" : "is-loading"}`}>
       <section className="services-hero">
         <div className="services-hero-grid">
           <div className="services-hero-copy">
@@ -147,6 +127,12 @@ function ServicesPage() {
               key={service.slug}
               className={`services-story-card ${index % 2 === 1 ? "is-reversed" : ""}`}
             >
+              <div className="services-story-intro">
+                <p className="services-story-kicker">0{index + 1} / {service.title}</p>
+                <h2 className="services-story-title">{service.title}</h2>
+                <p className="services-story-lede">{service.storyHeadline}</p>
+              </div>
+
               <div className="services-story-media">
                 <img
                   src={service.storyImage}
@@ -157,10 +143,7 @@ function ServicesPage() {
                 />
               </div>
 
-              <div className="services-story-copy">
-                <p className="services-story-kicker">0{index + 1} / {service.title}</p>
-                <h2 className="services-story-title">{service.title}</h2>
-                <p className="services-story-body">{service.storyHeadline}</p>
+              <div className="services-story-details">
                 <p className="services-story-body">{service.storyBody}</p>
 
                 <div className="services-story-meta">
@@ -174,27 +157,23 @@ function ServicesPage() {
                   </ol>
                 </div>
 
-                <div className="mt-6 grid gap-5 md:grid-cols-2">
+                <div className="mt-6">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-50">
-                      Useful for
+                      Key outputs
                     </p>
                     <ul className="services-story-list-block">
-                      {service.bestFor.map((item) => (
+                      {service.deliverables.slice(0, 3).map((item) => (
                         <li key={item}>{item}</li>
                       ))}
                     </ul>
                   </div>
-                  <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-50">
-                      Impact
-                    </p>
-                    <ul className="services-story-list-block">
-                      {service.proofPoints.map((item) => (
-                        <li key={item}>{item}</li>
-                      ))}
-                    </ul>
-                  </div>
+                </div>
+
+                <div className="services-proof-chips" aria-label={`${service.title} impact`}>
+                  {service.proofPoints.map((item) => (
+                    <span key={item}>{item}</span>
+                  ))}
                 </div>
 
                 <div className="mt-7 flex flex-wrap gap-3">
@@ -213,32 +192,6 @@ function ServicesPage() {
         })}
       </section>
 
-      <section className="services-flow" aria-labelledby="services-flow-title">
-        <div className="max-w-3xl">
-          <p className="section-eyebrow">Service flow</p>
-          <h2 id="services-flow-title" className="section-heading mt-4">
-            Pick one entry point, then build the rest around it.
-          </h2>
-          <p className="section-description mt-4">
-            The work can start with a page, an edit, a shoot, or a monthly
-            content rhythm. The important part is that each asset supports the
-            same business story.
-          </p>
-        </div>
-
-        <div className="services-flow-grid">
-          {flowCards.map((item, index) => (
-            <article key={item.title} className="services-flow-card">
-              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-copper-50">
-                0{index + 1}
-              </p>
-              <h3 className="mt-5 text-xl font-semibold text-white">{item.title}</h3>
-              <p className="mt-3 text-sm leading-7 text-white-50">{item.body}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
       <section className="services-final-cta" aria-labelledby="services-final-title">
         <div className="relative z-10 max-w-3xl">
           <p className="section-eyebrow">Start with the clearest next move</p>
@@ -251,15 +204,15 @@ function ServicesPage() {
           </p>
         </div>
         <div className="relative z-10 flex flex-wrap gap-3">
-          <CTAButton to={featuredService ? createContactPath(featuredService) : "/contact"}>
+          <CTAButton to="/contact">
             Start a Project
           </CTAButton>
           <CTAButton to="/pricing" variant="secondary">
-            Request a Quote
+            View Pricing
           </CTAButton>
         </div>
       </section>
-    </main>
+    </div>
   );
 }
 

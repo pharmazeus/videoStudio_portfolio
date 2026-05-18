@@ -202,19 +202,20 @@ Navbar CTA:
 
 I help businesses improve how they present, launch, and operate by combining content, websites, and automation into one execution layer.
 
-### Cards
+### Direction
 
-#### Content & Creative
+Follow `specs/services-page-redesign.md` as the detailed source of truth for the Services page redesign.
 
-Short-form content, brand visuals, editing, drone work, and creative direction for businesses that need stronger attention and presentation.
+Keep `/services` as one route and keep the four current services:
 
-#### Web & Launch Assets
+- Web Development & Launch
+- Video Editing
+- Video Production & Filming
+- Brand Content Growth
 
-Landing pages, portfolio websites, business sites, and lightweight web experiences designed to clarify the offer and improve conversion.
+The page should feel like a cinematic explanation of how these offers support a stronger digital presence. Use storytelling images, richer service explanations, homepage-aligned dark/copper styling, and purposeful animation.
 
-#### AI & Automation Systems
-
-Workflow automations, AI-assisted content systems, and lightweight internal tools that reduce repetitive work and make execution more efficient.
+Do not introduce new services, new routes, or pricing architecture changes.
 
 ---
 
