@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import ResponsiveImage from "../../../components/ResponsiveImage";
 import { servicePricingCategory } from "../constants";
 
 function ServiceCard({ item, index }) {
@@ -49,12 +50,15 @@ function ServiceCard({ item, index }) {
       style={{ "--service-card-delay": `${Math.min(index * 70, 210)}ms` }}
     >
       <div className="home-service-card-media">
-        <img
+        <ResponsiveImage
           src={item.image}
           alt={item.imageAlt}
           className="home-service-card-image"
+          width="1280"
+          height="800"
           loading="lazy"
           decoding="async"
+          sizes="(min-width: 1280px) 18rem, (min-width: 768px) 50vw, 100vw"
         />
       </div>
 

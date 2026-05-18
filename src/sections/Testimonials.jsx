@@ -2,104 +2,63 @@ import { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import CTAButton from "../components/CTAButton";
+import ResponsiveImage from "../components/ResponsiveImage";
 import TitleHeader from "../components/TitleHeader";
 import { longTermClients } from "../constants";
 
 gsap.registerPlugin(ScrollTrigger);
 
 function Testimonials() {
-  const [showClients, setShowClients] = useState(false);
-  const [isButtonVisible, setIsButtonVisible] = useState(false);
   const [expandedClients, setExpandedClients] = useState({});
 
-  // Refs for GSAP animations
   const sectionRef = useRef(null);
   const titleRef = useRef(null);
-  const buttonRef = useRef(null);
   const cardsRef = useRef([]);
 
-  // Initial GSAP animations setup
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Initial setup - hide title and cards
-      gsap.set(titleRef.current, { opacity: 0, y: 50 });
-      gsap.set(cardsRef.current, { opacity: 0, y: 80, scale: 0.8 });
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-      // Title animation on scroll
+    if (prefersReducedMotion) return undefined;
+
+    const ctx = gsap.context(() => {
+      const cards = cardsRef.current.filter(Boolean);
+
       if (titleRef.current) {
+        gsap.set(titleRef.current, { opacity: 0, y: 28 });
         gsap.to(titleRef.current, {
           opacity: 1,
           y: 0,
-          duration: 1.4,
+          duration: 0.9,
           ease: "power2.out",
           scrollTrigger: {
             trigger: titleRef.current,
             start: "top 85%",
-            end: "bottom 15%",
-            toggleActions: "play none none reverse",
+            once: true,
           },
         });
       }
 
-      if (sectionRef.current) {
-        ScrollTrigger.create({
-          trigger: sectionRef.current,
-          start: "top 75%",
-          onEnter: () => setIsButtonVisible(true),
-          onEnterBack: () => setIsButtonVisible(true),
-          onLeaveBack: () => setIsButtonVisible(false),
+      if (cards.length > 0) {
+        gsap.set(cards, { opacity: 0, y: 32 });
+        gsap.to(cards, {
+          opacity: 1,
+          y: 0,
+          duration: 0.9,
+          ease: "power2.out",
+          stagger: 0.08,
+          scrollTrigger: {
+            trigger: cards[0],
+            start: "top 88%",
+            once: true,
+          },
         });
       }
     }, sectionRef);
 
     return () => ctx.revert();
   }, []);
-
-  // Button animation when it appears
-  useEffect(() => {
-    if (isButtonVisible && !showClients && buttonRef.current) {
-      gsap.to(buttonRef.current, {
-        opacity: 1,
-        y: 0,
-        duration: 1.0,
-        ease: "power2.out",
-        delay: 0.1,
-      });
-    } else if (buttonRef.current) {
-      gsap.to(buttonRef.current, {
-        opacity: 0,
-        y: 20,
-        duration: 0.4,
-        ease: "power2.inOut",
-      });
-    }
-  }, [isButtonVisible, showClients]);
-
-  // Cards animation when clients are shown
-  useEffect(() => {
-    if (showClients && cardsRef.current.length > 0) {
-      gsap.to(cardsRef.current, {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 1.2,
-        ease: "power2.inOut",
-        stagger: 0.1,
-        delay: 0.1,
-      });
-    }
-  }, [showClients]);
-
-  const handleTriggerClients = () => {
-    setShowClients(true);
-
-    setTimeout(() => {
-      document.getElementById("testimonials").scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
-    }, 200);
-  };
 
   const toggleClientNote = (company) => {
     setExpandedClients((current) => ({
@@ -122,24 +81,8 @@ function Testimonials() {
           />
         </div>
 
-        {/* Trigger Button - Shows when user reaches bottom */}
-        {isButtonVisible && !showClients && (
-          <div className="flex-center mt-12 md:mt-16">
-            <CTAButton
-              ref={buttonRef}
-              onClick={handleTriggerClients}
-              size="lg"
-              className="min-w-[14rem] md:min-w-[16rem]"
-            >
-              <span className="block md:hidden">View Clients</span>
-              <span className="hidden md:block">View Long-term Clients</span>
-            </CTAButton>
-          </div>
-        )}
-
-        {/* Clients Section with GSAP Animation */}
-        <div className={`${showClients ? "block" : "hidden"}`}>
-          <div className="mx-auto mt-16 grid max-w-[56rem] grid-cols-1 gap-8">
+        <div>
+          <div className="mx-auto mt-12 grid max-w-[56rem] grid-cols-1 gap-8 md:mt-16">
             {longTermClients.map((client, index) => {
               const noteContent = client.note ?? client.review;
               const isExpanded = Boolean(expandedClients[client.company]);
@@ -164,12 +107,15 @@ function Testimonials() {
                 >
                   <div className="long-term-client-card-header">
                     <div className={logoShellClassName}>
-                      <img
+                      <ResponsiveImage
                         src={client.logoPath}
                         alt={`${client.company} logo`}
+                        width="658"
+                        height="524"
                         loading="lazy"
                         decoding="async"
                         className={logoClassName}
+                        sizes="(min-width: 768px) 14rem, 12rem"
                       />
                     </div>
 

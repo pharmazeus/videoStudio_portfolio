@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import ResponsiveImage from "../../../components/ResponsiveImage";
 import { VIDEO_PLACEHOLDER_SRC } from "../../../lib/youtube.js";
 
 function CaseStudyHeroMedia({ caseStudy }) {
@@ -27,12 +28,15 @@ function CaseStudyHeroMedia({ caseStudy }) {
             Your browser does not support the video tag.
           </video>
         ) : (
-          <img
+          <ResponsiveImage
             src={posterSrc}
             alt={caseStudy.media.description}
             className={assetClassName}
+            width={isPortrait ? "1080" : "1920"}
+            height={isPortrait ? "1920" : "1080"}
             loading="lazy"
             decoding="async"
+            sizes={isPortrait ? "(min-width: 768px) 420px, 100vw" : "100vw"}
             onError={(event) => {
               event.currentTarget.onerror = null;
               event.currentTarget.src = VIDEO_PLACEHOLDER_SRC;
