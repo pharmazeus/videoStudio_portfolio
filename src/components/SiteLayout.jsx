@@ -13,7 +13,10 @@ function SiteLayout() {
     <div className="min-h-dvh bg-black text-white">
       <ScrollToTop />
       <NavBar />
-      <main className={isHomePage ? "" : "pt-20 md:pt-24"}>
+      <main
+        key={pathname}
+        className={`page-transition-enter ${isHomePage ? "" : "pt-20 md:pt-24"}`}
+      >
         <Outlet />
       </main>
       <SiteFooter />

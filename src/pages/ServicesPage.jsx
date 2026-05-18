@@ -1,62 +1,265 @@
+import { useEffect, useMemo, useState } from "react";
+
 import CTAButton from "../components/CTAButton";
-import SectionTitle from "../components/SectionTitle";
 import { services } from "../constants";
 
+const servicePricingCategory = {
+  "video-editing": "one-off-projects",
+  "video-production": "one-off-projects",
+  "brand-content-growth": "monthly-retainers",
+  "web-development": "web-offers",
+};
+
+const projectTypeByService = {
+  "web-development": "website",
+  "video-editing": "video",
+  "video-production": "video",
+  "brand-content-growth": "content",
+};
+
+const systemCards = [
+  {
+    label: "01",
+    title: "Clarify the offer",
+    body: "Make the service, proof, and next step easier for a visitor to understand.",
+  },
+  {
+    label: "02",
+    title: "Create useful assets",
+    body: "Turn footage, pages, and content ideas into material that can support real sales conversations.",
+  },
+  {
+    label: "03",
+    title: "Keep the path active",
+    body: "Connect launches, edits, shoots, and content rhythm so the brand keeps moving after one project.",
+  },
+];
+
+const flowCards = [
+  {
+    title: "Website",
+    body: "The destination where the offer, proof, and inquiry path become clear.",
+  },
+  {
+    title: "Editing",
+    body: "The layer that makes existing footage sharper, faster, and easier to finish.",
+  },
+  {
+    title: "Filming",
+    body: "The source of fresh proof, scenes, and visuals built around the final story.",
+  },
+  {
+    title: "Content rhythm",
+    body: "The recurring system that keeps the brand visible between bigger launches.",
+  },
+];
+
+function createContactPath(service) {
+  const params = new URLSearchParams({
+    projectType: projectTypeByService[service.slug] ?? "mixed-scope",
+    service: service.title,
+  });
+
+  return `/contact?${params.toString()}`;
+}
+
 function ServicesPage() {
+  const [isReady, setIsReady] = useState(false);
+  const featuredService = services[0];
+  const serviceCount = useMemo(() => services.length.toString().padStart(2, "0"), []);
+
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => {
+      setIsReady(true);
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
+
   return (
-    <section className="py-12 md:py-16">
-      <div className="mx-auto w-full max-w-[1280px] px-5 md:px-10 xl:px-20">
-        <SectionTitle
-          eyebrow="Services"
-          title="Web, video, and content that make the offer easier to understand."
-          description="I help businesses turn scattered digital presence into a clear path: what you do, why it matters, what proof supports it, and how someone can take the next step."
-        />
+    <main className={`services-page ${isReady ? "" : "is-loading"}`}>
+      <section className="services-hero">
+        <div className="services-hero-grid">
+          <div className="services-hero-copy">
+            <p className="section-eyebrow">Services</p>
+            <h1 className="section-heading mt-4">
+              Services built around one digital system.
+            </h1>
+            <p className="section-description mt-5 max-w-3xl">
+              Websites, editing, filming, and content systems work better when
+              they point to the same story: what you do, why it matters, what
+              proof supports it, and how a client takes the next step.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <CTAButton to="/contact">Start a Project</CTAButton>
+              <CTAButton to="/pricing" variant="secondary">
+                View Pricing
+              </CTAButton>
+            </div>
+          </div>
 
-        <div className="mt-10 grid grid-cols-1 gap-6 md:grid-cols-2">
-          {services.map((service) => (
-            <article key={service.slug} className="card-border rounded-xl p-5 md:p-6">
-              <h2 className="text-2xl font-semibold">{service.title}</h2>
-              <p className="mt-3 text-sm text-white-50">{service.summary}</p>
+          <aside className="services-hero-panel" aria-label="Services overview">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-copper-50">
+              Connected offers
+            </p>
+            <p className="mt-6 text-6xl font-semibold leading-none text-white md:text-7xl">
+              {serviceCount}
+            </p>
+            <p className="mt-4 text-lg font-semibold text-white">
+              Practical ways to improve how the brand presents, launches, and
+              stays visible.
+            </p>
+            <p className="mt-4 text-sm leading-7 text-white-50">
+              Start with one priority or combine services into a focused
+              launch path. The work stays grounded in assets a business can
+              actually use.
+            </p>
+          </aside>
+        </div>
+      </section>
 
-              <h3 className="mt-5 text-sm font-semibold uppercase tracking-[0.12em] text-blue-50">
-                Includes
-              </h3>
-              <ul className="mt-3 space-y-2 text-sm text-white-50">
-                {service.deliverables.map((item) => (
-                  <li key={item}>- {item}</li>
-                ))}
-              </ul>
-
-              <h3 className="mt-5 text-sm font-semibold uppercase tracking-[0.12em] text-blue-50">
-                Business impact
-              </h3>
-              <ul className="mt-3 space-y-2 text-sm text-white-50">
-                {service.outcomes.map((item) => (
-                  <li key={item}>- {item}</li>
-                ))}
-              </ul>
+      <section className="services-system-band" aria-labelledby="services-system-title">
+        <div className="max-w-3xl">
+          <p className="section-eyebrow">How it connects</p>
+          <h2 id="services-system-title" className="section-heading mt-4">
+            One clear path from attention to inquiry.
+          </h2>
+        </div>
+        <div className="services-system-grid mt-8">
+          {systemCards.map((item) => (
+            <article key={item.title} className="services-system-card">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-copper-50">
+                {item.label}
+              </p>
+              <h3 className="mt-5 text-xl font-semibold text-white">{item.title}</h3>
+              <p className="mt-3 text-sm leading-7 text-white-50">{item.body}</p>
             </article>
           ))}
         </div>
+      </section>
 
-        <div className="mt-10 rounded-xl border border-black-50 bg-black-100/60 p-6 md:p-8">
-          <h2 className="text-2xl font-semibold md:text-3xl">
-            One operator. Four practical ways to make the brand clearer.
+      <section className="services-story-list" aria-label="Service details">
+        {services.map((service, index) => {
+          const pricingCategory = servicePricingCategory[service.slug];
+
+          return (
+            <article
+              key={service.slug}
+              className={`services-story-card ${index % 2 === 1 ? "is-reversed" : ""}`}
+            >
+              <div className="services-story-media">
+                <img
+                  src={service.storyImage}
+                  alt={service.storyImageAlt}
+                  className="services-story-image"
+                  loading={index === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                />
+              </div>
+
+              <div className="services-story-copy">
+                <p className="services-story-kicker">0{index + 1} / {service.title}</p>
+                <h2 className="services-story-title">{service.title}</h2>
+                <p className="services-story-body">{service.storyHeadline}</p>
+                <p className="services-story-body">{service.storyBody}</p>
+
+                <div className="services-story-meta">
+                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-50">
+                    Process
+                  </p>
+                  <ol className="services-story-list-block">
+                    {service.storySteps.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ol>
+                </div>
+
+                <div className="mt-6 grid gap-5 md:grid-cols-2">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-50">
+                      Useful for
+                    </p>
+                    <ul className="services-story-list-block">
+                      {service.bestFor.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-50">
+                      Impact
+                    </p>
+                    <ul className="services-story-list-block">
+                      {service.proofPoints.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="mt-7 flex flex-wrap gap-3">
+                  <CTAButton to={createContactPath(service)} size="sm">
+                    {service.ctaLabel}
+                  </CTAButton>
+                  {pricingCategory ? (
+                    <CTAButton to={`/pricing#${pricingCategory}`} variant="secondary" size="sm">
+                      See pricing
+                    </CTAButton>
+                  ) : null}
+                </div>
+              </div>
+            </article>
+          );
+        })}
+      </section>
+
+      <section className="services-flow" aria-labelledby="services-flow-title">
+        <div className="max-w-3xl">
+          <p className="section-eyebrow">Service flow</p>
+          <h2 id="services-flow-title" className="section-heading mt-4">
+            Pick one entry point, then build the rest around it.
           </h2>
-          <p className="mt-4 max-w-3xl text-white-50">
-            Websites turn attention into action, video editing sharpens the
-            story, on-location filming gives the brand fresh material, and
-            ongoing content keeps the presence consistent.
+          <p className="section-description mt-4">
+            The work can start with a page, an edit, a shoot, or a monthly
+            content rhythm. The important part is that each asset supports the
+            same business story.
           </p>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <CTAButton to="/pricing">Request a Quote</CTAButton>
-            <CTAButton to="/contact" variant="secondary">
-              Start a Project
-            </CTAButton>
-          </div>
         </div>
-      </div>
-    </section>
+
+        <div className="services-flow-grid">
+          {flowCards.map((item, index) => (
+            <article key={item.title} className="services-flow-card">
+              <p className="text-xs font-semibold uppercase tracking-[0.22em] text-copper-50">
+                0{index + 1}
+              </p>
+              <h3 className="mt-5 text-xl font-semibold text-white">{item.title}</h3>
+              <p className="mt-3 text-sm leading-7 text-white-50">{item.body}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="services-final-cta" aria-labelledby="services-final-title">
+        <div className="relative z-10 max-w-3xl">
+          <p className="section-eyebrow">Start with the clearest next move</p>
+          <h2 id="services-final-title" className="section-heading mt-4">
+            Let's shape the service path around what your client needs to understand first.
+          </h2>
+          <p className="section-description mt-4">
+            Bring one priority, a rough idea, or a mixed scope. The first step
+            is turning it into a practical plan with the right assets.
+          </p>
+        </div>
+        <div className="relative z-10 flex flex-wrap gap-3">
+          <CTAButton to={featuredService ? createContactPath(featuredService) : "/contact"}>
+            Start a Project
+          </CTAButton>
+          <CTAButton to="/pricing" variant="secondary">
+            Request a Quote
+          </CTAButton>
+        </div>
+      </section>
+    </main>
   );
 }
 

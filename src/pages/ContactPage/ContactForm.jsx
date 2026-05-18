@@ -62,8 +62,9 @@ function ContactForm({ prefilledProjectType, selectedService, hasPricingPrefill 
     <form
       id="contact-form"
       onSubmit={handleSubmit}
-      className="card-border rounded-xl p-5 md:p-6"
+      className="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#121214]/60 p-6 backdrop-blur-xl shadow-[0_24px_56px_rgba(0,0,0,0.24),inset_0_1px_0_rgba(255,255,255,0.08)] md:p-8"
     >
+      <div className="absolute inset-0 pointer-events-none opacity-40 bg-[radial-gradient(circle_at_10%_10%,_rgba(212,134,93,0.12)_0%,_transparent_50%)]" />
       {selectedService ? (
         <div className="mb-5 rounded-xl border border-white/12 bg-white/[0.04] p-4 shadow-[0_18px_40px_rgba(0,0,0,0.16)]">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-copper-50">

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { words_videos } from "../constants/index";
 import Button from "../components/Button";
+import HeroActionButtons from "../components/HeroActionButtons";
 import HeroExperience from "../components/HeroModels/HeroExperience";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -116,11 +117,7 @@ const Hero = () => {
               convert.
             </p>
 
-            <Button
-              className="md:w-80 md:h-16 w-60 h-12 mt-auto pb-32 md:mt-0 md:pb-0 md:pt-6"
-              text="See my work"
-              id="work"
-            />
+            <HeroActionButtons />
           </div>
         </header>
 

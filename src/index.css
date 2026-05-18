@@ -1062,6 +1062,7 @@ section {
       isolation: isolate;
       backdrop-filter: blur(22px) saturate(135%);
       -webkit-backdrop-filter: blur(22px) saturate(135%);
+      transition: all 300ms ease;
     }
 
     > .inner::before {
@@ -1078,6 +1079,7 @@ section {
       );
       opacity: 0.9;
       pointer-events: none;
+      transition: opacity 300ms ease;
     }
 
     &.not-scrolled > .inner {
@@ -1104,6 +1106,18 @@ section {
       box-shadow:
         0 18px 40px rgba(0, 0, 0, 0.24),
         inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    &.menu-open > .inner {
+      backdrop-filter: blur(0px) saturate(100%);
+      -webkit-backdrop-filter: blur(0px) saturate(100%);
+      background: transparent !important;
+      border-color: transparent !important;
+      box-shadow: none !important;
+    }
+
+    &.menu-open > .inner::before {
+      opacity: 0;
     }
 
     .logo {
@@ -1284,25 +1298,46 @@ section {
     pointer-events: none;
     overscroll-behavior: contain;
     touch-action: none;
-    transition:
-      visibility 360ms ease,
-      opacity 360ms ease;
-    opacity: 0;
+    transition: visibility 400ms ease;
   }
 
   .mobile-menu.is-open {
     visibility: visible;
     pointer-events: auto;
-    opacity: 1;
   }
 
   .mobile-menu-backdrop {
-    @apply absolute inset-0 border-0 bg-black/80 backdrop-blur-md;
+    @apply absolute inset-0 border-0;
+    background-color: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    transition:
+      background-color 400ms ease,
+      backdrop-filter 400ms ease,
+      -webkit-backdrop-filter 400ms ease;
     cursor: pointer;
+    will-change: background-color, backdrop-filter;
+  }
+
+  .mobile-menu.is-open .mobile-menu-backdrop {
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
   }
 
   .mobile-menu-panel {
     @apply relative z-10 flex h-full flex-col items-center justify-center gap-8 px-4 pb-10 pt-24;
+    opacity: 0;
+    transform: scale(0.96) translateY(-10px);
+    transition: 
+      opacity 400ms ease,
+      transform 400ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: opacity, transform;
+  }
+
+  .mobile-menu.is-open .mobile-menu-panel {
+    opacity: 1;
+    transform: scale(1) translateY(0);
   }
 
   .mobile-menu-swiper {
@@ -2274,6 +2309,257 @@ section {
     animation-delay: var(--about-delay, 0ms);
   }
 
+  .services-page {
+    @apply relative overflow-hidden py-14 md:py-20;
+    --services-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    background:
+      radial-gradient(circle at 78% 8%, rgba(212, 134, 93, 0.18), transparent 30rem),
+      radial-gradient(circle at 8% 38%, rgba(131, 156, 181, 0.12), transparent 28rem),
+      linear-gradient(180deg, #000 0%, rgba(8, 8, 10, 1) 38%, #000 100%);
+  }
+
+  .services-page::before {
+    @apply pointer-events-none absolute inset-x-0 top-0 h-px;
+    content: "";
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(212, 134, 93, 0.64),
+      rgba(217, 236, 255, 0.28),
+      transparent
+    );
+  }
+
+  .services-hero,
+  .services-system-band,
+  .services-story-list,
+  .services-flow,
+  .services-final-cta {
+    @apply relative z-10 mx-auto w-full max-w-[1280px] px-5 md:px-10 xl:px-20;
+  }
+
+  .services-hero-grid {
+    @apply grid grid-cols-1 items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(320px,0.52fr)] xl:gap-14;
+  }
+
+  .services-hero-copy {
+    @apply max-w-4xl;
+  }
+
+  .services-hero-panel,
+  .services-system-card,
+  .services-story-card,
+  .services-flow-card,
+  .services-final-cta {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    background:
+      linear-gradient(145deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.02) 46%, rgba(212, 134, 93, 0.06)),
+      rgba(14, 14, 16, 0.78);
+    box-shadow:
+      0 26px 68px rgba(0, 0, 0, 0.28),
+      inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  .services-hero-copy,
+  .services-hero-panel,
+  .services-system-card,
+  .services-story-card,
+  .services-flow-card,
+  .services-final-cta {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+    transition:
+      transform 320ms var(--services-ease),
+      opacity 320ms var(--services-ease);
+  }
+
+  .services-page.is-loading
+    :where(
+      .services-hero-copy,
+      .services-hero-panel,
+      .services-system-card,
+      .services-story-card,
+      .services-flow-card,
+      .services-final-cta
+    ) {
+    opacity: 0;
+    transform: translate3d(0, 1rem, 0);
+  }
+
+  .services-hero-panel {
+    @apply relative overflow-hidden p-5 md:p-7;
+    background:
+      radial-gradient(circle at top right, rgba(212, 134, 93, 0.18), transparent 42%),
+      linear-gradient(145deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.025) 56%),
+      rgba(14, 14, 16, 0.86);
+  }
+
+  .services-hero-panel::after,
+  .services-final-cta::after {
+    @apply pointer-events-none absolute rounded-full;
+    content: "";
+    inset: auto -5rem -6rem auto;
+    width: 16rem;
+    height: 16rem;
+    background: rgba(212, 134, 93, 0.14);
+    filter: blur(46px);
+  }
+
+  .services-system-band,
+  .services-flow,
+  .services-final-cta {
+    @apply mt-14 md:mt-20;
+  }
+
+  .services-system-grid,
+  .services-flow-grid {
+    @apply grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3;
+  }
+
+  .services-system-card,
+  .services-flow-card {
+    @apply relative overflow-hidden p-5 md:p-6;
+  }
+
+  .services-system-card:hover,
+  .services-flow-card:hover,
+  .services-story-card:hover {
+    border-color: rgba(212, 134, 93, 0.4);
+    transform: translate3d(0, -4px, 0);
+  }
+
+  .services-story-list {
+    @apply mt-14 flex flex-col gap-6 md:mt-20 md:gap-8;
+  }
+
+  .services-story-card {
+    @apply grid grid-cols-1 gap-0 overflow-hidden lg:grid-cols-[minmax(0,0.92fr)_minmax(0,1fr)];
+  }
+
+  .services-story-card.is-reversed {
+    @apply lg:grid-cols-[minmax(0,1fr)_minmax(0,0.92fr)];
+  }
+
+  .services-story-card.is-reversed .services-story-media {
+    @apply lg:order-2;
+  }
+
+  .services-story-media {
+    @apply relative min-h-[16rem] overflow-hidden bg-black md:min-h-[22rem] lg:min-h-full;
+  }
+
+  .services-story-media::after {
+    @apply pointer-events-none absolute inset-0;
+    content: "";
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.12), transparent 28%),
+      linear-gradient(0deg, rgba(0, 0, 0, 0.62), transparent 48%),
+      radial-gradient(circle at 18% 8%, rgba(212, 134, 93, 0.22), transparent 42%);
+    opacity: 0.78;
+    transition: opacity 320ms var(--services-ease);
+  }
+
+  .services-story-card:hover .services-story-media::after {
+    opacity: 0.92;
+  }
+
+  .services-story-image {
+    @apply h-full w-full object-cover;
+    filter: saturate(0.96) contrast(1.06) brightness(0.84);
+    transform: scale(1.035);
+    transition: transform 520ms var(--services-ease);
+  }
+
+  .services-story-card:hover .services-story-image {
+    transform: scale(1.07);
+  }
+
+  .services-story-copy {
+    @apply relative z-10 flex min-w-0 flex-col justify-center p-6 md:p-8 xl:p-10;
+  }
+
+  .services-story-kicker {
+    @apply text-[11px] font-semibold uppercase tracking-[0.22em] text-copper-50;
+  }
+
+  .services-story-title {
+    @apply mt-4 text-2xl font-semibold leading-tight text-white md:text-4xl;
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+  }
+
+  .services-story-body {
+    @apply mt-4 text-sm leading-7 text-white-50 md:text-base;
+    text-wrap: pretty;
+  }
+
+  .services-story-meta,
+  .services-story-list-block {
+    @apply mt-6 border-t pt-5 text-sm leading-6 text-white/70;
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .services-story-list-block {
+    @apply space-y-3;
+  }
+
+  .services-story-list-block li {
+    @apply flex gap-3;
+  }
+
+  .services-story-list-block li::before {
+    @apply mt-2 size-1.5 flex-none rounded-full bg-copper-50;
+    content: "";
+  }
+
+  .services-flow-grid {
+    @apply mt-8;
+  }
+
+  .services-flow-card {
+    @apply min-h-[14rem];
+  }
+
+  .services-final-cta {
+    @apply flex flex-col justify-between gap-6 overflow-hidden p-6 md:flex-row md:items-end md:p-8;
+    background:
+      linear-gradient(125deg, rgba(212, 134, 93, 0.18), rgba(255, 255, 255, 0.05) 44%, rgba(14, 14, 16, 0.88)),
+      rgba(14, 14, 16, 0.9);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .services-hero-copy,
+    .services-hero-panel,
+    .services-system-card,
+    .services-story-card,
+    .services-story-media::after,
+    .services-story-image,
+    .services-flow-card,
+    .services-final-cta {
+      transition: none;
+    }
+
+    .services-page.is-loading
+      :where(
+        .services-hero-copy,
+        .services-hero-panel,
+        .services-system-card,
+        .services-story-card,
+        .services-flow-card,
+        .services-final-cta
+      ),
+    .services-system-card:hover,
+    .services-flow-card:hover,
+    .services-story-card:hover,
+    .services-story-card:hover .services-story-image {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
   .pricing-page {
     width: 100%;
     background:
@@ -2505,6 +2791,96 @@ section {
     @apply mt-5;
   }
 
+  .pricing-package-card-wrapper {
+    @apply h-full min-w-0;
+    display: flex;
+  }
+
+  .pricing-package-card-wrapper > .pricing-package-card {
+    flex: 1 1 auto;
+  }
+
+  .pricing-package-card-poster {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem 1rem 0 0;
+    aspect-ratio: 16 / 9;
+    margin: -1px -1px 1.25rem -1px;
+  }
+
+  .pricing-package-card-poster-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 35%;
+    transition: transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .pricing-package-card:hover .pricing-package-card-poster-img {
+    transform: scale(1.04);
+  }
+
+  @keyframes pricing-featured-pulse {
+    0%,
+    100% {
+      opacity: 0.85;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  .pricing-package-card.is-featured::after {
+    content: "";
+    position: absolute;
+    inset: -8% -12% auto auto;
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(
+      circle,
+      rgba(212, 134, 93, 0.22),
+      transparent 70%
+    );
+    filter: blur(2rem);
+    pointer-events: none;
+    animation: pricing-featured-pulse 6s ease-in-out infinite;
+    z-index: 0;
+  }
+
+  .pricing-mobile-tabs {
+    display: flex;
+    gap: 0.5rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    padding: 0.5rem 1.25rem;
+    margin-top: 1.5rem;
+    background: rgba(11, 11, 13, 0.85);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .pricing-mobile-tab {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    padding: 0.5rem 0.875rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    color: var(--color-white-50);
+    white-space: nowrap;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .pricing-mobile-tab[aria-current="true"] {
+    border-color: rgba(212, 134, 93, 0.55);
+    background: rgba(212, 134, 93, 0.12);
+    color: #fff;
+  }
+
   .home-pricing-preview-card-cta {
     width: auto;
     min-width: 0;
@@ -2616,6 +2992,15 @@ section {
 
     .pricing-package-card:hover {
       transform: none;
+    }
+
+    .pricing-package-card-poster-img {
+      transform: none !important;
+      transition: none !important;
+    }
+
+    .pricing-package-card.is-featured::after {
+      animation: none !important;
     }
   }
 
@@ -3008,4 +3393,33 @@ section {
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
   }
+}
+
+@keyframes pageFadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-transition-enter {
+  animation: pageFadeInUp 600ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: opacity, transform;
+}
+
+@keyframes siteFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.site-fade-in {
+  animation: siteFadeIn 1s ease-out forwards;
 }

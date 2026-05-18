@@ -44,3 +44,10 @@ reports/security/
 # Local dev scratch files and tool artifacts
 scratch.*
 .playwright-cli/
+
+# Agent tools and metadata
+.agents/
+AGENTS.md
+GEMINI.md
+.claude/
+.codex/
