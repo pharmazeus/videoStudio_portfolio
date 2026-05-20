@@ -1,41 +1,23 @@
-import { useActionState, useEffect, useState } from "react";
+import { useState } from "react";
 
 import { contactFormOptions } from "../../constants";
 import { createContactFormState } from "../../lib/contactForm";
 import Field from "./Field";
 import { STATUS_MAP } from "./statusMap";
-import SuccessToast from "./SuccessToast";
 import { INITIAL_ACTION_STATE, submitContact } from "./submitContactAction";
-
-const SUCCESS_TOAST_MESSAGE = "Sent — I'll reply soon.";
 
 function ContactForm({ prefilledProjectType, selectedService, hasPricingPrefill }) {
   const [formState, setFormState] = useState(() =>
     createContactFormState(prefilledProjectType, selectedService),
   );
   const [fieldErrors, setFieldErrors] = useState({});
-  const [showToast, setShowToast] = useState(false);
-
-  const [result, formAction, isPending] = useActionState(
-    submitContact,
-    INITIAL_ACTION_STATE,
-  );
-
-  useEffect(() => {
-    if (result.status === "success" && result.fields) {
-      setFormState(result.fields);
-      setFieldErrors({});
-      setShowToast(true);
-      return;
-    }
-    if (result.status === "validation_error") {
-      setFieldErrors(result.fieldErrors);
-    }
-  }, [result]);
+  const [result, setResult] = useState(INITIAL_ACTION_STATE);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormState((s) => ({ ...s, [name]: value }));
+    setResult(INITIAL_ACTION_STATE);
     setFieldErrors((prev) => {
       if (!prev[name]) return prev;
       const next = { ...prev };
@@ -44,19 +26,42 @@ function ContactForm({ prefilledProjectType, selectedService, hasPricingPrefill 
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    if (isPending) return;
-    formAction({
-      formState,
-      selectedService,
-      prefilledProjectType,
-      hasPricingPrefill,
-    });
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    setResult(INITIAL_ACTION_STATE);
+    setFieldErrors({});
+
+    try {
+      const nextResult = await submitContact({
+        formState,
+        selectedService,
+        prefilledProjectType,
+        hasPricingPrefill,
+      });
+
+      setResult(nextResult);
+
+      if (nextResult.status === "success" && nextResult.fields) {
+        setFormState(nextResult.fields);
+        setFieldErrors({});
+        return;
+      }
+
+      if (nextResult.status === "validation_error") {
+        setFieldErrors(nextResult.fieldErrors);
+        return;
+      }
+
+      setFieldErrors({});
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const inlineStatus =
-    result.status !== "success" ? STATUS_MAP[result.status] : null;
+  const inlineStatus = STATUS_MAP[result.status] ?? null;
 
   return (
     <form
@@ -151,17 +156,11 @@ function ContactForm({ prefilledProjectType, selectedService, hasPricingPrefill 
       <div className="relative mt-5">
         <button
           type="submit"
-          disabled={isPending}
+          disabled={isSubmitting}
           className="inline-flex items-center justify-center rounded-lg border border-white/70 bg-white px-5 py-3 font-semibold text-black transition-colors duration-300 hover:bg-black-50 hover:text-white disabled:cursor-wait disabled:opacity-75"
         >
-          {isPending ? "Sending..." : "Start a Project"}
+          {isSubmitting ? "Sending..." : "Start a Project"}
         </button>
-
-        <SuccessToast
-          show={showToast}
-          message={SUCCESS_TOAST_MESSAGE}
-          onDismiss={() => setShowToast(false)}
-        />
       </div>
 
       {inlineStatus ? (

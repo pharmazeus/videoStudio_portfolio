@@ -5,7 +5,12 @@ import {
   validateContactPayload,
 } from "../../lib/contactForm";
 
-export async function submitContact(prevState, { formState, selectedService, prefilledProjectType, hasPricingPrefill }) {
+export async function submitContact({
+  formState,
+  selectedService,
+  prefilledProjectType,
+  hasPricingPrefill,
+}) {
   const payload = createContactApiPayload(formState, selectedService);
   const validation = validateContactPayload(payload);
 

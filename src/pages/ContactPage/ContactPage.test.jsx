@@ -1,15 +1,26 @@
 import "@testing-library/jest-dom/vitest";
-import { render, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { MemoryRouter } from "react-router-dom";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { MemoryRouter, useLocation } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import ContactPage from "./index";
+
+function LocationProbe() {
+  const location = useLocation();
+
+  return (
+    <span data-testid="current-location">
+      {location.pathname}
+      {location.search}
+    </span>
+  );
+}
 
 function renderContactPage(initialEntry = "/contact") {
   return render(
     <MemoryRouter initialEntries={[initialEntry]}>
       <ContactPage />
+      <LocationProbe />
     </MemoryRouter>,
   );
 }
@@ -31,8 +42,6 @@ describe("ContactPage", () => {
   });
 
   it("submits successfully and clears user-entered values", async () => {
-    const user = userEvent.setup();
-
     globalThis.fetch.mockResolvedValue({
       ok: true,
       json: vi.fn().mockResolvedValue({ ok: true }),
@@ -40,29 +49,35 @@ describe("ContactPage", () => {
 
     renderContactPage();
 
-    await user.type(screen.getByLabelText("Name"), filledForm.name);
-    await user.type(screen.getByLabelText("Email"), filledForm.email);
-    await user.type(screen.getByLabelText("Business / Brand"), filledForm.company);
-    await user.type(
-      screen.getByLabelText("What are you trying to improve?"),
-      filledForm.message,
-    );
-    await user.click(screen.getByRole("button", { name: "Start a Project" }));
+    fireEvent.change(screen.getByLabelText("Name"), {
+      target: { value: filledForm.name },
+    });
+    fireEvent.change(screen.getByLabelText("Email"), {
+      target: { value: filledForm.email },
+    });
+    fireEvent.change(screen.getByLabelText("Business / Brand"), {
+      target: { value: filledForm.company },
+    });
+    fireEvent.change(screen.getByLabelText("What are you trying to improve?"), {
+      target: { value: filledForm.message },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Start a Project" }));
 
     await waitFor(() => {
       expect(globalThis.fetch).toHaveBeenCalledTimes(1);
     });
 
-    expect(await screen.findByText(/sent/i)).toBeInTheDocument();
+    expect(await screen.findByRole("status")).toHaveTextContent(
+      "Message sent. I'll reply soon.",
+    );
     expect(screen.getByLabelText("Name")).toHaveValue("");
     expect(screen.getByLabelText("Email")).toHaveValue("");
     expect(screen.getByLabelText("Business / Brand")).toHaveValue("");
     expect(screen.getByLabelText("What are you trying to improve?")).toHaveValue("");
+    expect(screen.getByTestId("current-location")).toHaveTextContent("/contact");
   });
 
   it("keeps entered values on send failure and shows fallback contact options", async () => {
-    const user = userEvent.setup();
-
     globalThis.fetch.mockResolvedValue({
       ok: false,
       json: vi.fn().mockResolvedValue({ ok: false, error: "send_failed" }),
@@ -70,13 +85,16 @@ describe("ContactPage", () => {
 
     renderContactPage();
 
-    await user.type(screen.getByLabelText("Name"), filledForm.name);
-    await user.type(screen.getByLabelText("Email"), filledForm.email);
-    await user.type(
-      screen.getByLabelText("What are you trying to improve?"),
-      filledForm.message,
-    );
-    await user.click(screen.getByRole("button", { name: "Start a Project" }));
+    fireEvent.change(screen.getByLabelText("Name"), {
+      target: { value: filledForm.name },
+    });
+    fireEvent.change(screen.getByLabelText("Email"), {
+      target: { value: filledForm.email },
+    });
+    fireEvent.change(screen.getByLabelText("What are you trying to improve?"), {
+      target: { value: filledForm.message },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Start a Project" }));
 
     expect(
       await screen.findByText(/The form could not send right now/i),
@@ -95,11 +113,10 @@ describe("ContactPage", () => {
         .getAllByRole("link", { name: "Telegram" })
         .some((link) => link.getAttribute("href") === "https://t.me/pharmazeus"),
     ).toBe(true);
+    expect(screen.getByTestId("current-location")).toHaveTextContent("/contact");
   });
 
   it("includes pricing-prefilled service context in the API payload", async () => {
-    const user = userEvent.setup();
-
     globalThis.fetch.mockResolvedValue({
       ok: true,
       json: vi.fn().mockResolvedValue({ ok: true }),
@@ -115,13 +132,19 @@ describe("ContactPage", () => {
       "Selected service: Landing Page Sprint",
     );
 
-    await user.type(screen.getByLabelText("Name"), filledForm.name);
-    await user.type(screen.getByLabelText("Email"), filledForm.email);
-    await user.type(
-      screen.getByLabelText("What are you trying to improve?"),
-      "\nNeed this live in the next month.",
-    );
-    await user.click(screen.getByRole("button", { name: "Start a Project" }));
+    fireEvent.change(screen.getByLabelText("Name"), {
+      target: { value: filledForm.name },
+    });
+    fireEvent.change(screen.getByLabelText("Email"), {
+      target: { value: filledForm.email },
+    });
+    fireEvent.change(screen.getByLabelText("What are you trying to improve?"), {
+      target: {
+        value: `${screen.getByLabelText("What are you trying to improve?").value}
+Need this live in the next month.`,
+      },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Start a Project" }));
 
     await waitFor(() => {
       expect(globalThis.fetch).toHaveBeenCalledWith(
@@ -139,5 +162,16 @@ describe("ContactPage", () => {
     expect(parsedBody.projectType).toBe("website");
     expect(parsedBody.service).toBe("Landing Page Sprint");
     expect(parsedBody.message).toContain("Selected service: Landing Page Sprint");
+    expect(await screen.findByRole("status")).toHaveTextContent(
+      "Message sent. I'll reply soon.",
+    );
+    expect(screen.getByLabelText("Name")).toHaveValue("");
+    expect(screen.getByLabelText("Email")).toHaveValue("");
+    expect(
+      screen.getByLabelText("What are you trying to improve?").value,
+    ).toContain("Selected service: Landing Page Sprint");
+    expect(screen.getByTestId("current-location")).toHaveTextContent(
+      "/contact?projectType=website&service=Landing%20Page%20Sprint",
+    );
   });
 });

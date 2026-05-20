@@ -4,23 +4,78 @@ import react from "@vitejs/plugin-react";
 import { handleContactRequest } from "./api/contact";
 import tailwindcss from "@tailwindcss/vite";
 
-function contactApiDevPlugin(env) {
+const CONTACT_API_MOCK_RESPONSES = {
+  success: { statusCode: 200, payload: { ok: true, mock: true } },
+  validation: { statusCode: 400, payload: { ok: false, error: "validation", mock: true } },
+  send_failed: { statusCode: 500, payload: { ok: false, error: "send_failed", mock: true } },
+  rate_limited: {
+    statusCode: 429,
+    payload: { ok: false, error: "rate_limited", mock: true },
+    headers: { "Retry-After": "60" },
+  },
+};
+
+function sendJson(res, { statusCode, payload, headers }) {
+  res.statusCode = statusCode;
+  res.setHeader("Content-Type", "application/json");
+
+  if (headers) {
+    for (const [key, value] of Object.entries(headers)) {
+      res.setHeader(key, value);
+    }
+  }
+
+  res.end(JSON.stringify(payload));
+}
+
+function getContactApiMockResponse(env, req) {
+  const mockMode = String(env.CONTACT_API_MOCK ?? "").trim().toLowerCase();
+
+  if (!mockMode || mockMode === "false" || mockMode === "off") {
+    return null;
+  }
+
+  if (req.method !== "POST") {
+    return {
+      statusCode: 405,
+      payload: { ok: false, error: "method_not_allowed", mock: true },
+    };
+  }
+
+  if (mockMode === "true" || mockMode === "1") {
+    return CONTACT_API_MOCK_RESPONSES.success;
+  }
+
+  return CONTACT_API_MOCK_RESPONSES[mockMode] ?? CONTACT_API_MOCK_RESPONSES.success;
+}
+
+function contactApiPlugin(env) {
+  const handleContactMiddleware = async (req, res, next) => {
+    const requestPath = req.url?.split("?")[0];
+
+    if (requestPath !== "/api/contact") {
+      return next();
+    }
+
+    const mockResponse = getContactApiMockResponse(env, req);
+
+    if (mockResponse) {
+      return sendJson(res, mockResponse);
+    }
+
+    return handleContactRequest(req, res, {
+      env,
+      fetchImpl: fetch,
+    });
+  };
+
   return {
-    name: "contact-api-dev-middleware",
-    apply: "serve",
+    name: "contact-api-local-middleware",
     configureServer(server) {
-      server.middlewares.use(async (req, res, next) => {
-        const requestPath = req.url?.split("?")[0];
-
-        if (requestPath !== "/api/contact") {
-          return next();
-        }
-
-        return handleContactRequest(req, res, {
-          env,
-          fetchImpl: fetch,
-        });
-      });
+      server.middlewares.use(handleContactMiddleware);
+    },
+    configurePreviewServer(server) {
+      server.middlewares.use(handleContactMiddleware);
     },
   };
 }
@@ -32,7 +87,7 @@ export default defineConfig(({ mode }) => {
   };
 
   return {
-    plugins: [tailwindcss(), react(), contactApiDevPlugin(env)],
+    plugins: [tailwindcss(), react(), contactApiPlugin(env)],
     build: {
       chunkSizeWarningLimit: 900,
       rollupOptions: {
