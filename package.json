@@ -20,7 +20,7 @@
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "gsap": "^3.13.0",
-    "lucide-react": "^1.0.1",
+    "lucide-react": "^1.16.0",
     "modern-normalize": "^3.0.1",
     "react": "^19.1.1",
     "react-countup": "^6.5.3",
