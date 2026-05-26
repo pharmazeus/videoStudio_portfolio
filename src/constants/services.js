@@ -45,12 +45,12 @@ export const services = [
   {
     slug: "video-editing",
     title: "Video Editing",
-    image: "/posters/services/video-editing.jpg",
+    image: "/posters/services/video-editing-text-free.jpg",
     imageAlt:
-      "Cinematic editing desk with color grading controls and a video timeline.",
-    storyImage: "/posters/services/story-video-editing.jpg",
+      "Dark video editing workspace with an abstract timeline, color scopes, and a small camera on the desk.",
+    storyImage: "/posters/services/video-editing-text-free.jpg",
     storyImageAlt:
-      "Abstract editing timeline with quiet monitor glow, footage blocks, and copper review markers.",
+      "Dark video editing workspace with an abstract timeline, color scopes, and a small camera on the desk.",
     summary:
       "Post-production for short-form and long-form video: edit, color, sound design, motion graphics, and platform-ready cutdowns.",
     storyHeadline: "Turn raw footage into assets people can actually finish watching",
@@ -90,7 +90,7 @@ export const services = [
     title: "Video Production & Filming",
     image: "/posters/services/video-filming.jpg",
     imageAlt:
-      "Professional cinema camera on a dark production set with warm studio lights.",
+      "Blackmagic Pocket Cinema Camera 6K with a Sigma lens on a dark production set with warm studio lights.",
     storyImage: "/posters/services/story-video-production.jpg",
     storyImageAlt:
       "Abstract production planning surface with location frames, simple camera silhouette, and light markers.",

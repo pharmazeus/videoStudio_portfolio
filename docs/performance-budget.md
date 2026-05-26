@@ -15,6 +15,10 @@
 - Keep below-fold video previews unloaded until their cards are near the viewport.
 - Prefer idle-time route prefetching over immediate post-load prefetching.
 - Avoid external font CSS on the critical path unless the font is self-hosted and subsetted.
+- On service-heavy pages, avoid repeated backdrop/filter blur on card grids; use solid layered surfaces, reserved dimensions, and `content-visibility` for below-fold cards instead.
+- Service card images should use responsive poster variants, including a `640px` middle size for laptop cards that render around `500-600px` wide.
+- Avoid text baked into service imagery so cards stay legible when cropped or scaled.
+- Use `ResponsiveImage`'s optional `sources` prop when adding modern image formats so WebP/AVIF can sit before the JPEG fallback without changing existing call sites.
 
 ## Verification
 

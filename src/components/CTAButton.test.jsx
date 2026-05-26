@@ -22,6 +22,20 @@ describe("CTAButton external href hardening", () => {
     expect(link).toHaveAttribute("rel", "noopener noreferrer");
   });
 
+  it("renders allowed mailto links as same-tab anchors", () => {
+    render(
+      <CTAButton href="mailto:vladmaidanskyi46@gmail.com">
+        Email Directly
+      </CTAButton>,
+    );
+
+    const link = screen.getByRole("link", { name: "Email Directly" });
+
+    expect(link).toHaveAttribute("href", "mailto:vladmaidanskyi46@gmail.com");
+    expect(link).not.toHaveAttribute("target");
+    expect(link).not.toHaveAttribute("rel");
+  });
+
   it("degrades invalid external links to a disabled text element", () => {
     render(<CTAButton href="javascript:alert(1)">Unsafe Link</CTAButton>);
 

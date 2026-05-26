@@ -7,10 +7,6 @@ import {
 import { getSafeExternalLinkAttributes } from "../../lib/safeExternalLink";
 
 function ContactSidebar() {
-  const directEmailLink = getSafeExternalLinkAttributes(
-    contactDetails.directEmailMailto,
-  );
-
   return (
     <aside className="space-y-5">
       <article className="relative overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#121214]/60 p-6 backdrop-blur-xl shadow-[0_24px_56px_rgba(0,0,0,0.24),inset_0_1px_0_rgba(255,255,255,0.08)] md:p-8">
@@ -20,9 +16,9 @@ function ContactSidebar() {
           request is in motion.
         </p>
         <div className="mt-5 flex flex-col gap-3">
-          {directEmailLink ? (
-            <CTAButton href={directEmailLink.href}>Email Directly</CTAButton>
-          ) : null}
+          <CTAButton href={contactDetails.directEmailMailto}>
+            Email Directly
+          </CTAButton>
           {contactDirectChannels.map((channel) => (
             <CTAButton
               key={channel.label}

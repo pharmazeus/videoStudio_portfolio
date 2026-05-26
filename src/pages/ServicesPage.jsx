@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 import CTAButton from "../components/CTAButton";
 import ResponsiveImage from "../components/ResponsiveImage";
 import { services } from "../constants";
@@ -36,6 +34,8 @@ const systemCards = [
   },
 ];
 
+const serviceStoryImageWidths = [480, 640, 960];
+
 function createContactPath(service) {
   const params = new URLSearchParams({
     projectType: projectTypeByService[service.slug] ?? "mixed-scope",
@@ -46,19 +46,10 @@ function createContactPath(service) {
 }
 
 function ServicesPage() {
-  const [isReady, setIsReady] = useState(false);
   const serviceCount = services.length.toString().padStart(2, "0");
 
-  useEffect(() => {
-    const frame = window.requestAnimationFrame(() => {
-      setIsReady(true);
-    });
-
-    return () => window.cancelAnimationFrame(frame);
-  }, []);
-
   return (
-    <div className={`services-page ${isReady ? "" : "is-loading"}`}>
+    <div className="services-page">
       <section className="services-hero">
         <div className="services-hero-grid">
           <div className="services-hero-copy">
@@ -141,10 +132,11 @@ function ServicesPage() {
                   className="services-story-image"
                   width="1586"
                   height="992"
+                  widths={serviceStoryImageWidths}
                   loading={index === 0 ? "eager" : "lazy"}
                   decoding="async"
                   fetchPriority={index === 0 ? "high" : "auto"}
-                  sizes="(min-width: 1024px) 38vw, 100vw"
+                  sizes="(min-width: 1280px) 560px, (min-width: 1024px) 52vw, 100vw"
                 />
               </div>
 
@@ -181,7 +173,7 @@ function ServicesPage() {
                   ))}
                 </div>
 
-                <div className="mt-7 flex flex-wrap gap-3">
+                <div className="services-story-actions mt-7 flex flex-wrap gap-3">
                   <CTAButton to={createContactPath(service)} size="sm">
                     {service.ctaLabel}
                   </CTAButton>

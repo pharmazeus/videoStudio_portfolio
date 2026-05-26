@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import CTAButton from "../../../components/CTAButton";
 import ResponsiveImage from "../../../components/ResponsiveImage";
 import { servicePricingCategory } from "../constants";
 
@@ -72,13 +73,14 @@ function ServiceCard({ item, index }) {
 
         {pricingCategory ? (
           <div className="home-service-card-footer">
-            <button
-              type="button"
+            <CTAButton
+              variant="secondary"
+              size="sm"
               className="home-service-card-prices-cta"
               onClick={handlePricesScroll}
             >
               See prices
-            </button>
+            </CTAButton>
           </div>
         ) : null}
       </div>

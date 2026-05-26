@@ -90,7 +90,8 @@ Use existing utility/component classes before inventing new ones.
 ### Buttons/CTA
 - Use `src/components/Button.jsx` for main CTA interactions.
 - Keep existing animated arrow behavior and circular reveal motif.
-- `src/components/CTAButton.jsx` is the shared page-level CTA primitive; hover/focus states should use the copper accent rather than unrelated bright colors.
+- `src/components/CTAButton.jsx` is the shared page-level CTA primitive; it uses a compact arrow cue, copper-led primary/secondary states, explicit transform/border/background/shadow transitions, and copper focus rings.
+- Keep CTA labels short enough to fit at tablet widths, and prefer strengthening the shared component instead of adding one-off page button styles.
 
 ## Motion System
 - Primary animation library: GSAP + ScrollTrigger.

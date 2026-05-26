@@ -1,10 +1,7 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
 import { navLinks } from "../../constants";
-import useNavBarGestures from "./useNavBarGestures.js";
-
-const MOBILE_SLIDE_SPACING = 125;
 
 function getActiveNavIndex(pathname) {
   const index = navLinks.findIndex(({ path }) => {
@@ -15,43 +12,78 @@ function getActiveNavIndex(pathname) {
   return index >= 0 ? index : 0;
 }
 
+function prefersReducedMotion() {
+  return window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+}
+
 function NavBarMobileMenu({ isOpen, onClose, onHomeNavLinkClick }) {
   const [activeSlide, setActiveSlide] = useState(0);
+  const swiperRef = useRef(null);
+  const slideRefs = useRef([]);
+  const scrollFrame = useRef(null);
   const location = useLocation();
   const pathname = location.pathname.replace(/\/+$/, "") || "/";
 
-  const {
-    dragOffsetState,
-    isDragging,
-    isSnapping,
-    suppressClickUntil,
-    resetDragOffset,
-    handlePointerDown,
-    handlePointerMove,
-    handlePointerEnd,
-    handlePointerCancel,
-    handleWheel,
-  } = useNavBarGestures({
-    isActive: isOpen,
-    slidesCount: navLinks.length,
-    setActiveSlide,
-  });
+  const scrollToSlide = useCallback((index, animate = true) => {
+    const swiper = swiperRef.current;
+    const slide = slideRefs.current[index];
+    if (!swiper || !slide) return;
+
+    const targetLeft = slide.offsetLeft - (swiper.clientWidth - slide.offsetWidth) / 2;
+
+    swiper.scrollTo({
+      left: Math.max(0, targetLeft),
+      behavior: animate && !prefersReducedMotion() ? "smooth" : "auto",
+    });
+  }, []);
+
+  const syncActiveSlideToScroll = useCallback(() => {
+    const swiper = swiperRef.current;
+    if (!swiper) return;
+
+    const swiperCenter = swiper.getBoundingClientRect().left + swiper.clientWidth / 2;
+    let nearestIndex = 0;
+    let nearestDistance = Number.POSITIVE_INFINITY;
+
+    slideRefs.current.forEach((slide, index) => {
+      if (!slide) return;
+      const rect = slide.getBoundingClientRect();
+      const slideCenter = rect.left + rect.width / 2;
+      const distance = Math.abs(slideCenter - swiperCenter);
+
+      if (distance < nearestDistance) {
+        nearestDistance = distance;
+        nearestIndex = index;
+      }
+    });
+
+    setActiveSlide((current) => (current === nearestIndex ? current : nearestIndex));
+  }, []);
+
+  const handleScroll = useCallback(() => {
+    if (scrollFrame.current) return;
+
+    scrollFrame.current = window.requestAnimationFrame(() => {
+      scrollFrame.current = null;
+      syncActiveSlideToScroll();
+    });
+  }, [syncActiveSlideToScroll]);
 
   useEffect(() => {
-    if (!isOpen) return;
+    if (!isOpen) return undefined;
     const routeIndex = getActiveNavIndex(pathname);
-    if (routeIndex !== -1) {
-      setActiveSlide(routeIndex);
-    }
-  }, [isOpen, pathname]);
+    setActiveSlide(routeIndex);
 
-  const getOffset = (index) => {
-    let offset = index - activeSlide;
-    const half = navLinks.length / 2;
-    if (offset < -half) offset += navLinks.length;
-    if (offset > half) offset -= navLinks.length;
-    return offset;
-  };
+    const frame = window.requestAnimationFrame(() => {
+      scrollToSlide(routeIndex, false);
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [isOpen, pathname, scrollToSlide]);
+
+  useEffect(() => () => {
+    if (scrollFrame.current) window.cancelAnimationFrame(scrollFrame.current);
+  }, []);
 
   return (
     <div
@@ -72,36 +104,27 @@ function NavBarMobileMenu({ isOpen, onClose, onHomeNavLinkClick }) {
 
       <div className="mobile-menu-panel">
         <div
-          className={`mobile-menu-swiper ${isDragging ? "is-dragging" : ""} ${isSnapping ? "is-snapping" : ""}`}
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={handlePointerEnd}
-          onPointerCancel={handlePointerCancel}
-          onWheel={handleWheel}
+          ref={swiperRef}
+          className="mobile-menu-swiper"
+          onScroll={handleScroll}
         >
           {navLinks.map(({ label, path }, index) => {
-            const baseOffset = getOffset(index);
-            let visualOffset = baseOffset + (dragOffsetState / MOBILE_SLIDE_SPACING);
-
-            if (visualOffset > navLinks.length / 2) visualOffset -= navLinks.length;
-            if (visualOffset < -navLinks.length / 2) visualOffset += navLinks.length;
-
-            const absOffset = Math.abs(visualOffset);
-            const isActiveSlide = absOffset < 0.5;
-            const isNearbySlide = absOffset <= 1.25;
-            const slideOpacity = absOffset > 1.45
-              ? 0
-              : Math.max(0.58, 1 - absOffset * 0.42);
+            const distanceFromActive = Math.abs(index - activeSlide);
+            const isActiveSlide = index === activeSlide;
+            const isNearbySlide = distanceFromActive <= 1;
+            const cardScale = isActiveSlide ? 1 : isNearbySlide ? 0.86 : 0.78;
+            const cardOpacity = isActiveSlide ? 1 : isNearbySlide ? 0.68 : 0.48;
 
             return (
               <div
                 key={path}
-                className={`mobile-menu-slide-proxy ${isDragging ? "is-dragging" : ""} ${isSnapping ? "is-snapping" : ""} ${isNearbySlide ? "is-nearby" : ""}`}
+                ref={(element) => {
+                  slideRefs.current[index] = element;
+                }}
+                className={`mobile-menu-slide-proxy ${isNearbySlide ? "is-nearby" : ""}`}
                 style={{
-                  transform: `translate(-50%, -50%) translateX(${visualOffset * MOBILE_SLIDE_SPACING}px) scale(${Math.max(0.6, 1 - absOffset * 0.25)})`,
-                  opacity: slideOpacity,
-                  zIndex: 10 - Math.floor(absOffset),
-                  pointerEvents: isActiveSlide ? "auto" : "none",
+                  "--mobile-menu-card-scale": cardScale,
+                  "--mobile-menu-card-opacity": cardOpacity,
                 }}
               >
                 <NavLink
@@ -111,13 +134,10 @@ function NavBarMobileMenu({ isOpen, onClose, onHomeNavLinkClick }) {
                     `mobile-menu-card ${isActive ? "is-route-active" : ""} ${isActiveSlide ? "is-focused" : "is-muted"}`
                   }
                   onClick={(event) => {
-                    if (performance.now() < suppressClickUntil.current) {
-                      event.preventDefault();
-                      return;
-                    }
                     if (path === "/") onHomeNavLinkClick(event);
                     else onClose();
                   }}
+                  tabIndex={isOpen ? 0 : -1}
                 >
                   {label}
                 </NavLink>
@@ -133,10 +153,11 @@ function NavBarMobileMenu({ isOpen, onClose, onHomeNavLinkClick }) {
               type="button"
               className={`mobile-menu-dot ${index === activeSlide ? "is-active" : ""}`}
               aria-label={`Go to ${navLinks[index].label}`}
+              aria-pressed={index === activeSlide}
               tabIndex={isOpen ? 0 : -1}
               onClick={() => {
-                resetDragOffset();
                 setActiveSlide(index);
+                scrollToSlide(index);
               }}
             />
           ))}
